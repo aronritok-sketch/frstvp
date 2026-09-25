@@ -450,7 +450,7 @@
       }).join('') + '</div>' +
       '</div>' +
       (p.stock === 'instock' ? '<div class="sticky-buy" data-sticky-buy><div class="wrap sb-in"><span class="sb-name">' + esc(p.name) + '</span>' + priceHtml(p) + '<button class="btn btn-primary" type="button" data-act="sticky-add">Kosárba</button></div></div>' : '') +
-      '<script type="application/ld+json">' + JSON.stringify(ld).replace(/</g, '\\u003c') + '</script>';
+      '<script type="application/ld+json">' + JSON.stringify(ld).replace(/</g, '\\u003c') + '<\/script>';
   };
 
   function longDesc(p) {
