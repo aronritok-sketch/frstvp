@@ -22,7 +22,7 @@
     return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
   };
 
-  FV.puffLabel = function (n) { return FV.num(n) + ' puff'; };
+  FV.puffLabel = function (n) { return FV.num(n) + ' ' + FV.t('puffUnit'); };
 
   FV.kg = function (g) {
     return g >= 1000 ? (g / 1000).toFixed(2).replace('.', ',') + ' kg' : g + ' g';
@@ -63,7 +63,10 @@
     }
     return null;
   };
-  FV.price = function (p) { return p.sale || p.price; };
+  // Az adatban szlovák bruttó ár van; a megjelenített ár az aktuális piac ÁFÁ-jával (FV.gross, i18n.js)
+  FV.regular = function (p) { return FV.gross(p.price); };
+  FV.salePrice = function (p) { return p.sale ? FV.gross(p.sale) : null; };
+  FV.price = function (p) { return FV.gross(p.sale || p.price); };
   FV.discount = function (p) { return p.sale ? Math.round((1 - p.sale / p.price) * 100) : 0; };
   FV.inCat = function (p, slug) { return p.cats.indexOf(slug) !== -1; };
   FV.productsInCat = function (slug) { return FV.products.filter(function (p) { return FV.inCat(p, slug); }); };
@@ -78,10 +81,11 @@
   };
 
   FV.stockInfo = function (p) {
-    if (p.stock === 'discontinued') return { cls: 'st-disc', label: 'Kifutott termék', short: 'Kifutott' };
-    if (p.stock === 'outofstock') return { cls: 'st-out', label: 'Készlethiányos', short: 'Készlethiány' };
-    if (p.qty <= 15) return { cls: 'st-low', label: 'Raktáron – utolsó ' + p.qty + ' db', short: 'Utolsó darabok' };
-    return { cls: 'st-in', label: 'Raktáron', short: 'Raktáron' };
+    var t = FV.t;
+    if (p.stock === 'discontinued') return { cls: 'st-disc', label: t('stDisc'), short: t('stDiscShort') };
+    if (p.stock === 'outofstock') return { cls: 'st-out', label: t('stOut'), short: t('stOutShort') };
+    if (p.qty <= 15) return { cls: 'st-low', label: t('stLow', { n: p.qty }), short: t('stLowShort') };
+    return { cls: 'st-in', label: t('stIn'), short: t('stIn') };
   };
 
   /* ---------- Tároló (localStorage, hibatűrő) ---------- */
@@ -135,15 +139,15 @@
     },
     totals: function () {
       var l = FV.cart.lines(), sub = 0, w = 0, n = 0, save = 0;
-      l.forEach(function (x) { sub += x.total; w += x.weight; n += x.qty; if (x.p.sale) save += (x.p.price - x.p.sale) * x.qty; });
+      l.forEach(function (x) { sub += x.total; w += x.weight; n += x.qty; if (x.p.sale) save += (FV.regular(x.p) - FV.salePrice(x.p)) * x.qty; });
       return { lines: l, sub: sub, weight: w, count: n, save: save };
     }
   };
 
   FV.shippingCost = function (methodId, weight, sub) {
-    var m = FV.shipping.methods.filter(function (x) { return x.id === methodId; })[0];
+    var m = FV.ship().methods.filter(function (x) { return x.id === methodId; })[0];
     if (!m) return null;
-    if (sub >= FV.shipping.freeOver) return 0;
+    if (sub >= FV.ship().freeOver) return 0;
     for (var i = 0; i < m.tiers.length; i++) if (weight <= m.tiers[i].max) return m.tiers[i].price;
     return null;
   };
@@ -177,17 +181,17 @@
     p._idx = {
       name: FV.norm(p.name),
       brand: FV.norm(b ? b.name : ''),
-      attrs: FV.norm([].concat(a.iz || [], a.nikotin || [], a.ml || [], a.kompat || [], a.szin || []).join(' ')),
+      attrs: FV.norm([].concat(a.iz || [], a.nikotin || [], a.ml || [], a.kompat || [], (a.szin || []).map(FV.colorName), a.szin || []).join(' ')),
       puff: (a.puff || []).map(String),
       cats: FV.norm(cats),
       ids: FV.norm(p.sku + ' ' + p.ean)
     };
-    p._idx.all = [p._idx.name, p._idx.brand, p._idx.attrs, p._idx.puff.join(' '), (a.puff && a.puff.length ? 'puff slukk' : ''), p._idx.cats, p._idx.ids].join(' ');
+    p._idx.all = [p._idx.name, p._idx.brand, p._idx.attrs, p._idx.puff.join(' '), (a.puff && a.puff.length ? 'puff ' + FV.norm(FV.t('puffUnit')) : ''), p._idx.cats, p._idx.ids].join(' ');
     return p._idx;
   }
 
   FV.search = function (q) {
-    var tokens = FV.norm(q).split(' ').filter(function (t) { return t && t !== 'puff' && t !== 'slukk' && t !== 'puffos'; });
+    var tokens = FV.norm(q).split(' ').filter(function (t) { return t && ['puff', 'puffs', 'potiahnuti', 'potiahnutia', 'bouffee', 'bouffees'].indexOf(t) === -1; });
     if (!tokens.length) return [];
     var res = [];
     FV.products.forEach(function (p) {
@@ -223,23 +227,23 @@
       return tokens.some(function (t) { return t.length > 1 && n.indexOf(t) !== -1; });
     }
     FV.brands.forEach(function (b) {
-      if (hit(b.name)) out.push({ type: 'Márka', label: b.name, href: '#/marka/' + b.slug });
+      if (hit(b.name)) out.push({ type: FV.t('sBrand'), label: b.name, href: '#/marka/' + b.slug });
     });
     Object.keys(FV.catIndex).forEach(function (k) {
       var c = FV.catIndex[k];
-      if (hit(c.name)) out.push({ type: 'Kategória', label: c.name, href: '#/kategoria/' + k });
+      if (hit(c.name)) out.push({ type: FV.t('sCat'), label: c.name, href: '#/kategoria/' + k });
     });
     var puffs = {};
     FV.products.forEach(function (p) { (p.attrs.puff || []).forEach(function (x) { puffs[x] = 1; }); });
     Object.keys(puffs).forEach(function (x) {
       tokens.forEach(function (t) {
-        if (/^\d{3,}$/.test(t) && x.indexOf(t) === 0) out.push({ type: 'Puff', label: FV.puffLabel(+x), href: '#/kategoria/eldobhato?puff=' + x });
+        if (/^\d{3,}$/.test(t) && x.indexOf(t) === 0) out.push({ type: FV.t('sPuff'), label: FV.puffLabel(+x), href: '#/kategoria/eldobhato?puff=' + x });
       });
     });
     var flav = {};
     FV.products.forEach(function (p) { (p.attrs.iz || []).forEach(function (x) { flav[x] = 1; }); });
     Object.keys(flav).forEach(function (x) {
-      if (tokens.some(function (t) { return t.length > 2 && FV.norm(x).indexOf(t) !== -1; })) out.push({ type: 'Íz', label: x, href: '#/kereses/' + encodeURIComponent(x) });
+      if (tokens.some(function (t) { return t.length > 2 && FV.norm(x).indexOf(t) !== -1; })) out.push({ type: FV.t('sFlavor'), label: x, href: '#/kereses/' + encodeURIComponent(x) });
     });
     var seen = {};
     return out.filter(function (o) { var k = o.type + o.label; if (seen[k]) return false; seen[k] = 1; return true; }).slice(0, 6);
@@ -247,15 +251,15 @@
 
   /* ---------- Szűrők (WooCommerce layered nav megfelelője) ---------- */
   FV.facetDefs = [
-    { key: 'marka', label: 'Márka', get: function (p) { return [p.brand]; }, name: function (v) { var b = FV.brand(v); return b ? b.name : v; } },
-    { key: 'kat', label: 'Kategória', get: function (p) { return p.cats.filter(function (c) { return FV.cat(c) && FV.cat(c).parent; }); }, name: function (v) { return FV.cat(v).name; } },
-    { key: 'puff', label: 'Puff szám', get: function (p) { return (p.attrs.puff || []).map(String); }, name: function (v) { return FV.puffLabel(+v); }, sort: 'num', mono: true },
-    { key: 'iz', label: 'Íz', get: function (p) { return p.attrs.iz || []; }, name: function (v) { return v; }, swatch: 'flavor' },
-    { key: 'nikotin', label: 'Nikotinerősség', get: function (p) { return p.attrs.nikotin || []; }, name: function (v) { return v; }, sort: 'num', mono: true },
-    { key: 'ml', label: 'Kiszerelés', get: function (p) { return p.attrs.ml || []; }, name: function (v) { return v; }, sort: 'num', mono: true },
-    { key: 'kompat', label: 'Kompatibilitás', get: function (p) { return p.attrs.kompat || []; }, name: function (v) { return v; } },
-    { key: 'szin', label: 'Szín', get: function (p) { return p.attrs.szin || []; }, name: function (v) { return v; }, swatch: 'color' },
-    { key: 'keszlet', label: 'Elérhetőség', get: function (p) { return [p.stock]; }, name: function (v) { return { instock: 'Raktáron', outofstock: 'Készlethiányos', discontinued: 'Kifutott' }[v]; } }
+    { key: 'marka', lk: 'a_marka', get: function (p) { return [p.brand]; }, name: function (v) { var b = FV.brand(v); return b ? b.name : v; } },
+    { key: 'kat', lk: 'a_kat', get: function (p) { return p.cats.filter(function (c) { return FV.cat(c) && FV.cat(c).parent; }); }, name: function (v) { return FV.cat(v).name; } },
+    { key: 'puff', lk: 'a_puff', get: function (p) { return (p.attrs.puff || []).map(String); }, name: function (v) { return FV.puffLabel(+v); }, sort: 'num', mono: true },
+    { key: 'iz', lk: 'a_iz', get: function (p) { return p.attrs.iz || []; }, name: function (v) { return v; }, swatch: 'flavor' },
+    { key: 'nikotin', lk: 'a_nikotin', get: function (p) { return p.attrs.nikotin || []; }, name: function (v) { return v; }, sort: 'num', mono: true },
+    { key: 'ml', lk: 'a_ml', get: function (p) { return p.attrs.ml || []; }, name: function (v) { return v; }, sort: 'num', mono: true },
+    { key: 'kompat', lk: 'a_kompat', get: function (p) { return p.attrs.kompat || []; }, name: function (v) { return v; } },
+    { key: 'szin', lk: 'a_szin', get: function (p) { return p.attrs.szin || []; }, name: function (v) { return FV.colorName(v); }, swatch: 'color' },
+    { key: 'keszlet', lk: 'a_keszlet', get: function (p) { return [p.stock]; }, name: function (v) { return FV.t({ instock: 'fInstock', outofstock: 'fOut', discontinued: 'fDisc' }[v]); } }
   ];
 
   FV.applyFilters = function (list, f, skipKey) {
@@ -284,17 +288,17 @@
       pool.forEach(function (p) { d.get(p).forEach(function (v) { counts[v] = (counts[v] || 0) + 1; }); });
       var vals = Object.keys(all);
       if (d.sort === 'num') vals.sort(function (a, b) { return parseFloat(a) - parseFloat(b); });
-      else vals.sort(function (a, b) { return d.name(a).localeCompare(d.name(b), 'hu'); });
+      else vals.sort(function (a, b) { return d.name(a).localeCompare(d.name(b), FV.lang); });
       return { def: d, values: vals.map(function (v) { return { v: v, n: counts[v] || 0, on: (f[d.key] || []).indexOf(v) !== -1 }; }) };
     }).filter(function (fc) { return fc.values.length > 1 || fc.values.some(function (x) { return x.on; }); });
   };
 
   FV.sorters = {
-    pop: { label: 'Népszerűség', fn: function (a, b) { return b.pop - a.pop; } },
-    uj: { label: 'Legújabb', fn: function (a, b) { return a.date < b.date ? 1 : -1; } },
-    ar_n: { label: 'Ár szerint növekvő', fn: function (a, b) { return FV.price(a) - FV.price(b); } },
-    ar_cs: { label: 'Ár szerint csökkenő', fn: function (a, b) { return FV.price(b) - FV.price(a); } },
-    puff: { label: 'Puff szám szerint', fn: function (a, b) { return ((b.attrs.puff || [0])[0]) - ((a.attrs.puff || [0])[0]); } }
+    pop: { lk: 'sortPop', fn: function (a, b) { return b.pop - a.pop; } },
+    uj: { lk: 'sortNew', fn: function (a, b) { return a.date < b.date ? 1 : -1; } },
+    ar_n: { lk: 'sortAsc', fn: function (a, b) { return FV.price(a) - FV.price(b); } },
+    ar_cs: { lk: 'sortDesc', fn: function (a, b) { return FV.price(b) - FV.price(a); } },
+    puff: { lk: 'sortPuff', fn: function (a, b) { return ((b.attrs.puff || [0])[0]) - ((a.attrs.puff || [0])[0]); } }
   };
 
   /* ---------- Kapcsolódó termékek ----------
@@ -313,16 +317,16 @@
     var others = FV.products.filter(function (x) { return x.id !== p.id && x.stock !== 'discontinued'; });
     var out = [];
     if (isDevice) {
-      out.push({ title: 'Kompatibilis podok és porlasztók', note: 'pa_kompatibilitas egyezés', items: others.filter(function (x) { return !FV.inCat(x, 'keszulekek') && shares(p, x) && !FV.inCat(x, 'toltok'); }) });
+      out.push({ title: FV.t('relPods'), note: 'pa_kompatibilitas egyezés', items: others.filter(function (x) { return !FV.inCat(x, 'keszulekek') && shares(p, x) && !FV.inCat(x, 'toltok'); }) });
     }
     if (isPod) {
-      out.push({ title: 'Kapcsolódó készülék', note: 'pa_kompatibilitas egyezés', items: others.filter(function (x) { return FV.inCat(x, 'keszulekek') && shares(p, x); }) });
+      out.push({ title: FV.t('relDevice'), note: 'pa_kompatibilitas egyezés', items: others.filter(function (x) { return FV.inCat(x, 'keszulekek') && shares(p, x); }) });
     }
     var leaf = FV.leafCat(p), prim = FV.primaryCat(p);
     var alt = others.filter(function (x) { return leaf ? FV.inCat(x, leaf.slug) : FV.inCat(x, prim.slug); });
     if (alt.length < 4) alt = alt.concat(others.filter(function (x) { return FV.inCat(x, prim.slug) && alt.indexOf(x) === -1; }));
     alt.sort(function (a, b) { return (b.stock === 'instock') - (a.stock === 'instock') || b.pop - a.pop; });
-    out.push({ title: p.stock === 'discontinued' ? 'Helyette ajánljuk' : 'Alternatív termékek', note: 'azonos kategória', items: alt });
+    out.push({ title: FV.t(p.stock === 'discontinued' ? 'relInstead' : 'relAlt'), note: 'azonos kategória', items: alt });
     return out.map(function (g) { g.items = g.items.slice(0, 4); return g; }).filter(function (g) { return g.items.length; });
   };
 
@@ -369,7 +373,7 @@
           '<rect x="' + (px - 2) + '" y="180" width="48" height="26" rx="6" fill="#26222f"/>' +
           '<circle cx="' + (px + 14) + '" cy="193" r="3" fill="#c9b27a"/><circle cx="' + (px + 30) + '" cy="193" r="3" fill="#c9b27a"/>';
       };
-      body = /\(2 db\)/.test(p.name) ? pod(66, c) + pod(126, shade(c, -0.1)) : pod(98, c);
+      body = p.pack === 2 ? pod(66, c) + pod(126, shade(c, -0.1)) : pod(98, c);
     } else if (p.art === 'kit') {
       var sw = FV.colorSwatches[(p.attrs.szin || [])[0]] || c;
       var big = FV.inCat(p, 'box-mod-kitek');

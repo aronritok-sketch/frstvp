@@ -8,7 +8,7 @@
  */
 (function (FV) {
   'use strict';
-  var $ = FV.$, $$ = FV.$$;
+  var $ = FV.$, $$ = FV.$$, T = FV.t;
 
   function parseHash() {
     var h = location.hash.replace(/^#\/?/, ''), q = {}, qs = '';
@@ -22,45 +22,43 @@
     return { parts: h.split('/').filter(Boolean).map(decodeURIComponent), q: q };
   }
 
-  var titles = { home: 'First Vape – e-cigaretták, podok, liquidek' };
-
   function route() {
     var r = parseHash(), p = r.parts, html, title = '', after = null, view = p[0] || '';
     FV.shopState = null;
     switch (view) {
       case '':
-        html = FV.views.home(); after = initHome; title = titles.home; break;
+        html = FV.views.home(); after = initHome; title = T('titleHome'); break;
       case 'kategoria':
         html = FV.views.shop({ type: 'cat', slug: p[1] }, r.q); after = FV.renderShop; title = (FV.cat(p[1]) || {}).name; break;
       case 'marka':
         html = FV.views.shop({ type: 'brand', slug: p[1] }, r.q); after = FV.renderShop; title = (FV.brand(p[1]) || {}).name; break;
       case 'akciok':
-        html = FV.views.shop({ type: 'sale' }, r.q); after = FV.renderShop; title = 'Akciók'; break;
+        html = FV.views.shop({ type: 'sale' }, r.q); after = FV.renderShop; title = T('sale'); break;
       case 'kereses':
-        html = FV.views.shop({ type: 'search', q: p.slice(1).join('/') }, r.q); after = FV.renderShop; title = 'Keresés: ' + p[1]; break;
+        html = FV.views.shop({ type: 'search', q: p.slice(1).join('/') }, r.q); after = FV.renderShop; title = T('searchCrumb', { q: p[1] }); break;
       case 'markak':
-        html = FV.views.brands(); title = 'Márkák'; break;
+        html = FV.views.brands(); title = T('brands'); break;
       case 'termek':
         html = FV.views.product(p[1]); after = initProduct; title = (FV.product(p[1]) || {}).name; break;
       case 'kosar':
-        html = FV.views.cart(); after = FV.renderCartPage; title = 'Kosár'; break;
+        html = FV.views.cart(); after = FV.renderCartPage; title = T('cart'); break;
       case 'penztar':
-        html = FV.views.checkout(); after = FV.renderCheckoutSide; title = 'Pénztár'; break;
+        html = FV.views.checkout(); after = FV.renderCheckoutSide; title = T('titleCheckout'); break;
       case 'koszonjuk':
-        html = FV.views.thanks(); title = 'Köszönjük a rendelést'; break;
+        html = FV.views.thanks(); title = T('titleThanks'); break;
       case 'fiok':
-        html = FV.views.account(p[1]); title = 'Fiókom'; break;
+        html = FV.views.account(p[1]); title = T('myAccount'); break;
       case 'oldal':
-        html = FV.views.page(p[1]); title = FV.pages[p[1]]; break;
+        html = FV.views.page(p[1]); title = FV.pageList().indexOf(p[1]) !== -1 ? FV.pageTitle(p[1]) : T('titleNotFound'); break;
       case 'prototipus':
         html = FV.views.proto(); title = 'Prototípus áttekintés'; break;
       default:
-        html = FV.views.notfound(); title = 'Nem található';
+        html = FV.views.notfound(); title = T('titleNotFound');
     }
     var main = $('#main');
     main.innerHTML = html;
     main.dataset.view = view || 'home';
-    document.title = view ? (title ? title + ' | ' : '') + 'First Vape' : titles.home;
+    document.title = view ? (title ? title + ' | ' : '') + 'First Vape' : T('titleHome');
     if (after) after();
     closeAll();
     setActiveNav(view, p[1]);
@@ -154,14 +152,14 @@
       case 'add': {
         FV.cart.add(id, 1, {});
         var p = FV.product(id);
-        toast(FV.icon('check') + '<span><b>' + FV.esc(p.name) + '</b> a kosárba került.</span><button type="button" class="linkbtn" data-act="cart-open">Kosár</button>');
+        toast(FV.icon('check') + '<span>' + T('addedToCart', { x: FV.esc(p.name) }) + '</span><button type="button" class="linkbtn" data-act="cart-open">' + T('cart') + '</button>');
         a.classList.add('added'); setTimeout(function () { a.classList.remove('added'); }, 900);
         break;
       }
       case 'wish': {
         var on = FV.wish.toggle(id);
         $$('[data-act="wish"][data-id="' + id + '"]').forEach(function (b) { b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
-        toast(FV.icon('heart') + '<span>' + (on ? 'Hozzáadva a kedvencekhez.' : 'Eltávolítva a kedvencek közül.') + '</span>');
+        toast(FV.icon('heart') + '<span>' + T(on ? 'wishAdded' : 'wishRemoved') + '</span>');
         break;
       }
       case 'line-qty': {
@@ -232,6 +230,7 @@
         break;
       }
       case 'age-yes': FV.store.set('age_ok', true); $('[data-agegate]').remove(); document.body.classList.remove('lock'); break;
+      case 'set-lang': e.preventDefault(); FV.setLang(a.dataset.lang); break;
       case 'age-no': $('.ag-no').hidden = false; break;
       case 'co-fill': fillCheckout(); break;
       case 'skip': e.preventDefault(); $('#main').focus(); break;
@@ -268,7 +267,7 @@
     } else if (t.id === 'co-company') {
       $('[data-company]').hidden = !t.checked;
     } else if (t.matches('[data-opt]')) {
-      $('[data-opt-val="' + t.dataset.opt + '"]').textContent = t.value;
+      $('[data-opt-val="' + t.dataset.opt + '"]').textContent = t.dataset.optLabel || t.value;
       $('[data-buy-err]').hidden = true;
     }
   });
@@ -305,25 +304,25 @@
       });
       if (missing.length) {
         var err = $('[data-buy-err]');
-        err.textContent = 'Válaszd ki: ' + missing.join(', ').toLowerCase() + '.';
+        err.textContent = T('chooseOpt', { x: missing.join(', ').toLowerCase() });
         err.hidden = false;
         f.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
       var p = FV.product(+f.dataset.id), qty = Math.max(1, +$('#buy-qty').value || 1);
       FV.cart.add(p.id, qty, v);
-      toast(FV.icon('check') + '<span><b>' + qty + ' × ' + FV.esc(p.name) + '</b> a kosárba került.</span><button type="button" class="linkbtn" data-act="cart-open">Kosár</button>');
+      toast(FV.icon('check') + '<span>' + T('addedToCart', { x: qty + ' × ' + FV.esc(p.name) }) + '</span><button type="button" class="linkbtn" data-act="cart-open">' + T('cart') + '</button>');
     } else if (f.matches('[data-notify]') || f.matches('[data-fake-form]')) {
       e.preventDefault();
       var ok = $('.ok-msg', f);
       if (ok) ok.hidden = false;
     } else if (f.matches('[data-newsletter]')) {
       e.preventDefault();
-      toast(FV.icon('mail') + '<span>Feliratkoztál. Megerősítő e-mailt küldtünk.</span>');
+      toast(FV.icon('mail') + '<span>' + T('nlDone') + '</span>');
       f.reset();
     } else if (f.matches('[data-coupon]')) {
       e.preventDefault();
-      $('[data-cp-msg]').textContent = 'A kuponkezelés a WooCommerce kuponokkal működik; a prototípusban nincs érvényes kód.';
+      $('[data-cp-msg]').textContent = T('couponMsg');
     } else if (f.matches('[data-checkout]')) {
       e.preventDefault();
       var bad = $$('[required]', f).filter(function (i) { return i.type === 'checkbox' ? !i.checked : !i.value.trim(); });
@@ -331,20 +330,21 @@
       bad.forEach(function (i) { var fl = i.closest('.fld'); if (fl) fl.classList.add('err'); });
       var ce = $('[data-co-err]');
       if (bad.length) {
-        ce.textContent = 'Töltsd ki a kötelező mezőket' + (bad.some(function (i) { return i.type === 'checkbox'; }) ? ', és fogadd el a feltételeket' : '') + '.';
+        ce.textContent = T('errRequired') + (bad.some(function (i) { return i.type === 'checkbox'; }) ? T('errAccept') : '') + '.';
         ce.hidden = false;
         bad[0].focus();
         return;
       }
-      var t = FV.cart.totals(), ship = FV.shippingCost(FV.store.get('ship', 'dpd-home'), t.weight, t.sub), pay = $('#pay-cod').checked ? 'cod' : 'teya';
-      FV.store.set('last_order', { no: 'FV-2026-' + (10500 + Math.floor(Math.random() * 400)), total: t.sub + ship + (pay === 'cod' ? 1.5 : 0), email: $('#co-email').value, pay: pay });
+      var t = FV.cart.totals(), ship = FV.shippingCost(FV.shipMethod(), t.weight, t.sub), pay = $('#pay-cod').checked ? 'cod' : 'teya';
+      FV.store.set('last_order', { no: 'FV-2026-' + (10500 + Math.floor(Math.random() * 400)), total: t.sub + ship + (pay === 'cod' ? FV.mkt().codFee : 0), email: $('#co-email').value, pay: pay });
       FV.cart.save([]);
       location.hash = '#/koszonjuk';
     }
   });
 
   function fillCheckout() {
-    var d = { 'co-email': 'anna.kovacs@example.com', 'co-phone': '+421 905 123 456', 'co-first': 'Anna', 'co-last': 'Kovács', 'co-zip': '945 01', 'co-city': 'Komárno', 'co-street': 'Hlavná 12' };
+    var m = FV.mkt().demo;
+    var d = { 'co-email': m.email, 'co-phone': m.phone, 'co-first': m.first, 'co-last': m.last, 'co-zip': m.zip, 'co-city': m.city, 'co-street': m.street };
     Object.keys(d).forEach(function (k) { var el = document.getElementById(k); if (el) el.value = d[k]; });
     $('#co-18').checked = true; $('#co-terms').checked = true;
   }
@@ -381,13 +381,29 @@
   }
 
   /* ---------- Indítás ---------- */
-  function boot() {
+  /* Fejléc, lábléc, 18+ ablak (nyelvváltáskor újrarajzolva) */
+  function renderChrome() {
     $('#site-header').innerHTML = FV.renderHeader();
     $('#site-footer').innerHTML = FV.renderFooter();
+    var old = $('[data-agegate]');
+    if (old) old.remove();
     var ag = FV.renderAgeGate();
     if (ag) { document.body.insertAdjacentHTML('beforeend', ag); document.body.classList.add('lock'); }
+    var sk = $('[data-act="skip"]');
+    if (sk) sk.textContent = T('skip');
     initMega();
     FV.renderMiniCart();
+  }
+
+  function boot() {
+    renderChrome();
+    FV.on('lang', function () {
+      renderChrome();
+      route.keepScroll = true;
+      route();
+      var b = $('[data-agegate] [data-act="set-lang"].on') || $('.hdr-burger');
+      if ($('[data-agegate]') && b) b.focus();
+    });
     FV.on('cart', function () { FV.renderMiniCart(); FV.renderCartPage(); FV.renderCheckoutSide(); });
     FV.on('wish', function () {
       FV.renderMiniCart();

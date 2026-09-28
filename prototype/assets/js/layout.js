@@ -4,7 +4,7 @@
  */
 (function (FV) {
   'use strict';
-  var esc = FV.esc;
+  var esc = FV.esc, t = FV.t;
 
   /* ---------- Ikonok ---------- */
   var P = {
@@ -40,7 +40,7 @@
   var I = FV.icon;
 
   FV.logo = function () {
-    return '<a class="logo" href="#/" aria-label="First Vape – főoldal">' +
+    return '<a class="logo" href="#/" aria-label="' + esc(t('logoAria')) + '">' +
       '<span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i></span>' +
       '<span class="logo-word">first<b>vape</b></span></a>';
   };
@@ -49,11 +49,11 @@
   function megaFor(item) {
     if (item.brands) {
       return '<div class="mega mega-brands"><div class="wrap mega-in">' +
-        '<div class="mega-col mega-wide"><p class="mega-h">Összes márka A–Z</p><div class="brand-grid">' +
+        '<div class="mega-col mega-wide"><p class="mega-h">' + t('allBrandsAZ') + '</p><div class="brand-grid">' +
         FV.brands.slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).map(function (b) {
-          return '<a class="brand-tile" href="#/marka/' + b.slug + '">' + FV.wordmark(b, 'sm') + '<small>' + FV.productsOfBrand(b.slug).length + ' termék</small></a>';
+          return '<a class="brand-tile" href="#/marka/' + b.slug + '">' + FV.wordmark(b, 'sm') + '<small>' + FV.nw('wProducts', FV.productsOfBrand(b.slug).length) + '</small></a>';
         }).join('') + '</div></div>' +
-        '<div class="mega-col mega-promo"><p class="mega-h">Kiemelt márka</p>' + promo(FV.product('elfa-pro-kit-black'), 'ELFA pod rendszer', 'Egy akkumulátor, 3 szín, több tucat pod íz.') + '</div>' +
+        '<div class="mega-col mega-promo"><p class="mega-h">' + t('featuredBrand') + '</p>' + promo(FV.product('elfa-pro-kit-black'), t('elfaPromoTitle'), t('elfaPromoText')) + '</div>' +
         '</div></div>';
     }
     if (!item.cat) return '';
@@ -61,21 +61,21 @@
     var brands = {};
     prods.forEach(function (p) { brands[p.brand] = (brands[p.brand] || 0) + 1; });
     var feat = prods.filter(function (p) { return p.stock === 'instock'; }).sort(function (a, b) { return b.pop - a.pop; })[0];
-    var sub = '<div class="mega-col"><p class="mega-h">Alkategóriák</p><ul class="mega-list">' +
+    var sub = '<div class="mega-col"><p class="mega-h">' + t('subcats') + '</p><ul class="mega-list">' +
       c.children.map(function (ch) {
         return '<li><a href="#/kategoria/' + ch.slug + '">' + esc(ch.name) + '<span class="cnt">' + FV.productsInCat(ch.slug).length + '</span></a></li>';
-      }).join('') + '<li class="mega-all"><a href="#/kategoria/' + c.slug + '">Összes ' + esc(c.short.toLowerCase()) + ' ' + I('chev') + '</a></li></ul></div>';
-    var puff = item.puffLinks ? '<div class="mega-col"><p class="mega-h">Keresés slukkszám szerint</p><div class="puff-chips">' +
+      }).join('') + '<li class="mega-all"><a href="#/kategoria/' + c.slug + '">' + t('seeAll') + ' ' + I('chev') + '</a></li></ul></div>';
+    var puff = item.puffLinks ? '<div class="mega-col"><p class="mega-h">' + t('byPuffs') + '</p><div class="puff-chips">' +
       [600, 5000, 10000, 20000, 30000, 40000].map(function (n) {
-        return '<a class="puff-chip" href="#/kategoria/eldobhato?puff=' + n + '"><b>' + FV.num(n) + '</b><span>puff</span></a>';
+        return '<a class="puff-chip" href="#/kategoria/eldobhato?puff=' + n + '"><b>' + FV.num(n) + '</b><span>' + t('puffUnit') + '</span></a>';
       }).join('') + '</div></div>' : '';
-    var br = '<div class="mega-col"><p class="mega-h">Márkák ebben a kategóriában</p><ul class="mega-list">' +
+    var br = '<div class="mega-col"><p class="mega-h">' + t('brandsInCat') + '</p><ul class="mega-list">' +
       Object.keys(brands).map(function (s) {
         var b = FV.brand(s);
         return '<li><a href="#/kategoria/' + c.slug + '?marka=' + s + '">' + esc(b.name) + '<span class="cnt">' + brands[s] + '</span></a></li>';
       }).join('') + '</ul></div>';
     return '<div class="mega"><div class="wrap mega-in">' + sub + puff + br +
-      '<div class="mega-col mega-promo"><p class="mega-h">Most népszerű</p>' + (feat ? promo(feat) : '') + '</div></div></div>';
+      '<div class="mega-col mega-promo"><p class="mega-h">' + t('popularNow') + '</p>' + (feat ? promo(feat) : '') + '</div></div></div>';
   }
 
   function promo(p, title, text) {
@@ -84,35 +84,51 @@
       '<small>' + esc(text || FV.money(FV.price(p))) + '</small></span></a>';
   }
 
+  function menuLabel(m) { return m.cat ? FV.cat(m.cat).name : t(m.lk); }
+  FV.menuLabel = menuLabel;
+
+  /* Nyelv- és piacváltó (SK / FR). WordPressben: WPML / Polylang nyelvváltó, piaconként saját URL-lel. */
+  function langSwitch(cls) {
+    var names = { sk: 'Slovensko – slovenčina', fr: 'France – français' };
+    return '<div class="lang-sw ' + cls + '" role="group" aria-label="' + esc(t('langAria')) + '">' + FV.LANGS.map(function (l) {
+      return '<button type="button" data-act="set-lang" data-lang="' + l + '" lang="' + l + '" title="' + names[l] + '"' + (l === FV.lang ? ' class="on" aria-pressed="true"' : ' aria-pressed="false"') + '>' + l.toUpperCase() + '</button>';
+    }).join('') + '</div>';
+  }
+  FV.langSwitch = langSwitch;
+
   FV.renderHeader = function () {
     var nav = FV.menu.map(function (m, i) {
       var href = m.href || (m.cat ? '#/kategoria/' + m.cat : '#/markak');
       var hasMega = !!(m.cat || m.brands);
       return '<li class="nav-item' + (hasMega ? ' has-mega' : '') + (m.sale ? ' is-sale' : '') + '" data-nav="' + i + '">' +
-        '<a class="nav-link" href="' + href + '"' + (hasMega ? ' aria-haspopup="true" aria-expanded="false"' : '') + '>' + esc(m.label) + (hasMega ? I('down', 'nav-caret') : '') + '</a>' +
+        '<a class="nav-link" href="' + href + '"' + (hasMega ? ' aria-haspopup="true" aria-expanded="false"' : '') + '>' + esc(menuLabel(m)) + (hasMega ? I('down', 'nav-caret') : '') + '</a>' +
         (hasMega ? megaFor(m) : '') + '</li>';
     }).join('');
+    var free = FV.money(FV.ship().freeOver);
+    var msg = FV.lang === 'sk'
+      ? 'Doručenie DPD za 1–2 pracovné dni · Doprava zadarmo nad <b>' + free + '</b>'
+      : 'Expédition depuis la Slovaquie · Livraison offerte dès <b>' + free + '</b>';
 
     return '<div class="topbar"><div class="wrap topbar-in">' +
-      '<p class="tb-msg">' + I('truck') + '<span>DPD szállítás 1–2 munkanap alatt · Ingyenes szállítás <b>50 €</b> felett</span></p>' +
-      '<p class="tb-age"><span class="age-pill">18+</span> Csak nagykorúak részére</p>' +
-      '<div class="tb-lang" role="group" aria-label="Nyelv és piac"><a href="#/prototipus" title="Szlovák piac">SK</a><a class="on" href="#/prototipus" title="Magyar">HU</a><a href="#/prototipus" title="Angol">EN</a></div>' +
+      '<p class="tb-msg">' + I('truck') + '<span>' + msg + '</span></p>' +
+      '<p class="tb-age"><span class="age-pill">18+</span> ' + t('age18') + '</p>' +
+      langSwitch('tb-lang') +
       '</div></div>' +
       '<header class="hdr"><div class="wrap hdr-in">' +
-      '<button class="icon-btn hdr-burger" type="button" data-act="menu-open" aria-label="Menü megnyitása">' + I('menu') + '</button>' +
+      '<button class="icon-btn hdr-burger" type="button" data-act="menu-open" aria-label="' + esc(t('menuOpen')) + '">' + I('menu') + '</button>' +
       FV.logo() +
       '<form class="hsearch" role="search" data-search-form autocomplete="off">' +
-      '<label class="sr" for="hsearch-q">Keresés a termékek között</label>' +
+      '<label class="sr" for="hsearch-q">' + t('searchLabel') + '</label>' +
       I('search', 'hs-ico') +
-      '<input id="hsearch-q" name="q" type="search" placeholder="Márka, íz, puff szám… pl. Elfbar 40000" data-live-search>' +
-      '<button class="hs-btn" type="submit">Keresés</button>' +
+      '<input id="hsearch-q" name="q" type="search" placeholder="' + esc(t('searchPh')) + '" data-live-search>' +
+      '<button class="hs-btn" type="submit">' + t('searchBtn') + '</button>' +
       '<div class="hs-drop" hidden></div></form>' +
-      '<nav class="hdr-acts" aria-label="Fiók és kosár">' +
-      '<a class="hact" href="#/fiok">' + I('user') + '<span>Fiók</span></a>' +
-      '<a class="hact" href="#/fiok/kedvencek">' + I('heart') + '<span>Kedvencek</span><em class="badge" data-wish-count>0</em></a>' +
-      '<button class="hact hact-cart" type="button" data-act="cart-open">' + I('bag') + '<span data-cart-total>0,00 €</span><em class="badge" data-cart-count>0</em></button>' +
+      '<nav class="hdr-acts" aria-label="' + esc(t('acctCartAria')) + '">' +
+      '<a class="hact" href="#/fiok">' + I('user') + '<span>' + t('account') + '</span></a>' +
+      '<a class="hact" href="#/fiok/kedvencek">' + I('heart') + '<span>' + t('wishlist') + '</span><em class="badge" data-wish-count>0</em></a>' +
+      '<button class="hact hact-cart" type="button" data-act="cart-open" aria-label="' + esc(t('cart')) + '">' + I('bag') + '<span data-cart-total>' + FV.money(0) + '</span><em class="badge" data-cart-count>0</em></button>' +
       '</nav></div>' +
-      '<nav class="mainnav" aria-label="Fő navigáció"><div class="wrap"><ul class="nav-list">' + nav + '</ul></div></nav>' +
+      '<nav class="mainnav" aria-label="' + esc(t('mainNavAria')) + '"><div class="wrap"><ul class="nav-list">' + nav + '</ul></div></nav>' +
       '</header>' +
       mobileMenu() + miniCart();
   };
@@ -121,107 +137,110 @@
     var items = FV.menu.map(function (m) {
       if (m.cat) {
         var c = FV.cat(m.cat).node;
-        return '<li><details><summary>' + esc(m.label) + I('down') + '</summary><ul>' +
-          '<li><a href="#/kategoria/' + c.slug + '">Összes ' + esc(c.short.toLowerCase()) + '</a></li>' +
+        return '<li><details><summary>' + esc(menuLabel(m)) + I('down') + '</summary><ul>' +
+          '<li><a href="#/kategoria/' + c.slug + '">' + t('seeAll') + ': ' + esc(c.short) + '</a></li>' +
           c.children.map(function (ch) { return '<li><a href="#/kategoria/' + ch.slug + '">' + esc(ch.name) + '</a></li>'; }).join('') +
           (m.puffLinks ? '<li class="mm-puffs">' + [600, 5000, 10000, 20000, 40000].map(function (n) { return '<a class="puff-chip sm" href="#/kategoria/eldobhato?puff=' + n + '"><b>' + FV.num(n) + '</b></a>'; }).join('') + '</li>' : '') +
           '</ul></details></li>';
       }
       if (m.brands) {
-        return '<li><details><summary>Márkák' + I('down') + '</summary><ul>' +
+        return '<li><details><summary>' + t('brands') + I('down') + '</summary><ul>' +
           FV.brands.map(function (b) { return '<li><a href="#/marka/' + b.slug + '">' + esc(b.name) + '</a></li>'; }).join('') +
-          '<li><a href="#/markak">Összes márka</a></li></ul></details></li>';
+          '<li><a href="#/markak">' + t('allBrands') + '</a></li></ul></details></li>';
       }
-      return '<li><a class="mm-link' + (m.sale ? ' is-sale' : '') + '" href="' + m.href + '">' + esc(m.label) + '</a></li>';
+      return '<li><a class="mm-link' + (m.sale ? ' is-sale' : '') + '" href="' + m.href + '">' + esc(menuLabel(m)) + '</a></li>';
     }).join('');
     return '<div class="drawer drawer-left" data-drawer="menu" hidden><div class="drawer-scrim" data-act="drawer-close"></div>' +
-      '<aside class="drawer-panel" aria-label="Mobil menü"><div class="drawer-head">' + FV.logo() +
-      '<button class="icon-btn" type="button" data-act="drawer-close" aria-label="Bezárás">' + I('close') + '</button></div>' +
+      '<aside class="drawer-panel" aria-label="' + esc(t('mobileMenuAria')) + '"><div class="drawer-head">' + FV.logo() +
+      '<button class="icon-btn" type="button" data-act="drawer-close" aria-label="' + esc(t('close')) + '">' + I('close') + '</button></div>' +
       '<ul class="mm">' + items + '</ul>' +
-      '<ul class="mm mm-sec"><li><a href="#/fiok">' + I('user') + ' Fiókom</a></li><li><a href="#/fiok/rendelesek">' + I('box') + ' Rendeléseim</a></li><li><a href="#/fiok/kedvencek">' + I('heart') + ' Kedvencek</a></li><li><a href="#/oldal/kapcsolat">' + I('mail') + ' Kapcsolat</a></li></ul>' +
+      '<ul class="mm mm-sec"><li><a href="#/fiok">' + I('user') + ' ' + t('myAccount') + '</a></li><li><a href="#/fiok/rendelesek">' + I('box') + ' ' + t('myOrders') + '</a></li><li><a href="#/fiok/kedvencek">' + I('heart') + ' ' + t('wishlist') + '</a></li><li><a href="#/oldal/contact">' + I('mail') + ' ' + t('contact') + '</a></li></ul>' +
+      '<div class="mm-lang"><span>' + t('langAria') + '</span>' + langSwitch('mm-lang-sw') + '</div>' +
       '</aside></div>';
   }
 
   function miniCart() {
     return '<div class="drawer drawer-right" data-drawer="cart" hidden><div class="drawer-scrim" data-act="drawer-close"></div>' +
-      '<aside class="drawer-panel" aria-label="Kosár"><div class="drawer-head"><p class="drawer-title">Kosár</p>' +
-      '<button class="icon-btn" type="button" data-act="drawer-close" aria-label="Bezárás">' + I('close') + '</button></div>' +
+      '<aside class="drawer-panel" aria-label="' + esc(t('cart')) + '"><div class="drawer-head"><p class="drawer-title">' + t('cart') + '</p>' +
+      '<button class="icon-btn" type="button" data-act="drawer-close" aria-label="' + esc(t('close')) + '">' + I('close') + '</button></div>' +
       '<div class="mc-body" data-minicart></div></aside></div>';
   }
 
   FV.renderMiniCart = function () {
-    var t = FV.cart.totals(), el = FV.$('[data-minicart]');
-    FV.$$('[data-cart-count]').forEach(function (e) { e.textContent = t.count; e.hidden = !t.count; });
-    FV.$$('[data-cart-total]').forEach(function (e) { e.textContent = FV.money(t.sub); });
+    var tt = FV.cart.totals(), el = FV.$('[data-minicart]');
+    FV.$$('[data-cart-count]').forEach(function (e) { e.textContent = tt.count; e.hidden = !tt.count; });
+    FV.$$('[data-cart-total]').forEach(function (e) { e.textContent = FV.money(tt.sub); });
     FV.$$('[data-wish-count]').forEach(function (e) { var n = FV.wish.ids().length; e.textContent = n; e.hidden = !n; });
     if (!el) return;
-    if (!t.lines.length) {
-      el.innerHTML = '<div class="empty">' + I('bag', 'empty-ico') + '<p>A kosár üres.</p><a class="btn" href="#/kategoria/eldobhato" data-act="drawer-close">Vásárlás indítása</a></div>';
+    if (!tt.lines.length) {
+      el.innerHTML = '<div class="empty">' + I('bag', 'empty-ico') + '<p>' + t('cartEmpty') + '</p><a class="btn" href="#/kategoria/eldobhato" data-act="drawer-close">' + t('startShopping') + '</a></div>';
       return;
     }
-    var left = FV.shipping.freeOver - t.sub;
-    el.innerHTML = '<div class="freebar"><p>' + (left > 0 ? 'Még <b>' + FV.money(left) + '</b> és ingyenes a szállítás' : '<b>Ingyenes szállítás</b> jár a rendelésedhez') + '</p>' +
-      '<span class="freebar-track"><i style="width:' + Math.min(100, t.sub / FV.shipping.freeOver * 100) + '%"></i></span></div>' +
-      '<ul class="mc-list">' + t.lines.map(function (l, i) {
+    var left = FV.ship().freeOver - tt.sub;
+    el.innerHTML = '<div class="freebar"><p>' + (left > 0 ? t('freeLeft', { x: FV.money(left) }) : t('freeReached')) + '</p>' +
+      '<span class="freebar-track"><i style="width:' + Math.min(100, tt.sub / FV.ship().freeOver * 100) + '%"></i></span></div>' +
+      '<ul class="mc-list">' + tt.lines.map(function (l, i) {
         return '<li class="mc-item"><a class="mc-art" href="#/termek/' + l.p.slug + '" style="--tint:' + FV.tint(l.p) + '">' + FV.art(l.p) + '</a>' +
           '<div class="mc-info"><a href="#/termek/' + l.p.slug + '">' + esc(l.p.name) + '</a>' + variantText(l.v) +
           '<div class="mc-row">' + qtyCtl(i, l.qty) + '<b class="num">' + FV.money(l.total) + '</b></div></div></li>';
       }).join('') + '</ul>' +
-      '<div class="mc-foot"><p class="mc-sum"><span>Részösszeg</span><b class="num">' + FV.money(t.sub) + '</b></p>' +
-      '<p class="mc-weight">' + I('scale') + ' Csomag súlya: <b class="num">' + FV.kg(t.weight) + '</b></p>' +
-      '<a class="btn btn-ghost" href="#/kosar" data-act="drawer-close">Kosár megtekintése</a>' +
-      '<a class="btn btn-primary" href="#/penztar" data-act="drawer-close">Tovább a pénztárhoz</a></div>';
+      '<div class="mc-foot"><p class="mc-sum"><span>' + t('subtotal') + '</span><b class="num">' + FV.money(tt.sub) + '</b></p>' +
+      '<p class="mc-weight">' + I('scale') + ' ' + t('parcelWeight') + ': <b class="num">' + FV.kg(tt.weight) + '</b></p>' +
+      '<a class="btn btn-ghost" href="#/kosar" data-act="drawer-close">' + t('viewCart') + '</a>' +
+      '<a class="btn btn-primary" href="#/penztar" data-act="drawer-close">' + t('toCheckout') + '</a></div>';
   };
 
   function variantText(v) {
     var k = Object.keys(v || {});
     if (!k.length) return '';
-    var names = { iz: 'Íz', nikotin: 'Nikotin', szin: 'Szín' };
-    return '<small class="variant">' + k.map(function (x) { return (names[x] || x) + ': ' + esc(v[x]); }).join(' · ') + '</small>';
+    var names = { iz: t('a_iz'), nikotin: t('a_nikotinShort'), szin: t('a_szin') };
+    return '<small class="variant">' + k.map(function (x) { return (names[x] || x) + ': ' + esc(x === 'szin' ? FV.colorName(v[x]) : v[x]); }).join(' · ') + '</small>';
   }
   FV.variantText = variantText;
 
   function qtyCtl(idx, q) {
-    return '<span class="qty qty-sm"><button type="button" data-act="line-qty" data-i="' + idx + '" data-d="-1" aria-label="Csökkentés">' + I('minus') + '</button>' +
-      '<b class="num">' + q + '</b><button type="button" data-act="line-qty" data-i="' + idx + '" data-d="1" aria-label="Növelés">' + I('plus') + '</button></span>';
+    return '<span class="qty qty-sm"><button type="button" data-act="line-qty" data-i="' + idx + '" data-d="-1" aria-label="' + esc(t('decrease')) + '">' + I('minus') + '</button>' +
+      '<b class="num">' + q + '</b><button type="button" data-act="line-qty" data-i="' + idx + '" data-d="1" aria-label="' + esc(t('increase')) + '">' + I('plus') + '</button></span>';
   }
   FV.qtyCtl = qtyCtl;
 
   /* ---------- Lábléc ---------- */
   FV.renderFooter = function () {
-    return '<section class="newsletter"><div class="wrap nl-in"><div><h2>Új ízek és akciók elsőként</h2>' +
-      '<p>Havonta legfeljebb két levél. Bármikor leiratkozhatsz.</p></div>' +
-      '<form class="nl-form" data-newsletter><label class="sr" for="nl-mail">E-mail cím</label><input id="nl-mail" type="email" required placeholder="nev@email.hu">' +
-      '<button class="btn btn-primary" type="submit">Feliratkozom</button>' +
-      '<label class="nl-ok"><input id="nl-accept" type="checkbox" required><span>Elfogadom az <a href="#/oldal/adatvedelem">adatkezelési tájékoztatót</a>, és elmúltam 18 éves.</span></label></form></div></section>' +
+    var pages = FV.pageList().filter(function (k) { return k !== 'contact'; }), short = t('pageShort') || {};
+    return '<section class="newsletter"><div class="wrap nl-in"><div><h2>' + t('nlTitle') + '</h2>' +
+      '<p>' + t('nlText') + '</p></div>' +
+      '<form class="nl-form" data-newsletter><label class="sr" for="nl-mail">' + t('email') + '</label><input id="nl-mail" type="email" required placeholder="' + esc(t('emailPh')) + '">' +
+      '<button class="btn btn-primary" type="submit">' + t('subscribe') + '</button>' +
+      '<label class="nl-ok"><input id="nl-accept" type="checkbox" required><span>' + t('nlAccept') + '</span></label></form></div></section>' +
       '<footer class="ftr"><div class="wrap ftr-grid">' +
-      '<div class="ftr-brand">' + FV.logo() + '<p>Prémium e-cigaretták, podok és liquidek, eredeti forrásból. Szlovákiai raktárból, DPD-vel szállítva.</p>' +
+      '<div class="ftr-brand">' + FV.logo() + '<p>' + t('ftrAbout') + '</p>' +
       '<div class="social"><a href="#/prototipus" aria-label="Facebook">f</a><a href="#/prototipus" aria-label="Instagram">ig</a><a href="#/prototipus" aria-label="TikTok">tt</a></div></div>' +
-      '<div><p class="ftr-h">Termékek</p><ul>' + FV.categories.map(function (c) { return '<li><a href="#/kategoria/' + c.slug + '">' + esc(c.name) + '</a></li>'; }).join('') +
-      '<li><a href="#/markak">Márkák</a></li><li><a href="#/akciok">Akciók</a></li></ul></div>' +
-      '<div><p class="ftr-h">Információ</p><ul>' +
-      ['szallitas-es-fizetes', 'aszf', 'adatvedelem', 'elallas', 'cookie'].map(function (k) { return '<li><a href="#/oldal/' + k + '">' + esc(FV.pages[k].replace('Általános Szerződési Feltételek', 'ÁSZF').replace('Adatvédelmi tájékoztató', 'Adatvédelem')) + '</a></li>'; }).join('') + '</ul></div>' +
-      '<div><p class="ftr-h">Ügyfél</p><ul><li><a href="#/oldal/kapcsolat">Kapcsolat</a></li><li><a href="#/fiok">Felhasználói fiók</a></li><li><a href="#/fiok/rendelesek">Rendelések</a></li><li><a href="#/fiok/kedvencek">Kedvencek</a></li></ul></div>' +
-      '</div><div class="wrap ftr-pay"><div class="pay-badges"><span>Teya</span><span>VISA</span><span>Mastercard</span><span>Apple Pay</span><span>Google Pay</span><span class="dpd">DPD</span></div>' +
-      '<p class="warn-line">Ez a termék nikotint tartalmaz, amely erős függőséget okozó anyag. Használata nemdohányzók számára nem javasolt.</p></div>' +
-      '<div class="wrap ftr-bottom"><p>© 2026 First Vape · John&amp;Jen s.r.o.</p><p>Készítette: Ideastyle ProVision</p></div></footer>';
+      '<div><p class="ftr-h">' + t('products') + '</p><ul>' + FV.categories.map(function (c) { return '<li><a href="#/kategoria/' + c.slug + '">' + esc(c.name) + '</a></li>'; }).join('') +
+      '<li><a href="#/markak">' + t('brands') + '</a></li><li><a href="#/akciok">' + t('sale') + '</a></li></ul></div>' +
+      '<div><p class="ftr-h">' + t('info') + '</p><ul>' +
+      pages.map(function (k) { return '<li><a href="#/oldal/' + k + '">' + esc(short[k] || FV.pageTitle(k)) + '</a></li>'; }).join('') + '</ul></div>' +
+      '<div><p class="ftr-h">' + t('customer') + '</p><ul><li><a href="#/oldal/contact">' + t('contact') + '</a></li><li><a href="#/fiok">' + t('myAccount') + '</a></li><li><a href="#/fiok/rendelesek">' + t('orders') + '</a></li><li><a href="#/fiok/kedvencek">' + t('wishlist') + '</a></li></ul></div>' +
+      '</div><div class="wrap ftr-pay"><div class="pay-badges"><span>Teya</span><span>VISA</span><span>Mastercard</span><span>Apple Pay</span><span>Google Pay</span>' + (FV.mkt().carrier ? '<span class="dpd">' + FV.mkt().carrier + '</span>' : '') + '</div>' +
+      '<p class="warn-line">' + t('nicWarn') + '</p></div>' +
+      '<div class="wrap ftr-bottom"><p>© 2026 First Vape · John&amp;Jen s.r.o.</p><p>' + t('madeBy') + '</p></div></footer>';
   };
 
   /* ---------- Korellenőrzés (18+) ---------- */
   FV.renderAgeGate = function () {
     if (FV.store.get('age_ok', false)) return '';
     return '<div class="agegate" data-agegate role="dialog" aria-modal="true" aria-labelledby="age-t"><div class="ag-card">' +
-      '<span class="age-pill big">18+</span><h2 id="age-t">Elmúltál 18 éves?</h2>' +
-      '<p>A First Vape oldalain nikotintartalmú termékek szerepelnek, amelyek csak nagykorúak számára vásárolhatók meg.</p>' +
-      '<div class="ag-acts"><button class="btn btn-primary" type="button" data-act="age-yes">Igen, elmúltam 18 éves</button>' +
-      '<button class="btn btn-ghost" type="button" data-act="age-no">Nem</button></div>' +
-      '<p class="ag-no" hidden>Sajnáljuk, az oldal tartalma számodra nem elérhető.</p></div></div>';
+      langSwitch('ag-lang') +
+      '<span class="age-pill big">18+</span><h2 id="age-t">' + t('ageQ') + '</h2>' +
+      '<p>' + t('ageText') + '</p>' +
+      '<div class="ag-acts"><button class="btn btn-primary" type="button" data-act="age-yes">' + t('ageYes') + '</button>' +
+      '<button class="btn btn-ghost" type="button" data-act="age-no">' + t('ageNo') + '</button></div>' +
+      '<p class="ag-no" hidden>' + t('ageDenied') + '</p></div></div>';
   };
 
   /* ---------- Élő kereső lenyíló ---------- */
   FV.renderLiveSearch = function (q) {
     var res = FV.search(q).slice(0, 5), sug = FV.suggest(q);
-    if (!res.length && !sug.length) return '<p class="hs-empty">Nincs találat erre: <b>' + esc(q) + '</b>. Próbáld márkával vagy puff számmal.</p>';
+    if (!res.length && !sug.length) return '<p class="hs-empty">' + t('lsNone', { q: esc(q) }) + '</p>';
     return (sug.length ? '<div class="hs-sug">' + sug.map(function (s) {
       return '<a href="' + s.href + '"><em>' + esc(s.type) + '</em>' + esc(s.label) + '</a>';
     }).join('') + '</div>' : '') +
@@ -232,6 +251,6 @@
           '<span class="hs-txt"><b>' + esc(p.name) + '</b><small>' + esc(meta) + '</small></span>' +
           '<span class="hs-price num">' + FV.money(FV.price(p)) + '</span></a></li>';
       }).join('') + '</ul>' +
-      '<a class="hs-all" href="#/kereses/' + encodeURIComponent(q) + '">Összes találat (' + FV.search(q).length + ') ' + I('chev') + '</a>';
+      '<a class="hs-all" href="#/kereses/' + encodeURIComponent(q) + '">' + t('lsAll', { n: FV.search(q).length }) + ' ' + I('chev') + '</a>';
   };
 })(window.FV);
