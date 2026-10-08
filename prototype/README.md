@@ -57,6 +57,7 @@ A WordPressben ezek valódi, nyelvenként fordított permalinkek lesznek (pl. `/
 | Kosár / pénztár | `#/kosar`, `#/penztar` | klasszikus (shortcode-os) WooCommerce kosár és pénztár |
 | Fiók | `#/fiok`, `#/fiok/rendelesek`, `#/fiok/kedvencek` | My Account |
 | Információs és jogi oldalak | `#/oldal/shipping`, `#/oldal/terms` … | WordPress oldalak piaconként (`inc/setup.php`) |
+| Blog | `#/blog`, `#/blog/<slug>` | WordPress bejegyzések |
 | Fejlesztői áttekintés | `#/prototipus` | – |
 
 ## Adatmodell (a brief alapelve szerint)
@@ -83,6 +84,27 @@ A mintaadatok az `assets/js/data.js` fájlban vannak, pontosan ebben a szerkezet
 - Pénztár piaconként: SK DPD házhoz / Pickup, FR házhoz / point relais (szállító TBD); Teya, utánvét, cégadatok (SK: IČO, DIČ / IČ DPH; FR: SIRET, TVA-szám), 18+ megerősítés, „Objednať s povinnosťou platby” / „Commander avec obligation de paiement” gomb, ÁFA-sor az összesítőben
 - 18+ korellenőrző ablak nyelvválasztóval, hírlevél, lábléc a brief szerinti blokkokkal
 - SK / FR nyelv- és piacváltó (felület, árak ÁFÁ-val, szállítás, fizetés, jogi oldalak)
+
+## Arculat
+
+A jelenlegi firstvape.sk sötét témáját követi, modernizálva (a színek az élő oldal `custom.css`-éből):
+
+- alap `#151017`, kártyák `#231B26`
+- fő színátmenet `#EC2F4B → #1F2250` (45°): gombok, aktív elemek, kosár
+- fejléc `#002460 → #38203F` (90°), mint az eredeti felső sáv
+- betű: Barlow Semi Condensed (címek, nagybetűs menü), Barlow (szöveg)
+- eredeti logó (`assets/img/first-vape-logo.png`), favicon és füstös háttér (`assets/img/smoke.jpg`)
+- a főoldal az eredeti szerkezetét követi: füstös hero, termékválaszték, „Miért vape?”, „A First Vape a legjobb vape!”, blog, partnerek, hírlevél
+
+A régi oldal egészségügyi állításai („egészségesebb”, „40 káros anyag”) nem kerültek át, mert az EU-s TPD tiltja az e-cigaretta ilyen reklámozását.
+
+## CSV sablonok (brief 11. pont)
+
+- `csv/firstvape-termekimport-sablon.csv` – teljes termékimport magyar fejlécekkel, a prototípus összes termékével mintaként
+  (szlovák termékszövegekkel). Frissítésre is jó: a WooCommerce importáló SKU alapján frissíti a meglévő terméket.
+- `csv/firstvape-ar-keszlet-frissites.csv` – csak ár és készlet (SKU, Normál ár, Akciós ár, Készlet, Státusz).
+- Formátum: UTF-8, vessző elválasztó; több érték vesszővel egy cellában; alkategória `Szülő > Gyerek`; súly kg-ban;
+  státusz: Aktív / Készlethiányos / Kifutott. A kép URL-ek mintaértékek. A fejlécek nyelvét az ügyféllel egyeztetni kell.
 
 ## Ami szándékosan helyőrző
 

@@ -50,6 +50,8 @@
         html = FV.views.account(p[1]); title = T('myAccount'); break;
       case 'oldal':
         html = FV.views.page(p[1]); title = FV.pageList().indexOf(p[1]) !== -1 ? FV.pageTitle(p[1]) : T('titleNotFound'); break;
+      case 'blog':
+        html = FV.views.blog(p[1]); title = p[1] ? ((FV.posts.filter(function (b) { return b.slug === p[1]; })[0] || {}).title || FV.t('blog')) : FV.t('blog'); break;
       case 'prototipus':
         html = FV.views.proto(); title = 'Prototípus áttekintés'; break;
       default:

@@ -32,7 +32,12 @@
     pin: '<path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/>',
     mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
     phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/>',
-    upload: '<path d="M12 16V4M7 9l5-5 5 5M4 20h16"/>'
+    upload: '<path d="M12 16V4M7 9l5-5 5 5M4 20h16"/>',
+    cloud: '<path d="M7 18h10a4 4 0 0 0 .5-8A6 6 0 0 0 6 9.5 4.3 4.3 0 0 0 7 18Z"/>',
+    coin: '<circle cx="12" cy="12" r="8.5"/><path d="M14.5 9.5c-.5-1-1.4-1.5-2.5-1.5-1.5 0-2.5.8-2.5 2s1 1.6 2.5 2 2.5.9 2.5 2-1 2-2.5 2c-1.2 0-2.1-.5-2.6-1.5M12 6.5v1.5M12 16v1.5"/>',
+    drop: '<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11Z"/>',
+    star: '<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"/>',
+    bolt: '<path d="M13 3 5 14h6l-1 7 8-11h-6l1-7Z"/>'
   };
   FV.icon = function (name, cls) {
     return '<svg class="ico ' + (cls || '') + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (P[name] || '') + '</svg>';
@@ -41,8 +46,7 @@
 
   FV.logo = function () {
     return '<a class="logo" href="#/" aria-label="' + esc(t('logoAria')) + '">' +
-      '<span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i></span>' +
-      '<span class="logo-word">first<b>vape</b></span></a>';
+      '<img class="logo-img" src="' + FV.asset('img/first-vape-logo.png') + '" alt="First Vape" width="791" height="99"></a>';
   };
 
   /* ---------- Fejléc ---------- */
@@ -112,6 +116,7 @@
     return '<div class="topbar"><div class="wrap topbar-in">' +
       '<p class="tb-msg">' + I('truck') + '<span>' + msg + '</span></p>' +
       '<p class="tb-age"><span class="age-pill">18+</span> ' + t('age18') + '</p>' +
+      '<nav class="tb-links" aria-label="' + esc(t('moreLinksAria')) + '"><a href="#/blog">' + t('blog') + '</a><a href="#/oldal/shipping">' + esc(FV.pageTitle('shipping')) + '</a><a href="#/oldal/contact">' + t('contact') + '</a></nav>' +
       langSwitch('tb-lang') +
       '</div></div>' +
       '<header class="hdr"><div class="wrap hdr-in">' +
@@ -154,7 +159,7 @@
       '<aside class="drawer-panel" aria-label="' + esc(t('mobileMenuAria')) + '"><div class="drawer-head">' + FV.logo() +
       '<button class="icon-btn" type="button" data-act="drawer-close" aria-label="' + esc(t('close')) + '">' + I('close') + '</button></div>' +
       '<ul class="mm">' + items + '</ul>' +
-      '<ul class="mm mm-sec"><li><a href="#/fiok">' + I('user') + ' ' + t('myAccount') + '</a></li><li><a href="#/fiok/rendelesek">' + I('box') + ' ' + t('myOrders') + '</a></li><li><a href="#/fiok/kedvencek">' + I('heart') + ' ' + t('wishlist') + '</a></li><li><a href="#/oldal/contact">' + I('mail') + ' ' + t('contact') + '</a></li></ul>' +
+      '<ul class="mm mm-sec"><li><a href="#/fiok">' + I('user') + ' ' + t('myAccount') + '</a></li><li><a href="#/fiok/rendelesek">' + I('box') + ' ' + t('myOrders') + '</a></li><li><a href="#/fiok/kedvencek">' + I('heart') + ' ' + t('wishlist') + '</a></li><li><a href="#/blog">' + I('star') + ' ' + t('blog') + '</a></li><li><a href="#/oldal/contact">' + I('mail') + ' ' + t('contact') + '</a></li></ul>' +
       '<div class="mm-lang"><span>' + t('langAria') + '</span>' + langSwitch('mm-lang-sw') + '</div>' +
       '</aside></div>';
   }
@@ -230,7 +235,7 @@
     if (FV.store.get('age_ok', false)) return '';
     return '<div class="agegate" data-agegate role="dialog" aria-modal="true" aria-labelledby="age-t"><div class="ag-card">' +
       langSwitch('ag-lang') +
-      '<span class="age-pill big">18+</span><h2 id="age-t">' + t('ageQ') + '</h2>' +
+      '<img class="ag-logo" src="' + FV.asset('img/first-vape-logo.png') + '" alt="First Vape" width="791" height="99"><span class="age-pill big">18+</span><h2 id="age-t">' + t('ageQ') + '</h2>' +
       '<p>' + t('ageText') + '</p>' +
       '<div class="ag-acts"><button class="btn btn-primary" type="button" data-act="age-yes">' + t('ageYes') + '</button>' +
       '<button class="btn btn-ghost" type="button" data-act="age-no">' + t('ageNo') + '</button></div>' +

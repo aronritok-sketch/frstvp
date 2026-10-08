@@ -14,6 +14,10 @@ window.FV = window.FV || {};
  * A terméknevek és márkanevek nem fordítandók (kivéve, ha általános szó van bennük: names). */
 FV.currency = '€';
 
+// Képek útvonala; az egyfájlos változat data URI-kat tesz ide
+FV.assetMap = FV.assetMap || {};
+FV.asset = function (p) { return FV.assetMap[p] || 'assets/' + p; };
+
 /* ---------- Kategóriák (product_cat) ---------- */
 FV.categories = [
   { slug: 'keszulekek', art: 'kit', color: '#3D4A6B',
@@ -373,6 +377,34 @@ FV.markets = {
 /* ---------- Információs oldalak piaconként (a szöveg az i18n.js-ben) ----------
  * A jogi oldalak HELYŐRZŐK: a végleges szöveget az ügyfél (jogász) adja.
  */
+/* Blog (WordPress bejegyzések) – a régi firstvape.sk cikkei alapján */
+FV.posts = [
+  { slug: 'elfbar-nova-generacia', date: '2026-09-12', color: '#EC2F4B',
+    tag: { sk: 'Produkty', fr: 'Produits' },
+    title: { sk: 'Elfbar – nová generácia elektronických cigariet', fr: 'Elfbar : la nouvelle génération de cigarettes électroniques' },
+    excerpt: { sk: 'Prečo je Elfbar jednou z najžiadanejších značiek a ktorý model je pre koho?', fr: 'Pourquoi Elfbar est-elle l’une des marques les plus demandées, et quel modèle choisir ?' },
+    body: { sk: ['Jednorazové aj znovu nabíjateľné zariadenia Elfbar sa stali populárnymi za krátky čas. Tajomstvo je v jednoduchosti: rozbalíš a môžeš začať.', 'Od 600-potiahnutiových modelov v súlade s TPD až po BC40000 s displejom a 40 000 potiahnutiami – vyberie si každý. Ak hľadáš zariadenie na dlhšie, skús pod systém ELFA: jedna batéria a vymeniteľné pody v desiatkach príchutí.'],
+      fr: ['Les appareils jetables et rechargeables Elfbar sont devenus populaires en peu de temps. Le secret : la simplicité. Vous déballez, et c’est prêt.', 'Des modèles de 600 bouffées conformes à la TPD jusqu’au BC40000 avec écran et 40 000 bouffées, il y en a pour tous. Pour un usage durable, essayez le système pod ELFA : une batterie, des pods interchangeables dans des dizaines de saveurs.'] } },
+  { slug: 'popularita-e-cigariet', date: '2026-08-28', color: '#3C82E6',
+    tag: { sk: 'Poradňa', fr: 'Guide' },
+    title: { sk: 'Popularita elektronických cigariet', fr: 'La popularité des cigarettes électroniques' },
+    excerpt: { sk: 'Čoraz viac ľudí si vyberá alternatívu bez dymu. Pozreli sme sa, čo je za tým.', fr: 'De plus en plus de personnes choisissent une alternative sans fumée. Voici pourquoi.' },
+    body: { sk: ['E-cigareta namiesto dymu vytvára paru, preto po nej nezostáva nepríjemný zápach. Ponuka sa neustále rozširuje: jednorazové, pod systémy aj box mody.', 'Začiatočníkom odporúčame jednorazové zariadenia alebo jednoduchý pod kit, pokročilým box mody a vlastné miešanie liquidov.'],
+      fr: ['La cigarette électronique produit de la vapeur au lieu de la fumée et ne laisse donc pas d’odeur désagréable. L’offre ne cesse de s’élargir : jetables, systèmes pod et box mods.', 'Aux débutants, nous conseillons les jetables ou un kit pod simple ; aux vapoteurs confirmés, les box mods et les mélanges maison.'] } },
+  { slug: 'zazitok-z-e-liquidu', date: '2026-08-10', color: '#7B3FA0',
+    tag: { sk: 'Liquidy', fr: 'E-liquides' },
+    title: { sk: 'Zážitok z e-liquidu: nikotínová soľ, shortfill alebo príchuť?', fr: 'L’expérience e-liquide : sels de nicotine, shortfill ou arôme ?' },
+    excerpt: { sk: 'Vysvetľujeme rozdiely a pre koho je ktorý typ vhodný.', fr: 'Nous expliquons les différences et à qui s’adresse chaque type.' },
+    body: { sk: ['Liquidy s nikotínovou soľou uvoľňujú nikotín rýchlejšie a jemnejšie, preto sú ideálne do pod systémov. Shortfill liquidy prichádzajú vo väčšom balení bez nikotínu: silu nastavíš pridaním boostera.', 'Z príchutí si s bázou namiešaš vlastnú zmes – presne takú, akú chceš.'],
+      fr: ['Les e-liquides aux sels de nicotine délivrent la nicotine plus vite et plus en douceur : parfaits pour les systèmes pod. Les shortfills arrivent en grand format sans nicotine ; vous réglez le taux en ajoutant un booster.', 'Avec un arôme et une base, vous créez votre propre mélange, exactement à votre goût.'] } },
+  { slug: 'ako-vybrat-jednorazovu', date: '2026-07-22', color: '#FF8A1F',
+    tag: { sk: 'Návod', fr: 'Conseils' },
+    title: { sk: 'Ako vybrať jednorazovú e-cigaretu: potiahnutia, nikotín, príchuť', fr: 'Bien choisir sa cigarette électronique jetable : bouffées, nicotine, saveur' },
+    excerpt: { sk: 'Podľa počtu potiahnutí, sily nikotínu a príchute rýchlo nájdeš to pravé.', fr: 'Nombre de bouffées, taux de nicotine et saveur : trouvez vite l’appareil qu’il vous faut.' },
+    body: { sk: ['Počet potiahnutí ukazuje, na koľko vdýchnutí približne zariadenie vystačí. Na príležitostné použitie stačia modely so 600 potiahnutiami, na každodenné odporúčame zariadenia nad 10 000 potiahnutí s nabíjateľnou batériou.', 'Silu nikotínu uvádzame v mg: 0 mg je bez nikotínu, 10 mg je stredná sila, 20 mg je najvyššia povolená v EÚ.'],
+      fr: ['Le nombre de bouffées indique combien d’inhalations l’appareil permet environ. Pour un usage occasionnel, 600 bouffées suffisent ; au quotidien, préférez les appareils de plus de 10 000 bouffées avec batterie rechargeable.', 'Le taux de nicotine est indiqué en mg : 0 mg sans nicotine, 10 mg intermédiaire, 20 mg maximum autorisé dans l’UE.'] } }
+];
+
 FV.pageKeys = {
   sk: ['shipping', 'terms', 'privacy', 'withdrawal', 'cookies', 'contact'],
   fr: ['shipping', 'terms', 'privacy', 'withdrawal', 'legal', 'cookies', 'contact']

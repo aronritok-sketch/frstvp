@@ -342,7 +342,11 @@
   }
   FV.shade = shade;
 
-  FV.tint = function (p) { return shade(p.color, 0.86); };
+  // sötét felületen a termékszín „füstös” fényként jelenik meg a kép mögött (CSS: radial-gradient)
+  FV.tint = function (p) {
+    var n = parseInt(p.color.slice(1), 16), lum = (0.2126 * (n >> 16) + 0.7152 * ((n >> 8) & 255) + 0.0722 * (n & 255)) / 255;
+    return lum < 0.2 ? '#7A6A9E' : p.color; // fekete/sötét termék mögé világosabb fény, hogy elváljon a háttértől
+  };
 
   FV.art = function (p, opt) {
     opt = opt || {};
@@ -351,7 +355,7 @@
     var puff = (p.attrs.puff || [])[0] || 0;
     var defs = '<defs><linearGradient id="' + id + '" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="' + light + '"/><stop offset="1" stop-color="' + dark + '"/></linearGradient>' +
       '<linearGradient id="' + id + 'h" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>';
-    var shadow = '<ellipse cx="120" cy="214" rx="54" ry="7" fill="#000" fill-opacity=".12"/>';
+    var shadow = '<ellipse cx="120" cy="214" rx="54" ry="7" fill="#000" fill-opacity=".45"/>';
     var body = '';
     var view = opt.view || 0;
     var tf = view === 1 ? ' transform="rotate(-14 120 120)"' : view === 2 ? ' transform="translate(0 6) scale(1)"' : '';
@@ -359,18 +363,18 @@
     if (p.art === 'disposable') {
       var h = puff >= 20000 ? 164 : puff >= 5000 ? 150 : 132, w = puff >= 20000 ? 72 : puff >= 5000 ? 62 : 50;
       var x = 120 - w / 2, y = 208 - h;
-      body = '<rect x="' + (x + w * 0.2) + '" y="' + (y - 26) + '" width="' + (w * 0.6) + '" height="36" rx="12" fill="#1d1a26"/>' +
+      body = '<rect x="' + (x + w * 0.2) + '" y="' + (y - 26) + '" width="' + (w * 0.6) + '" height="36" rx="12" fill="#2E2735"/>' +
         '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="' + (w * 0.42) + '" fill="url(#' + id + ')"/>' +
         '<rect x="' + (x + 8) + '" y="' + (y + 16) + '" width="10" height="' + (h - 40) + '" rx="5" fill="url(#' + id + 'h)"/>' +
-        (puff >= 10000 ? '<rect x="' + (120 - 18) + '" y="' + (y + h * 0.52) + '" width="36" height="22" rx="5" fill="#101014"/><text x="120" y="' + (y + h * 0.52 + 15) + '" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" font-weight="600" fill="' + light + '">' + Math.round(puff / 1000) + 'K</text>' : '') +
-        '<text x="' + (120 + 4) + '" y="' + (y + h * 0.36) + '" transform="rotate(-90 ' + (120 + 4) + ' ' + (y + h * 0.36) + ')" text-anchor="middle" font-family="Unbounded,sans-serif" font-weight="700" font-size="' + (w > 55 ? 12 : 10) + '" fill="#fff" fill-opacity=".92" letter-spacing="1">' + bname + '</text>';
+        (puff >= 10000 ? '<rect x="' + (120 - 18) + '" y="' + (y + h * 0.52) + '" width="36" height="22" rx="5" fill="#101014"/><text x="120" y="' + (y + h * 0.52 + 15) + '" text-anchor="middle" font-family="Barlow Semi Condensed,sans-serif" font-size="10" font-weight="600" fill="' + light + '">' + Math.round(puff / 1000) + 'K</text>' : '') +
+        '<text x="' + (120 + 4) + '" y="' + (y + h * 0.36) + '" transform="rotate(-90 ' + (120 + 4) + ' ' + (y + h * 0.36) + ')" text-anchor="middle" font-family="Barlow Semi Condensed,sans-serif" font-weight="700" font-size="' + (w > 55 ? 12 : 10) + '" fill="#fff" fill-opacity=".92" letter-spacing="1">' + bname + '</text>';
     } else if (p.art === 'pod') {
       var pod = function (px, liquid) {
-        return '<path d="M' + (px + 8) + ' 60 h28 l6 30 h-40 z" fill="#1d1a26"/>' +
-          '<rect x="' + (px - 2) + '" y="88" width="48" height="96" rx="10" fill="#E9E6F0" fill-opacity=".9" stroke="#1d1a26" stroke-opacity=".15"/>' +
+        return '<path d="M' + (px + 8) + ' 60 h28 l6 30 h-40 z" fill="#2E2735"/>' +
+          '<rect x="' + (px - 2) + '" y="88" width="48" height="96" rx="10" fill="#E9E6F0" fill-opacity=".9" stroke="#2E2735" stroke-opacity=".15"/>' +
           '<rect x="' + (px + 3) + '" y="' + (120) + '" width="38" height="58" rx="7" fill="' + liquid + '" fill-opacity=".85"/>' +
           '<rect x="' + (px + 6) + '" y="96" width="6" height="80" rx="3" fill="#fff" fill-opacity=".6"/>' +
-          '<rect x="' + (px - 2) + '" y="180" width="48" height="26" rx="6" fill="#26222f"/>' +
+          '<rect x="' + (px - 2) + '" y="180" width="48" height="26" rx="6" fill="#352C3C"/>' +
           '<circle cx="' + (px + 14) + '" cy="193" r="3" fill="#c9b27a"/><circle cx="' + (px + 30) + '" cy="193" r="3" fill="#c9b27a"/>';
       };
       body = p.pack === 2 ? pod(66, c) + pod(126, shade(c, -0.1)) : pod(98, c);
@@ -378,46 +382,46 @@
       var sw = FV.colorSwatches[(p.attrs.szin || [])[0]] || c;
       var big = FV.inCat(p, 'box-mod-kitek');
       if (big) {
-        body = '<rect x="104" y="30" width="32" height="46" rx="6" fill="#d9dde6" stroke="#1d1a26" stroke-opacity=".2"/><rect x="110" y="44" width="20" height="28" rx="3" fill="#E9A23B" fill-opacity=".7"/><rect x="112" y="20" width="16" height="14" rx="4" fill="#1d1a26"/>' +
+        body = '<rect x="104" y="30" width="32" height="46" rx="6" fill="#d9dde6" stroke="#2E2735" stroke-opacity=".2"/><rect x="110" y="44" width="20" height="28" rx="3" fill="#E9A23B" fill-opacity=".7"/><rect x="112" y="20" width="16" height="14" rx="4" fill="#2E2735"/>' +
           '<rect x="72" y="74" width="96" height="136" rx="16" fill="' + shade(sw, 0.1) + '"/><rect x="72" y="74" width="96" height="136" rx="16" fill="url(#' + id + 'h)" fill-opacity=".5"/>' +
-          '<rect x="88" y="96" width="46" height="30" rx="4" fill="#0e0f13"/><text x="111" y="116" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#7CF3C1">80W</text>' +
-          '<rect x="146" y="94" width="10" height="40" rx="5" fill="#1d1a26" fill-opacity=".7"/><circle cx="102" cy="148" r="5" fill="#1d1a26" fill-opacity=".6"/><circle cx="120" cy="148" r="5" fill="#1d1a26" fill-opacity=".6"/>';
+          '<rect x="88" y="96" width="46" height="30" rx="4" fill="#0e0f13"/><text x="111" y="116" text-anchor="middle" font-family="Barlow Semi Condensed,sans-serif" font-size="11" fill="#7CF3C1">80W</text>' +
+          '<rect x="146" y="94" width="10" height="40" rx="5" fill="#2E2735" fill-opacity=".7"/><circle cx="102" cy="148" r="5" fill="#2E2735" fill-opacity=".6"/><circle cx="120" cy="148" r="5" fill="#2E2735" fill-opacity=".6"/>';
       } else {
-        body = '<rect x="96" y="30" width="48" height="58" rx="12" fill="#E9E6F0" fill-opacity=".92" stroke="#1d1a26" stroke-opacity=".15"/>' +
-          '<rect x="104" y="52" width="32" height="32" rx="7" fill="' + shade(sw === '#1B1B1F' ? '#4B5BD6' : sw, 0.1) + '" fill-opacity=".7"/><rect x="106" y="20" width="28" height="16" rx="6" fill="#1d1a26"/>' +
+        body = '<rect x="96" y="30" width="48" height="58" rx="12" fill="#E9E6F0" fill-opacity=".92" stroke="#2E2735" stroke-opacity=".15"/>' +
+          '<rect x="104" y="52" width="32" height="32" rx="7" fill="' + shade(sw === '#1B1B1F' ? '#4B5BD6' : sw, 0.1) + '" fill-opacity=".7"/><rect x="106" y="20" width="28" height="16" rx="6" fill="#2E2735"/>' +
           '<rect x="88" y="84" width="64" height="126" rx="22" fill="' + sw + '"/><rect x="94" y="96" width="10" height="100" rx="5" fill="url(#' + id + 'h)"/>' +
           '<rect x="116" y="170" width="8" height="18" rx="4" fill="#fff" fill-opacity=".55"/>';
       }
     } else if (p.art === 'liquid') {
       var big2 = /(50|60) ml/.test(p.name) || (p.attrs.ml || [])[0] === '20 ml';
       var bw = big2 ? 88 : 70, bh = big2 ? 128 : 108, bx = 120 - bw / 2, by = 210 - bh;
-      body = '<path d="M' + (120 - 6) + ' ' + (by - 58) + ' h12 l4 20 h-20 z" fill="#1d1a26"/>' +
-        '<rect x="' + (120 - 20) + '" y="' + (by - 40) + '" width="40" height="44" rx="6" fill="#1d1a26"/>' +
+      body = '<path d="M' + (120 - 6) + ' ' + (by - 58) + ' h12 l4 20 h-20 z" fill="#2E2735"/>' +
+        '<rect x="' + (120 - 20) + '" y="' + (by - 40) + '" width="40" height="44" rx="6" fill="#2E2735"/>' +
         '<rect x="' + (120 - 20) + '" y="' + (by - 40) + '" width="40" height="8" rx="3" fill="#fff" fill-opacity=".15"/>' +
-        '<rect x="' + bx + '" y="' + by + '" width="' + bw + '" height="' + bh + '" rx="14" fill="#F4F2F7" stroke="#1d1a26" stroke-opacity=".12"/>' +
+        '<rect x="' + bx + '" y="' + by + '" width="' + bw + '" height="' + bh + '" rx="14" fill="#F4F2F7" stroke="#2E2735" stroke-opacity=".12"/>' +
         '<rect x="' + bx + '" y="' + (by + bh * 0.28) + '" width="' + bw + '" height="' + bh * 0.52 + '" fill="url(#' + id + ')"/>' +
-        '<text x="120" y="' + (by + bh * 0.5) + '" text-anchor="middle" font-family="Unbounded,sans-serif" font-weight="700" font-size="' + (bname.length > 10 ? 7.5 : 9) + '" fill="#fff">' + bname + '</text>' +
-        '<text x="120" y="' + (by + bh * 0.66) + '" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#fff" fill-opacity=".9">' + FV.esc((p.attrs.ml || [''])[0]) + '</text>' +
+        '<text x="120" y="' + (by + bh * 0.5) + '" text-anchor="middle" font-family="Barlow Semi Condensed,sans-serif" font-weight="700" font-size="' + (bname.length > 10 ? 7.5 : 9) + '" fill="#fff">' + bname + '</text>' +
+        '<text x="120" y="' + (by + bh * 0.66) + '" text-anchor="middle" font-family="Barlow Semi Condensed,sans-serif" font-size="9" fill="#fff" fill-opacity=".9">' + FV.esc((p.attrs.ml || [''])[0]) + '</text>' +
         '<rect x="' + (bx + 7) + '" y="' + (by + 8) + '" width="7" height="' + (bh - 20) + '" rx="3.5" fill="#fff" fill-opacity=".7"/>';
     } else {
       var acc = p.acc;
       if (acc === 'cartridge') {
-        body = '<path d="M104 58 h32 l6 30 h-44 z" fill="#1d1a26"/><rect x="92" y="86" width="56" height="100" rx="12" fill="' + shade(c, 0.75) + '" stroke="' + c + '" stroke-width="3"/><rect x="100" y="96" width="7" height="80" rx="3.5" fill="#fff" fill-opacity=".8"/><rect x="92" y="180" width="56" height="26" rx="6" fill="#26222f"/><rect x="114" y="120" width="12" height="40" rx="3" fill="' + c + '" fill-opacity=".35"/>';
+        body = '<path d="M104 58 h32 l6 30 h-44 z" fill="#2E2735"/><rect x="92" y="86" width="56" height="100" rx="12" fill="' + shade(c, 0.75) + '" stroke="' + c + '" stroke-width="3"/><rect x="100" y="96" width="7" height="80" rx="3.5" fill="#fff" fill-opacity=".8"/><rect x="92" y="180" width="56" height="26" rx="6" fill="#352C3C"/><rect x="114" y="120" width="12" height="40" rx="3" fill="' + c + '" fill-opacity=".35"/>';
       } else if (acc === 'coil') {
         body = '<rect x="96" y="54" width="48" height="150" rx="8" fill="#b9bec8"/><rect x="96" y="54" width="48" height="150" rx="8" fill="url(#' + id + 'h)"/>' +
           '<rect x="104" y="96" width="32" height="50" rx="4" fill="#E3D6B8"/>' +
           [0, 1, 2, 3, 4].map(function (i) { return '<line x1="104" y1="' + (100 + i * 10) + '" x2="136" y2="' + (100 + i * 10) + '" stroke="#8a8f99" stroke-width="2"/>'; }).join('') +
-          '<rect x="96" y="54" width="48" height="16" rx="6" fill="' + c + '"/><rect x="102" y="196" width="36" height="12" rx="4" fill="#26222f"/>';
+          '<rect x="96" y="54" width="48" height="16" rx="6" fill="' + c + '"/><rect x="102" y="196" width="36" height="12" rx="4" fill="#352C3C"/>';
       } else if (acc === 'cable') {
         body = '<path d="M70 70 C 70 170, 170 60, 170 170" fill="none" stroke="' + c + '" stroke-width="9" stroke-linecap="round"/>' +
           '<rect x="58" y="36" width="24" height="40" rx="6" fill="#3a3744"/><rect x="63" y="22" width="14" height="16" rx="3" fill="#c7cbd3"/>' +
           '<rect x="158" y="164" width="24" height="40" rx="6" fill="#3a3744"/><rect x="163" y="202" width="14" height="10" rx="3" fill="#c7cbd3"/>';
       } else if (acc === 'cotton') {
-        body = '<rect x="70" y="110" width="100" height="96" rx="12" fill="' + c + '"/><text x="120" y="164" text-anchor="middle" font-family="Unbounded,sans-serif" font-size="11" font-weight="700" fill="#fff">COTTON</text>' +
+        body = '<rect x="70" y="110" width="100" height="96" rx="12" fill="' + c + '"/><text x="120" y="164" text-anchor="middle" font-family="Barlow Semi Condensed,sans-serif" font-size="11" font-weight="700" fill="#fff">COTTON</text>' +
           '<circle cx="96" cy="104" r="22" fill="#fff" stroke="#e0e0ea"/><circle cx="124" cy="92" r="26" fill="#fff" stroke="#e0e0ea"/><circle cx="148" cy="108" r="20" fill="#fff" stroke="#e0e0ea"/>';
       } else {
-        body = '<rect x="58" y="70" width="124" height="136" rx="14" fill="#26222f"/><rect x="68" y="80" width="104" height="116" rx="8" fill="' + shade(c, 0.1) + '"/>' +
-          '<rect x="80" y="92" width="8" height="92" rx="4" fill="#c7cbd3"/><rect x="96" y="92" width="8" height="92" rx="4" fill="#c7cbd3"/><rect x="112" y="92" width="6" height="92" rx="3" fill="#1d1a26"/><rect x="126" y="92" width="10" height="70" rx="3" fill="#c7cbd3"/><rect x="144" y="92" width="16" height="16" rx="8" fill="#1d1a26"/>';
+        body = '<rect x="58" y="70" width="124" height="136" rx="14" fill="#352C3C"/><rect x="68" y="80" width="104" height="116" rx="8" fill="' + shade(c, 0.1) + '"/>' +
+          '<rect x="80" y="92" width="8" height="92" rx="4" fill="#c7cbd3"/><rect x="96" y="92" width="8" height="92" rx="4" fill="#c7cbd3"/><rect x="112" y="92" width="6" height="92" rx="3" fill="#2E2735"/><rect x="126" y="92" width="10" height="70" rx="3" fill="#c7cbd3"/><rect x="144" y="92" width="16" height="16" rx="8" fill="#2E2735"/>';
       }
     }
     return '<svg class="art" viewBox="0 0 240 240" role="img" aria-label="' + FV.esc(p.name) + '">' + defs + shadow + '<g' + tf + '>' + body + '</g></svg>';

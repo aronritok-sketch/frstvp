@@ -77,10 +77,10 @@
     var elfaPods = FV.products.filter(function (p) { return FV.inCat(p, 'elfa-podok'); });
     var tabs = ['eldobhato', 'eloretoltott-podok', 'e-liquidek', 'keszulekek'];
 
-    return '<section class="hero"><div class="wrap hero-in">' +
+    return '<section class="hero"><div class="hero-smoke" aria-hidden="true"></div><div class="wrap hero-in">' +
       '<div class="hero-copy"><p class="eyebrow">' + t('heroEyebrow') + '</p>' +
       '<h1>' + t('heroH1') + '</h1>' +
-      '<p class="lead">' + (FV.lang === 'sk' ? 'Jednorazové e-cigarety od 600 do 40&nbsp;000 potiahnutí, pody ELFA a XROS, prémiové liquidy. Originálne produkty s doručením DPD za 1–2 dni.' : 'Des jetables de 600 à 40&nbsp;000 bouffées, des pods ELFA et XROS, des e-liquides premium. Produits 100 % authentiques, expédiés depuis la Slovaquie.') + '</p>' +
+      '<p class="lead">' + t('heroLead') + '</p>' +
       '<div class="hero-cta"><a class="btn btn-primary btn-lg" href="#/kategoria/eldobhato">' + t('heroCta1') + '</a><a class="btn btn-ghost btn-lg" href="#/akciok">' + t('heroCta2') + '</a></div>' +
       '<ul class="hero-facts"><li><b class="num">' + FV.products.length + '</b> ' + FV.pl('wProducts', FV.products.length) + '</li><li><b class="num">' + FV.brands.length + '</b> ' + FV.pl('wBrands', FV.brands.length) + '</li>' + (FV.lang === 'sk' ? '<li><b class="num">1–2</b> dni DPD</li>' : '<li><b class="num">100 %</b> authentiques</li>') + '</ul></div>' +
       '<div class="pufffinder" data-pufffinder><p class="pf-label">' + t('pfLabel') + '</p>' +
@@ -92,14 +92,18 @@
       '<a class="btn btn-primary pf-go" href="#/kategoria/eldobhato?puff=20000" data-pf-go><span>' + t('pfGo', { n: '<span data-pf-count>0</span>' }) + '</span></a></div>' +
       '</div></section>' +
 
-      '<section class="wrap sec"><div class="catgrid">' + FV.categories.map(function (c) {
+      '<section class="wrap sec">' + sectionHead(t('rangeTitle'), '#/kategoria/eldobhato', t('allProducts'), t('rangeEyebrow')) + '<div class="catgrid">' + FV.categories.map(function (c) {
         var rep = FV.productsInCat(c.slug).sort(function (a, b) { return b.pop - a.pop; })[0];
-        return '<a class="cattile" href="#/kategoria/' + c.slug + '" style="--tint:' + FV.shade(c.color, 0.86) + '">' +
+        return '<a class="cattile" href="#/kategoria/' + c.slug + '" style="--tint:' + c.color + '">' +
           '<span class="ct-art">' + (rep ? FV.art(rep) : '') + '</span>' +
           '<span class="ct-txt"><b>' + esc(c.name) + '</b><small>' + FV.nw('wProducts', FV.productsInCat(c.slug).length) + ' · ' + FV.nw('wSubcats', c.children.length) + '</small></span>' + I('chev', 'ct-go') + '</a>';
       }).join('') + '</div></section>' +
 
       '<section class="wrap sec">' + sectionHead(t('weeklyDeals'), '#/akciok', t('allDeals'), t('dealsEyebrow')) + grid(sale) + '</section>' +
+
+      '<section class="sec why"><div class="wrap"><div class="why-head"><p class="eyebrow">' + t('whyEyebrow') + '</p><h2>' + t('whyTitle') + '</h2></div><div class="why-grid">' +
+      t('whyItems').map(function (w) { return '<div class="why-item"><span class="why-ico">' + I(w[0]) + '</span><b>' + esc(w[1]) + '</b><p>' + esc(w[2]) + '</p></div>'; }).join('') +
+      '</div></div></section>' +
 
       '<section class="sec system"><div class="wrap sys-in"><div class="sys-copy"><p class="eyebrow">' + t('a_kompat') + '</p>' +
       '<h2>' + t('sysTitle', { n: elfaPods.length, w: FV.pl('wFlavors', elfaPods.length) }) + '</h2>' +
@@ -111,20 +115,38 @@
       elfaPods.map(function (p) { return '<a class="mini" href="#/termek/' + p.slug + '" style="--tint:' + FV.tint(p) + '"><span>' + FV.art(p) + '</span><b>' + esc(p.attrs.iz[0]) + '</b><small class="num">' + money(FV.price(p)) + '</small></a>'; }).join('') +
       '</div></div></div></section>' +
 
-      '<section class="wrap sec">' + sectionHead(t('ourBrands'), '#/markak', t('allBrands')) + '<div class="brandstrip">' +
-      FV.brands.map(function (b) { return '<a class="brand-tile" href="#/marka/' + b.slug + '">' + FV.wordmark(b) + '<small>' + FV.nw('wProducts', FV.productsOfBrand(b.slug).length) + '</small></a>'; }).join('') + '</div></section>' +
-
       '<section class="wrap sec">' + sectionHead(t('bestsellers'), null, null, t('custFav')) +
-      '<div class="tabs" role="tablist" aria-label="' + esc(t('popCats')) + '">' + tabs.map(function (t, i) {
-        return '<button class="tab' + (i ? '' : ' on') + '" type="button" role="tab" aria-selected="' + (i ? 'false' : 'true') + '" data-act="home-tab" data-tab="' + t + '">' + esc(FV.cat(t).node.short) + '</button>';
+      '<div class="tabs" role="tablist" aria-label="' + esc(t('popCats')) + '">' + tabs.map(function (c, i) {
+        return '<button class="tab' + (i ? '' : ' on') + '" type="button" role="tab" aria-selected="' + (i ? 'false' : 'true') + '" data-act="home-tab" data-tab="' + c + '">' + esc(FV.cat(c).node.short) + '</button>';
       }).join('') + '</div><div data-home-tab>' + popular(tabs[0]) + '</div></section>' +
 
-      '<section class="usp"><div class="wrap usp-in">' +
-      (FV.lang === 'sk' ? usp('truck', 'DPD 1–2 pracovné dni', 'Objednávky prijaté v pracovné dni do 14:00 odosielame ešte v ten deň.') : usp('truck', 'Expédition rapide', 'Commandes passées en semaine avant 14 h expédiées le jour même depuis la Slovaquie.')) +
-      usp('shield', t('uspOrigT'), t('uspOrigD')) +
-      usp('card', t('uspPayT'), t('uspPayD')) +
-      usp('receipt', t('uspInvT'), t('uspInvD')) +
-      '</div></section>';
+      '<section class="sec best"><div class="wrap best-in"><div class="best-copy"><p class="eyebrow">First Vape</p><h2>' + t('bestTitle') + '</h2>' +
+      '<p>' + t('bestText') + '</p><a class="btn btn-ghost" href="#/oldal/shipping">' + esc(FV.pageTitle('shipping')) + '</a></div><ul class="best-list">' +
+      t('bestItems').map(function (x) { return '<li>' + I('check') + '<span>' + esc(x) + '</span></li>'; }).join('') + '</ul></div></section>' +
+
+      '<section class="wrap sec">' + sectionHead(t('blogTitle'), '#/blog', t('moreArticles'), t('blog')) + blogCards(FV.posts.slice(0, 3)) + '</section>' +
+
+      '<section class="wrap sec">' + sectionHead(t('partnersTitle'), '#/markak', t('allBrands'), t('brands')) + '<div class="brandstrip">' +
+      FV.brands.map(function (b) { return '<a class="brand-tile" href="#/marka/' + b.slug + '">' + FV.wordmark(b) + '<small>' + FV.nw('wProducts', FV.productsOfBrand(b.slug).length) + '</small></a>'; }).join('') + '</div></section>';
+  };
+
+  function blogCards(list) {
+    return '<div class="blog-grid">' + list.map(function (b) {
+      return '<a class="post-card" href="#/blog/' + b.slug + '"><span class="post-img" style="--tint:' + b.color + '"></span>' +
+        '<span class="post-body"><small>' + esc(FV.fmtDate(b.date)) + ' · ' + esc(b.tag) + '</small><b>' + esc(b.title) + '</b><p>' + esc(b.excerpt) + '</p><em>' + t('readMore') + ' ' + I('chev') + '</em></span></a>';
+    }).join('') + '</div>';
+  }
+
+  FV.views.blog = function (slug) {
+    if (slug) {
+      var b = FV.posts.filter(function (x) { return x.slug === slug; })[0];
+      if (!b) return FV.views.notfound();
+      return '<div class="wrap">' + crumbs([{ label: t('blog'), href: '#/blog' }, { label: b.title }]) +
+        '<article class="prose page post"><span class="post-img lg" style="--tint:' + b.color + '"></span><small class="muted">' + esc(FV.fmtDate(b.date)) + ' · ' + esc(b.tag) + '</small><h1>' + esc(b.title) + '</h1>' +
+        b.body.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') + '</article>' +
+        '<section class="sec">' + sectionHead(t('moreArticles')) + blogCards(FV.posts.filter(function (x) { return x !== b; }).slice(0, 3)) + '</section></div>';
+    }
+    return '<div class="wrap">' + crumbs([{ label: t('blog') }]) + '<div class="shop-title"><h1>' + t('blogTitle') + '</h1><p>' + t('blogIntro') + '</p></div>' + blogCards(FV.posts) + '</div>';
   };
 
   function usp(ic, t, d) { return '<div class="usp-item">' + I(ic) + '<div><b>' + esc(t) + '</b><p>' + esc(d) + '</p></div></div>'; }
@@ -435,7 +457,7 @@
       '<ul class="pi-perks"><li>' + I('truck') + '<span>' + t('perkShip') + '</span></li>' +
       '<li>' + I('receipt') + '<span>' + t('perkInvoice') + '</span></li>' +
       '<li>' + I('shield') + '<span>' + t('perkReturn') + '</span></li></ul>' +
-      '<p class="pi-cats">' + t('catsLabel') + ' ' + cats + '</p>' +
+      '<p class="pi-cats">' + t('catsLabel') + ' ' + cats + (p.sale ? ', <a href="#/akciok">' + t('onSaleCat') + '</a>' : '') + '</p>' +
       (hasNic ? '<p class="nic-warn">' + t('nicWarn') + '</p>' : '') +
       '</div></div>' +
 
@@ -689,7 +711,7 @@
       ['Fiók', '#/fiok', 'My Account – rendelések követési számmal, számla letöltés, kedvencek (saját kód, wishlist-plugin nélkül)'],
       ['Információs és jogi oldalak', '#/oldal/shipping', 'Piaconként külön oldalak (SK: Obchodné podmienky …, FR: CGV, mentions légales …), inc/setup.php hozza létre; a szöveg HELYŐRZŐ']
     ];
-    var csv = ['Terméknév', 'SKU', 'EAN', 'Kategória', 'Márka', 'Íz', 'Nikotin', 'ML', 'Puff', 'Kompatibilitás', 'Szín', 'Normál ár', 'Akciós ár', 'Készlet', 'Státusz', 'Súly (g)', 'Rövid leírás', 'Hosszú leírás', 'Kép URL-ek'];
+    var csv = ['Terméknév', 'SKU', 'EAN', 'Kategória', 'Márka', 'Íz', 'Nikotin', 'ML', 'Puff', 'Kompatibilitás', 'Szín', 'Normál ár', 'Akciós ár', 'Készlet', 'Státusz', 'Súly (kg)', 'Rövid leírás', 'Hosszú leírás', 'Kép URL-ek'];
     return '<div class="wrap" lang="hu">' + crumbs([{ label: 'Prototípus áttekintés' }]) +
       '<div class="shop-title"><h1>Prototípus áttekintés</h1><p>A First Vape új WooCommerce frontendjének kattintható HTML prototípusa. Piacok: <b>Szlovákia (SK)</b> és <b>Franciaország (FR)</b>, pénznem EUR. Jóváhagyás után ebből készül az <b>iu_theme + firstvape child téma</b>. Ez az átadó oldal szándékosan magyar, a bolt felülete szlovák és francia.</p></div>' +
       '<section class="sec"><h2>Piacok és nyelvek</h2><div class="model">' +
@@ -712,7 +734,7 @@
       '<li>Szűrj a kategóriaoldalon több szempont szerint. A darabszámok élőben frissülnek, mobilon a szűrő lenyíló panelben nyílik.</li>' +
       '<li>Nyiss meg egy készüléket (pl. <a href="#/termek/elfa-pro-kit-black">ELFA Pro</a>): alul automatikusan megjelennek a kompatibilis podok.</li>' +
       '<li>Tegyél termékeket a kosárba: a csomag súlya és a szállítási díj automatikusan számolódik.</li></ul></section>' +
-      '<section class="sec"><h2>CSV import sablon oszlopai</h2><p class="muted">Automatikus leképezés a WooCommerce importálóra, frissítés SKU alapján (ár, készlet). A fejlécek nyelvét az ügyféllel egyeztetni kell (a csapat nyelve).</p><div class="csvcols">' +
+      '<section class="sec"><h2>CSV import sablon</h2><p class="muted">Automatikus leképezés a WooCommerce importálóra. Ugyanazzal a sablonnal lehet új termékeket feltölteni és meglévőket frissíteni (SKU alapján); az ár- és készletfrissítéshez elég az öt oszlopos rövid sablon. Több érték vesszővel, alkategória „Szülő &gt; Gyerek” formában. A fejlécek nyelvét az ügyféllel egyeztetni kell (a csapat nyelve). Sablonfájlok a repóban: <code>prototype/csv/firstvape-termekimport-sablon.csv</code>, <code>prototype/csv/firstvape-ar-keszlet-frissites.csv</code>.</p><div class="csvcols">' +
       csv.map(function (c) { return '<code>' + esc(c) + '</code>'; }).join('') + '</div></section>' +
       '<section class="sec"><h2>Integrációk (bővítményekkel)</h2><div class="acc-cards">' +
       '<div class="acc-card">' + I('card') + '<b>Teya</b><span>Online kártyás fizetés (fizetési kapu bővítmény)</span></div>' +
