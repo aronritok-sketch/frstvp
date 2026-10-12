@@ -39,6 +39,16 @@ python3 -m http.server 8000
 # http://localhost:8000
 ```
 
+### Ügyfélnek küldhető, egyfájlos változat (portál / e-mail)
+
+```bash
+python3 prototype/tools/build_single.py   # → prototype/dist/firstvape-prototipus.html
+```
+
+Minden CSS, JS és kép beágyazva, letöltve internet nélkül is megnyílik (a Google Fonts betűkhöz net kell, anélkül tartalék betű).
+`noindex`, alul „Dizájn-prototípus” sáv, a belső „Prototípus infó” gomb kimarad. A `dist/` mappában van a kísérőszöveg
+(`KISEROSZOVEG.md`) és a két CSV-sablon is, ezeket együtt kell feltölteni a portálra. Változtatás után a buildet újra kell futtatni.
+
 A prototípus egyetlen oldalas alkalmazás, hash alapú útvonalakkal (`#/kategoria/eldobhato`, `#/termek/...`).
 A WordPressben ezek valódi, nyelvenként fordított permalinkek lesznek (pl. `/sk/…`, `/fr/…`).
 
