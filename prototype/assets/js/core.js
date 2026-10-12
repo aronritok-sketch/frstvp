@@ -71,6 +71,41 @@
   FV.inCat = function (p, slug) { return p.cats.indexOf(slug) !== -1; };
   FV.productsInCat = function (slug) { return FV.products.filter(function (p) { return FV.inCat(p, slug); }); };
   FV.productsOfBrand = function (slug) { return FV.products.filter(function (p) { return p.brand === slug; }); };
+  // „Csak a tényleges kínálathoz tartozó kategóriák és márkák jelenjenek meg”: aktív = nem kifutott termék
+  FV.isActive = function (p) { return p.stock !== 'discontinued'; };
+  FV.catHasProducts = function (slug) { return FV.products.some(function (p) { return FV.isActive(p) && FV.inCat(p, slug); }); };
+  FV.brandHasProducts = function (slug) { return FV.products.some(function (p) { return FV.isActive(p) && p.brand === slug; }); };
+  FV.visibleBrands = function () { return FV.brands.filter(function (b) { return FV.brandHasProducts(b.slug); }); };
+  FV.visibleChildren = function (c) { return (c.children || []).filter(function (ch) { return FV.catHasProducts(ch.slug); }); };
+
+  // Nikotin: a „20 mg” helyett „20 mg/ml (2 %)” – az attribútum értéke mg/ml, a % = mg/ml ÷ 10
+  FV.nicLabel = function (v) {
+    var n = parseFloat(v);
+    if (isNaN(n)) return v;
+    if (n === 0) return '0 mg/ml (' + FV.t('nicFree') + ')';
+    return String(n).replace('.', ',') + ' mg/ml (' + String(n / 10).replace('.', ',') + ' %)';
+  };
+  // Slukkszám: gyártói becslés, a szűrő tartományokra keres
+  FV.PUFF_BUCKETS = [
+    { id: '0-999', min: 0, max: 999, tick: '< 1k' },
+    { id: '1000-9999', min: 1000, max: 9999, tick: '1–10k' },
+    { id: '10000-19999', min: 10000, max: 19999, tick: '10–20k' },
+    { id: '20000+', min: 20000, max: Infinity, tick: '20k +' }
+  ];
+  FV.puffBucket = function (n) {
+    for (var i = 0; i < FV.PUFF_BUCKETS.length; i++) { var b = FV.PUFF_BUCKETS[i]; if (n >= b.min && n <= b.max) return b.id; }
+    return null;
+  };
+  FV.puffBucketLabel = function (id) {
+    var b = FV.PUFF_BUCKETS.filter(function (x) { return x.id === id; })[0];
+    if (!b) return id;
+    if (b.min === 0) return FV.t('puffUpTo', { n: FV.num(b.max + 1) });
+    if (b.max === Infinity) return FV.t('puffFrom', { n: FV.num(b.min) });
+    return FV.num(b.min) + ' – ' + FV.num(b.max);
+  };
+  FV.puffApprox = function (n) { return '≈ ' + FV.num(n) + ' ' + FV.t('puffUnit'); };
+  FV.ohmNum = function (v) { return parseFloat(String(v).replace(',', '.')); };
+
   FV.primaryCat = function (p) {
     for (var i = 0; i < p.cats.length; i++) if (FV.cat(p.cats[i]) && !FV.cat(p.cats[i]).parent) return FV.cat(p.cats[i]);
     return FV.cat(p.cats[0]);
@@ -124,7 +159,7 @@
       if (FV.store.get('cart_seeded', false)) return [];
       var seed = [
         { id: FV.product('elfbar-bc40000-blueberry-ice').id, qty: 2, v: {} },
-        { id: FV.product('elfa-pod-blueberry').id, qty: 3, v: {} }
+        { id: FV.product('elfbar-elfa-pro-pod-blueberry').id, qty: 3, v: {} }
       ];
       FV.store.set('cart', seed);
       FV.store.set('cart_seeded', true);
@@ -250,7 +285,7 @@
     FV.products.forEach(function (p) { (p.attrs.puff || []).forEach(function (x) { puffs[x] = 1; }); });
     Object.keys(puffs).forEach(function (x) {
       tokens.forEach(function (t) {
-        if (/^\d{3,}$/.test(t) && x.indexOf(t) === 0) out.push({ type: FV.t('sPuff'), label: FV.puffLabel(+x), href: '#/kategoria/eldobhato?puff=' + x });
+        if (/^\d{3,}$/.test(t) && x.indexOf(t) === 0) out.push({ type: FV.t('sPuff'), label: FV.puffLabel(+x), href: '#/kategoria/eldobhato?puff=' + encodeURIComponent(FV.puffBucket(+x)) });
       });
     });
     var flav = {};
@@ -264,16 +299,25 @@
 
   /* ---------- Szűrők (WooCommerce layered nav megfelelője) ---------- */
   FV.facetDefs = [
-    { key: 'marka', lk: 'a_marka', get: function (p) { return [p.brand]; }, name: function (v) { var b = FV.brand(v); return b ? b.name : v; } },
     { key: 'kat', lk: 'a_kat', get: function (p) { return p.cats.filter(function (c) { return FV.cat(c) && FV.cat(c).parent; }); }, name: function (v) { return FV.cat(v).name; } },
-    { key: 'puff', lk: 'a_puff', get: function (p) { return (p.attrs.puff || []).map(String); }, name: function (v) { return FV.puffLabel(+v); }, sort: 'num', mono: true },
-    { key: 'iz', lk: 'a_iz', get: function (p) { return p.attrs.iz || []; }, name: function (v) { return v; }, swatch: 'flavor' },
-    { key: 'nikotin', lk: 'a_nikotin', get: function (p) { return p.attrs.nikotin || []; }, name: function (v) { return v; }, sort: 'num', mono: true },
-    { key: 'ml', lk: 'a_ml', get: function (p) { return p.attrs.ml || []; }, name: function (v) { return v; }, sort: 'num', mono: true },
+    { key: 'marka', lk: 'a_marka', get: function (p) { return [p.brand]; }, name: function (v) { var b = FV.brand(v); return b ? b.name : v; } },
     { key: 'kompat', lk: 'a_kompat', get: function (p) { return p.attrs.kompat || []; }, name: function (v) { return v; } },
+    { key: 'iz', lk: 'a_iz', get: function (p) { return p.attrs.iz || []; }, name: function (v) { return v; }, swatch: 'flavor' },
+    { key: 'puff', lk: 'a_puffF', note: 'puffNote', get: function (p) { return (p.attrs.puff || []).map(FV.puffBucket); }, name: FV.puffBucketLabel, order: function (v) { return FV.PUFF_BUCKETS.map(function (b) { return b.id; }).indexOf(v); }, mono: true },
+    { key: 'nikotin', lk: 'a_nikotin', get: function (p) { return p.attrs.nikotin || []; }, name: function (v) { return FV.nicLabel(v); }, sort: 'num', mono: true },
+    { key: 'ml', lk: 'a_ml', get: function (p) { return p.attrs.ml || []; }, name: function (v) { return v; }, sort: 'num', mono: true },
     { key: 'szin', lk: 'a_szin', get: function (p) { return p.attrs.szin || []; }, name: function (v) { return FV.colorName(v); }, swatch: 'color' },
+    { key: 'ohm', lk: 'a_ohm', get: function (p) { return p.attrs.ohm || []; }, name: function (v) { return v; }, sort: 'ohm', mono: true },
     { key: 'keszlet', lk: 'a_keszlet', get: function (p) { return [p.stock]; }, name: function (v) { return FV.t({ instock: 'fInstock', outofstock: 'fOut', discontinued: 'fDisc' }[v]); } }
   ];
+  // Csak az adott fő kategóriában értelmezhető szűrők (az ügyfél kérése); márka / akció / keresés oldalon minden, aminek van értéke
+  FV.catFacets = {
+    'keszulekek': ['kat', 'marka', 'kompat', 'szin', 'ohm', 'keszlet'],
+    'eloretoltott-podok': ['marka', 'kompat', 'iz', 'nikotin', 'puff', 'keszlet'],
+    'e-liquidek': ['kat', 'marka', 'iz', 'nikotin', 'ml', 'keszlet'],
+    'eldobhato': ['marka', 'iz', 'puff', 'nikotin', 'keszlet'],
+    'kiegeszitok': ['kat', 'marka', 'kompat', 'ohm', 'keszlet']
+  };
 
   FV.applyFilters = function (list, f, skipKey) {
     return list.filter(function (p) {
@@ -294,13 +338,15 @@
   };
 
   // Tényezők és darabszámok (az adott tényező saját kijelölését figyelmen kívül hagyva, mint a WC „OR” szűrőnél)
-  FV.facets = function (base, f) {
-    return FV.facetDefs.map(function (d) {
+  FV.facets = function (base, f, allowed) {
+    return FV.facetDefs.filter(function (d) { return !allowed || allowed.indexOf(d.key) !== -1; }).map(function (d) {
       var pool = FV.applyFilters(base, f, d.key), counts = {}, all = {};
-      base.forEach(function (p) { d.get(p).forEach(function (v) { all[v] = 1; }); });
+      base.forEach(function (p) { d.get(p).forEach(function (v) { if (v != null) all[v] = 1; }); });
       pool.forEach(function (p) { d.get(p).forEach(function (v) { counts[v] = (counts[v] || 0) + 1; }); });
       var vals = Object.keys(all);
-      if (d.sort === 'num') vals.sort(function (a, b) { return parseFloat(a) - parseFloat(b); });
+      if (d.order) vals.sort(function (a, b) { return d.order(a) - d.order(b); });
+      else if (d.sort === 'num') vals.sort(function (a, b) { return parseFloat(a) - parseFloat(b); });
+      else if (d.sort === 'ohm') vals.sort(function (a, b) { return FV.ohmNum(a) - FV.ohmNum(b); });
       else vals.sort(function (a, b) { return d.name(a).localeCompare(d.name(b), FV.lang); });
       return { def: d, values: vals.map(function (v) { return { v: v, n: counts[v] || 0, on: (f[d.key] || []).indexOf(v) !== -1 }; }) };
     }).filter(function (fc) { return fc.values.length > 1 || fc.values.some(function (x) { return x.on; }); });
@@ -326,20 +372,31 @@
   }
   FV.related = function (p) {
     var isDevice = FV.inCat(p, 'keszulekek');
-    var isPod = FV.inCat(p, 'eloretoltott-podok') || FV.inCat(p, 'ures-podok') || FV.inCat(p, 'porlasztofejek');
-    var others = FV.products.filter(function (x) { return x.id !== p.id && x.stock !== 'discontinued'; });
+    var isPart = FV.inCat(p, 'eloretoltott-podok') || FV.inCat(p, 'ures-podok') || FV.inCat(p, 'porlasztok') || FV.inCat(p, 'tankok');
+    var others = FV.products.filter(function (x) { return x.id !== p.id && FV.isActive(x); });
+    var sys = (p.attrs.kompat || []).join(', ');
     var out = [];
-    if (isDevice) {
-      out.push({ title: FV.t('relPods'), note: 'pa_kompatibilitas egyezés', items: others.filter(function (x) { return !FV.inCat(x, 'keszulekek') && shares(p, x) && !FV.inCat(x, 'toltok'); }) });
+    if (isDevice && sys) {
+      var parts = others.filter(function (x) { return !FV.inCat(x, 'keszulekek') && shares(p, x); });
+      // először a predplnené pody, utána a prázdne pody / hlavy / tanky
+      parts.sort(function (a, b) { return FV.inCat(b, 'eloretoltott-podok') - FV.inCat(a, 'eloretoltott-podok') || b.pop - a.pop; });
+      out.push({ title: FV.t('relParts', { x: sys }), items: parts, sys: true });
     }
-    if (isPod) {
-      out.push({ title: FV.t('relDevice'), note: 'pa_kompatibilitas egyezés', items: others.filter(function (x) { return FV.inCat(x, 'keszulekek') && shares(p, x); }) });
+    if (isPart && sys) {
+      out.push({ title: FV.t('relDevices', { x: sys }), items: others.filter(function (x) { return FV.inCat(x, 'keszulekek') && shares(p, x); }), sys: true });
+    }
+    if (p.group) {
+      var sib = others.filter(function (x) { return x.group === p.group; });
+      if (sib.length) out.push({ title: FV.t('relVariants'), items: sib });
     }
     var leaf = FV.leafCat(p), prim = FV.primaryCat(p);
-    var alt = others.filter(function (x) { return leaf ? FV.inCat(x, leaf.slug) : FV.inCat(x, prim.slug); });
-    if (alt.length < 4) alt = alt.concat(others.filter(function (x) { return FV.inCat(x, prim.slug) && alt.indexOf(x) === -1; }));
+    var alt = others.filter(function (x) { return x.group !== p.group || !p.group; }).filter(function (x) { return leaf ? FV.inCat(x, leaf.slug) : FV.inCat(x, prim.slug); });
+    if (alt.length < 4) alt = alt.concat(others.filter(function (x) { return FV.inCat(x, prim.slug) && alt.indexOf(x) === -1 && (x.group !== p.group || !p.group); }));
     alt.sort(function (a, b) { return (b.stock === 'instock') - (a.stock === 'instock') || b.pop - a.pop; });
-    out.push({ title: FV.t(p.stock === 'discontinued' ? 'relInstead' : 'relAlt'), note: 'azonos kategória', items: alt });
+    // csoportonként (pl. színváltozatok) csak egy termék
+    var seenGrp = {};
+    alt = alt.filter(function (x) { if (!x.group) return true; if (seenGrp[x.group]) return false; seenGrp[x.group] = 1; return true; });
+    out.push({ title: FV.t(p.stock === 'discontinued' ? 'relInstead' : 'relAlt'), items: alt });
     return out.map(function (g) { g.items = g.items.slice(0, 4); return g; }).filter(function (g) { return g.items.length; });
   };
 
@@ -393,7 +450,7 @@
       body = p.pack === 2 ? pod(66, c) + pod(126, shade(c, -0.1)) : pod(98, c);
     } else if (p.art === 'kit') {
       var sw = FV.colorSwatches[(p.attrs.szin || [])[0]] || c;
-      var big = FV.inCat(p, 'box-mod-kitek');
+      var big = FV.inCat(p, 'mod-tank-kitek');
       if (big) {
         body = '<rect x="104" y="30" width="32" height="46" rx="6" fill="#d9dde6" stroke="#2E2735" stroke-opacity=".2"/><rect x="110" y="44" width="20" height="28" rx="3" fill="#E9A23B" fill-opacity=".7"/><rect x="112" y="20" width="16" height="14" rx="4" fill="#2E2735"/>' +
           '<rect x="72" y="74" width="96" height="136" rx="16" fill="' + shade(sw, 0.1) + '"/><rect x="72" y="74" width="96" height="136" rx="16" fill="url(#' + id + 'h)" fill-opacity=".5"/>' +
@@ -429,6 +486,15 @@
         body = '<path d="M70 70 C 70 170, 170 60, 170 170" fill="none" stroke="' + c + '" stroke-width="9" stroke-linecap="round"/>' +
           '<rect x="58" y="36" width="24" height="40" rx="6" fill="#3a3744"/><rect x="63" y="22" width="14" height="16" rx="3" fill="#c7cbd3"/>' +
           '<rect x="158" y="164" width="24" height="40" rx="6" fill="#3a3744"/><rect x="163" y="202" width="14" height="10" rx="3" fill="#c7cbd3"/>';
+      } else if (acc === 'tank') {
+        body = '<rect x="98" y="34" width="44" height="22" rx="6" fill="#2E2735"/><rect x="90" y="54" width="60" height="16" rx="4" fill="#b9bec8"/>' +
+          '<rect x="92" y="70" width="56" height="104" rx="8" fill="#E9E6F0" fill-opacity=".85" stroke="#b9bec8" stroke-width="3"/>' +
+          '<rect x="96" y="112" width="48" height="58" rx="6" fill="' + c + '" fill-opacity=".55"/><rect x="112" y="76" width="16" height="96" rx="4" fill="#b9bec8"/>' +
+          '<rect x="98" y="78" width="6" height="88" rx="3" fill="#fff" fill-opacity=".7"/><rect x="88" y="174" width="64" height="24" rx="6" fill="#b9bec8"/><rect x="108" y="198" width="24" height="10" rx="3" fill="#c9b27a"/>';
+      } else if (acc === 'battery') {
+        body = '<rect x="96" y="40" width="48" height="168" rx="10" fill="' + c + '"/><rect x="96" y="40" width="48" height="168" rx="10" fill="url(#' + id + 'h)"/>' +
+          '<rect x="110" y="30" width="20" height="12" rx="3" fill="#c7cbd3"/><rect x="96" y="150" width="48" height="40" fill="#1d1a26" fill-opacity=".55"/>' +
+          '<text x="120" y="176" text-anchor="middle" font-family="Barlow Semi Condensed,sans-serif" font-size="12" font-weight="700" fill="#fff">18650</text>';
       } else if (acc === 'cotton') {
         body = '<rect x="70" y="110" width="100" height="96" rx="12" fill="' + c + '"/><text x="120" y="164" text-anchor="middle" font-family="Barlow Semi Condensed,sans-serif" font-size="11" font-weight="700" fill="#fff">COTTON</text>' +
           '<circle cx="96" cy="104" r="22" fill="#fff" stroke="#e0e0ea"/><circle cx="124" cy="92" r="26" fill="#fff" stroke="#e0e0ea"/><circle cx="148" cy="108" r="20" fill="#fff" stroke="#e0e0ea"/>';

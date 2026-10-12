@@ -66,7 +66,18 @@
     setActiveNav(view, p[1]);
     if (!route.keepScroll) window.scrollTo(0, 0);
     route.keepScroll = false;
+    // ?to=<id>: a megadott szakaszhoz görget (pl. kifutott termék → helyettesítők)
+    if (r.q.to && document.getElementById(r.q.to)) document.getElementById(r.q.to).scrollIntoView();
   }
+
+  // Pénztár: a rendelésösszesítő csak akkor ragad, ha a fejléc alatt elfér a képernyőn
+  FV.fitSummary = function () {
+    var s = $('.co-side .summary');
+    if (!s) return;
+    var top = parseFloat(getComputedStyle(s).top) || 24;
+    s.classList.toggle('is-sticky', s.offsetHeight + 2 * top <= window.innerHeight);
+  };
+  window.addEventListener('resize', FV.fitSummary);
 
   function setActiveNav(view, slug) {
     $$('.nav-item').forEach(function (li) { li.classList.remove('on'); });
@@ -119,11 +130,11 @@
     var r = $('[data-pf-range]');
     if (!r) return;
     function upd() {
-      var n = FV.PUFF_STEPS[+r.value];
-      var cnt = FV.products.filter(function (p) { return FV.inCat(p, 'eldobhato') && (p.attrs.puff || []).indexOf(n) !== -1 && p.stock !== 'discontinued'; }).length;
-      $('#pf-out').textContent = FV.num(n);
+      var id = FV.PUFF_STEPS[+r.value];
+      var cnt = FV.products.filter(function (p) { return FV.inCat(p, 'eldobhato') && FV.isActive(p) && (p.attrs.puff || []).some(function (x) { return FV.puffBucket(x) === id; }); }).length;
+      $('#pf-out').textContent = FV.puffBucketLabel(id);
       $('[data-pf-count]').textContent = cnt;
-      $('[data-pf-go]').href = '#/kategoria/eldobhato?puff=' + n;
+      $('[data-pf-go]').href = '#/kategoria/eldobhato?puff=' + encodeURIComponent(id);
       r.style.setProperty('--p', (r.value / (FV.PUFF_STEPS.length - 1) * 100) + '%');
     }
     r.addEventListener('input', upd);
@@ -234,7 +245,6 @@
       case 'age-yes': FV.store.set('age_ok', true); $('[data-agegate]').remove(); document.body.classList.remove('lock'); break;
       case 'set-lang': e.preventDefault(); FV.setLang(a.dataset.lang); break;
       case 'age-no': $('.ag-no').hidden = false; break;
-      case 'co-fill': fillCheckout(); break;
       case 'skip': e.preventDefault(); $('#main').focus(); break;
     }
   });
@@ -266,6 +276,12 @@
       FV.renderCartPage(); FV.renderCheckoutSide();
     } else if (t.matches('[name="pay"]')) {
       FV.renderCheckoutSide();
+    } else if (t.id === 'co-shipdiff') {
+      $('[data-shipdiff]').hidden = !t.checked;
+    } else if (t.name === 'pickup') {
+      FV.store.set('pickup', t.value);
+      $('[data-pickup-err]').hidden = true;
+      $('[data-pickup]').classList.remove('err');
     } else if (t.id === 'co-company') {
       $('[data-company]').hidden = !t.checked;
     } else if (t.matches('[data-opt]')) {
@@ -287,6 +303,14 @@
     var t = e.target;
     if (t.matches('[data-pr]')) FV.paintPrice();
     if (t.matches('[data-live-search]')) liveSearch(t);
+    // pénztár: az első beküldés után gépelés közben eltűnik a hiba
+    var cf = t.closest && t.closest('[data-checkout]');
+    if (cf && cf.dataset.tried && (t.matches('[required]') || t.matches('[data-req]'))) showFieldError(t, fieldError(t));
+    // Packeta átvételi pont keresése
+    if (t.matches('[data-pickup-q]')) {
+      var q = FV.norm(t.value);
+      $$('[data-pp-list] .pp-item').forEach(function (it) { it.hidden = q && FV.norm(it.textContent).indexOf(q) === -1; });
+    }
   });
 
   document.addEventListener('submit', function (e) {
@@ -327,16 +351,17 @@
       $('[data-cp-msg]').textContent = T('couponMsg');
     } else if (f.matches('[data-checkout]')) {
       e.preventDefault();
-      var bad = $$('[required]', f).filter(function (i) { return i.type === 'checkbox' ? !i.checked : !i.value.trim(); });
-      $$('.fld.err', f).forEach(function (x) { x.classList.remove('err'); });
-      bad.forEach(function (i) { var fl = i.closest('.fld'); if (fl) fl.classList.add('err'); });
+      f.dataset.tried = '1';
+      var bad = validateCheckout(f);
       var ce = $('[data-co-err]');
       if (bad.length) {
-        ce.textContent = T('errRequired') + (bad.some(function (i) { return i.type === 'checkbox'; }) ? T('errAccept') : '') + '.';
+        ce.textContent = T('errSummary');
         ce.hidden = false;
         bad[0].focus();
+        bad[0].scrollIntoView({ block: 'center' });
         return;
       }
+      ce.hidden = true;
       var t = FV.cart.totals(), ship = FV.shippingCost(FV.shipMethod(), t.weight, t.sub), pay = $('#pay-cod').checked ? 'cod' : 'teya';
       FV.store.set('last_order', { no: 'FV-2026-' + (10500 + Math.floor(Math.random() * 400)), total: t.sub + ship + (pay === 'cod' ? FV.mkt().codFee : 0), email: $('#co-email').value, pay: pay });
       FV.cart.save([]);
@@ -344,11 +369,41 @@
     }
   });
 
-  function fillCheckout() {
-    var m = FV.mkt().demo;
-    var d = { 'co-email': m.email, 'co-phone': m.phone, 'co-first': m.first, 'co-last': m.last, 'co-zip': m.zip, 'co-city': m.city, 'co-street': m.street };
-    Object.keys(d).forEach(function (k) { var el = document.getElementById(k); if (el) el.value = d[k]; });
-    $('#co-18').checked = true; $('#co-terms').checked = true;
+  /* ---------- Pénztár: mezőnkénti ellenőrzés, rövid szöveges hibaüzenettel ---------- */
+  var ZIP = { sk: /^\d{3}\s?\d{2}$/, fr: /^\d{5}$/ };
+  function fieldError(i) {
+    if (i.type === 'checkbox') return i.checked ? '' : T('errCheck');
+    var v = i.value.trim();
+    if (!v) return T('errField');
+    if (i.dataset.v === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return T('errEmail');
+    if (i.dataset.v === 'phone' && v.replace(/\D/g, '').length < 9) return T('errPhone');
+    if (i.dataset.v === 'zip' && !ZIP[FV.lang].test(v)) return T('errZip');
+    return '';
+  }
+  function showFieldError(i, msg) {
+    var fl = i.closest('.fld');
+    if (!fl) return;
+    fl.classList.toggle('err', !!msg);
+    i.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    var m = fl.querySelector('[data-err]');
+    if (m) { m.textContent = msg; m.hidden = !msg; }
+  }
+  function validateCheckout(f) {
+    var bad = [];
+    $$('[required], [data-req]', f).forEach(function (i) {
+      if (i.closest('[hidden]')) { showFieldError(i, ''); return; }   // rejtett rész (pl. cég, eltérő cím) nem kötelező
+      var msg = fieldError(i);
+      showFieldError(i, msg);
+      if (msg) bad.push(i);
+    });
+    var pk = $('[data-pickup]');
+    if (pk && !pk.hidden) {
+      var ok = !!$('input[name="pickup"]:checked', pk);
+      $('[data-pickup-err]').hidden = ok;
+      pk.classList.toggle('err', !ok);
+      if (!ok) bad.push($('[data-pickup-q]'));
+    }
+    return bad;
   }
 
   /* ---------- Élő keresés ---------- */

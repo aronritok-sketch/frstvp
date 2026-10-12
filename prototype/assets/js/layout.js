@@ -25,6 +25,7 @@
     plus: '<path d="M12 5v14M5 12h14"/>',
     minus: '<path d="M5 12h14"/>',
     trash: '<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',
+    swap: '<path d="M7 4 3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/>',
     box: '<path d="M3 7l9-4 9 4-9 4-9-4Z"/><path d="M3 7v10l9 4 9-4V7M12 11v10"/>',
     scale: '<path d="M12 4v16M5 20h14"/><path d="M5 8h14l-3 6h-8L5 8Z" transform="translate(0 -1)"/>',
     bell: '<path d="M6 16V11a6 6 0 1 1 12 0v5l2 2H4l2-2Z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
@@ -54,25 +55,26 @@
     if (item.brands) {
       return '<div class="mega mega-brands"><div class="wrap mega-in">' +
         '<div class="mega-col mega-wide"><p class="mega-h">' + t('allBrandsAZ') + '</p><div class="brand-grid">' +
-        FV.brands.slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).map(function (b) {
-          return '<a class="brand-tile" href="#/marka/' + b.slug + '">' + FV.wordmark(b, 'sm') + '<small>' + FV.nw('wProducts', FV.productsOfBrand(b.slug).length) + '</small></a>';
+        FV.visibleBrands().sort(function (a, b) { return a.name.localeCompare(b.name); }).map(function (b) {
+          return '<a class="brand-tile" href="#/marka/' + b.slug + '">' + FV.wordmark(b, 'sm') + '<small>' + FV.nw('wProducts', FV.productsOfBrand(b.slug).filter(FV.isActive).length) + '</small></a>';
         }).join('') + '</div></div>' +
-        '<div class="mega-col mega-promo"><p class="mega-h">' + t('featuredBrand') + '</p>' + promo(FV.product('elfa-pro-kit-black'), t('elfaPromoTitle'), t('elfaPromoText')) + '</div>' +
+        '<div class="mega-col mega-promo"><p class="mega-h">' + t('featuredBrand') + '</p>' + promo(FV.product('elfbar-elfa-pro-kit-black'), t('elfaPromoTitle'), t('elfaPromoText')) + '</div>' +
         '</div></div>';
     }
     if (!item.cat) return '';
-    var c = FV.cat(item.cat).node, prods = FV.productsInCat(c.slug);
+    var c = FV.cat(item.cat).node, prods = FV.productsInCat(c.slug).filter(FV.isActive);
     var brands = {};
     prods.forEach(function (p) { brands[p.brand] = (brands[p.brand] || 0) + 1; });
     var feat = prods.filter(function (p) { return p.stock === 'instock'; }).sort(function (a, b) { return b.pop - a.pop; })[0];
-    var sub = '<div class="mega-col"><p class="mega-h">' + t('subcats') + '</p><ul class="mega-list">' +
-      c.children.map(function (ch) {
+    var kids = FV.visibleChildren(c);
+    var sub = '<div class="mega-col"><p class="mega-h">' + t(kids.length ? 'subcats' : 'products') + '</p><ul class="mega-list">' +
+      kids.map(function (ch) {
         return '<li><a href="#/kategoria/' + ch.slug + '">' + esc(ch.name) + '<span class="cnt">' + FV.productsInCat(ch.slug).length + '</span></a></li>';
-      }).join('') + '<li class="mega-all"><a href="#/kategoria/' + c.slug + '">' + t('seeAll') + ' ' + I('chev') + '</a></li></ul></div>';
+      }).join('') + '<li class="mega-all"><a href="#/kategoria/' + c.slug + '">' + t('seeAll') + ' <span class="cnt">' + FV.productsInCat(c.slug).length + '</span> ' + I('chev') + '</a></li></ul></div>';
     var puff = item.puffLinks ? '<div class="mega-col"><p class="mega-h">' + t('byPuffs') + '</p><div class="puff-chips">' +
-      [600, 5000, 10000, 20000, 30000, 40000].map(function (n) {
-        return '<a class="puff-chip" href="#/kategoria/eldobhato?puff=' + n + '"><b>' + FV.num(n) + '</b><span>' + t('puffUnit') + '</span></a>';
-      }).join('') + '</div></div>' : '';
+      FV.PUFF_BUCKETS.map(function (b) {
+        return '<a class="puff-chip" href="#/kategoria/eldobhato?puff=' + encodeURIComponent(b.id) + '"><b>' + esc(FV.puffBucketLabel(b.id)) + '</b></a>';
+      }).join('') + '</div><p class="mega-note">' + t('puffNote') + '</p></div>' : '';
     var br = '<div class="mega-col"><p class="mega-h">' + t('brandsInCat') + '</p><ul class="mega-list">' +
       Object.keys(brands).map(function (s) {
         var b = FV.brand(s);
@@ -110,7 +112,7 @@
     }).join('');
     var free = FV.money(FV.ship().freeOver);
     var msg = FV.lang === 'sk'
-      ? 'Doručenie DPD za 1–2 pracovné dni · Doprava zadarmo nad <b>' + free + '</b>'
+      ? 'Packeta: výdajné miesto, Z-BOX alebo na adresu · Doprava zadarmo nad <b>' + free + '</b>'
       : 'Expédition depuis la Slovaquie · Livraison offerte dès <b>' + free + '</b>';
 
     return '<div class="topbar"><div class="wrap topbar-in">' +
@@ -144,13 +146,13 @@
         var c = FV.cat(m.cat).node;
         return '<li><details><summary>' + esc(menuLabel(m)) + I('down') + '</summary><ul>' +
           '<li><a href="#/kategoria/' + c.slug + '">' + t('seeAll') + ': ' + esc(c.short) + '</a></li>' +
-          c.children.map(function (ch) { return '<li><a href="#/kategoria/' + ch.slug + '">' + esc(ch.name) + '</a></li>'; }).join('') +
-          (m.puffLinks ? '<li class="mm-puffs">' + [600, 5000, 10000, 20000, 40000].map(function (n) { return '<a class="puff-chip sm" href="#/kategoria/eldobhato?puff=' + n + '"><b>' + FV.num(n) + '</b></a>'; }).join('') + '</li>' : '') +
+          FV.visibleChildren(c).map(function (ch) { return '<li><a href="#/kategoria/' + ch.slug + '">' + esc(ch.name) + '</a></li>'; }).join('') +
+          (m.puffLinks ? '<li class="mm-puffs">' + FV.PUFF_BUCKETS.map(function (b) { return '<a class="puff-chip sm" href="#/kategoria/eldobhato?puff=' + encodeURIComponent(b.id) + '"><b>' + esc(FV.puffBucketLabel(b.id)) + '</b></a>'; }).join('') + '</li>' : '') +
           '</ul></details></li>';
       }
       if (m.brands) {
         return '<li><details><summary>' + t('brands') + I('down') + '</summary><ul>' +
-          FV.brands.map(function (b) { return '<li><a href="#/marka/' + b.slug + '">' + esc(b.name) + '</a></li>'; }).join('') +
+          FV.visibleBrands().map(function (b) { return '<li><a href="#/marka/' + b.slug + '">' + esc(b.name) + '</a></li>'; }).join('') +
           '<li><a href="#/markak">' + t('allBrands') + '</a></li></ul></details></li>';
       }
       return '<li><a class="mm-link' + (m.sale ? ' is-sale' : '') + '" href="' + m.href + '">' + esc(menuLabel(m)) + '</a></li>';
@@ -187,10 +189,9 @@
       '<ul class="mc-list">' + tt.lines.map(function (l, i) {
         return '<li class="mc-item"><a class="mc-art" href="#/termek/' + l.p.slug + '" style="--tint:' + FV.tint(l.p) + '">' + FV.art(l.p) + '</a>' +
           '<div class="mc-info"><a href="#/termek/' + l.p.slug + '">' + esc(l.p.name) + '</a>' + variantText(l.v) +
-          '<div class="mc-row">' + qtyCtl(i, l.qty) + '<b class="num">' + FV.money(l.total) + '</b></div></div></li>';
+          '<div class="mc-row">' + qtyCtl(i, l.qty) + '<button type="button" class="cl-remove sm" data-act="line-remove" data-i="' + i + '" aria-label="' + esc(t('removeAria', { x: l.p.name })) + '">' + I('trash') + '</button><b class="num">' + FV.money(l.total) + '</b></div></div></li>';
       }).join('') + '</ul>' +
       '<div class="mc-foot"><p class="mc-sum"><span>' + t('subtotal') + '</span><b class="num">' + FV.money(tt.sub) + '</b></p>' +
-      '<p class="mc-weight">' + I('scale') + ' ' + t('parcelWeight') + ': <b class="num">' + FV.kg(tt.weight) + '</b></p>' +
       '<a class="btn btn-ghost" href="#/kosar" data-act="drawer-close">' + t('viewCart') + '</a>' +
       '<a class="btn btn-primary" href="#/penztar" data-act="drawer-close">' + t('toCheckout') + '</a></div>';
   };
@@ -225,7 +226,7 @@
       '<div><p class="ftr-h">' + t('info') + '</p><ul>' +
       pages.map(function (k) { return '<li><a href="#/oldal/' + k + '">' + esc(short[k] || FV.pageTitle(k)) + '</a></li>'; }).join('') + '</ul></div>' +
       '<div><p class="ftr-h">' + t('customer') + '</p><ul><li><a href="#/oldal/contact">' + t('contact') + '</a></li><li><a href="#/fiok">' + t('myAccount') + '</a></li><li><a href="#/fiok/rendelesek">' + t('orders') + '</a></li><li><a href="#/fiok/kedvencek">' + t('wishlist') + '</a></li></ul></div>' +
-      '</div><div class="wrap ftr-pay"><div class="pay-badges"><span>Teya</span><span>VISA</span><span>Mastercard</span><span>Apple Pay</span><span>Google Pay</span>' + (FV.mkt().carrier ? '<span class="dpd">' + FV.mkt().carrier + '</span>' : '') + '</div>' +
+      '</div><div class="wrap ftr-pay"><div class="pay-badges"><span>Teya</span><span>VISA</span><span>Mastercard</span><span>Apple Pay</span><span>Google Pay</span>' + (FV.mkt().carrier ? '<span class="carrier">' + FV.mkt().carrier + '</span>' : '') + '</div>' +
       '<p class="warn-line">' + t('nicWarn') + '</p></div>' +
       '<div class="wrap ftr-bottom"><p>© 2026 First Vape · John&amp;Jen s.r.o.</p><p>' + t('madeBy') + '</p></div></footer>';
   };

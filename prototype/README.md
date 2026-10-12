@@ -7,8 +7,8 @@ Jóváhagyás után ebből készül a WordPress / WooCommerce oldal: **Infinite 
 
 | Piac | Nyelv | Pénznem | ÁFA (áraink bruttók) | Szállítás | Fizetés |
 |---|---|---|---|---|---|
-| **Szlovákia (SK)** | szlovák (alapértelmezett) | EUR | **23% DPH** | DPD házhoz, DPD Pickup / Box, súlyalapú díj, ingyenes 50 € felett | Teya (kártya, Apple Pay, Google Pay), dobierka (+1,50 €) |
-| **Franciaország (FR)** | francia | EUR | **20% TVA** | **szállító még nincs kiválasztva** (DPD France / Colissimo / Mondial Relay?), a díjtábla MINTA | Teya, utánvét csak ha a szállító támogatja |
+| **Szlovákia (SK)** | szlovák (alapértelmezett) | EUR | **23% DPH** | **Packeta**: výdajné miesto / Z-BOX és házhoz szállítás, ingyenes 50 € felett (a díjak mintaértékek, élesítés előtt a Packeta-szerződés szerint) | Teya (kártya, Apple Pay, Google Pay), dobierka (+1,50 €) |
+| **Franciaország (FR)** | francia | EUR | **20% TVA** | **Packeta** point relais és házhoz szállítás, a díjtábla és a szállítási idő MINTA | Teya, utánvét csak ha a Packeta FR-ben támogatja |
 
 - Magyar piac nincs: a felület szlovák és francia. A nyelv és a piac együtt vált (SK = szlovák felület + SK ÁFA + SK szállítás; FR = francia felület + FR ÁFA + FR szállítás).
 - **Az ÁFA-kulcsokat élesítés előtt a könyvelőnek ellenőriznie kell** (OSS-bejelentés, a termékek besorolása, e-cigaretta jövedéki adó piaconként). A prototípus 23%-kal és 20%-kal számol.
@@ -65,7 +65,7 @@ A WordPressben ezek valódi, nyelvenként fordított permalinkek lesznek (pl. `/
 |---|---|---|
 | Főoldal | `#/` | `templates/front_page_content.html` |
 | Kategória + szűrők | `#/kategoria/eldobhato` | `templates/tax_product_cat_content.html`: `[products class="mainquery"]` + `iu-woocommerce/filter` |
-| Szűrt lista | `#/kategoria/eldobhato?puff=40000` | szűrt archív URL |
+| Szűrt lista | `#/kategoria/eldobhato?puff=20000%2B` | szűrt archív URL (slukkszám-sáv) |
 | Márkaoldal | `#/marka/elfbar` | `templates/tax_product_brand_content.html` (WooCommerce Brands) |
 | Márkák A–Z | `#/markak` | oldal sablon |
 | Akciók | `#/akciok` | `wc_get_product_ids_on_sale()` |
@@ -81,26 +81,39 @@ A WordPressben ezek valódi, nyelvenként fordított permalinkek lesznek (pl. `/
 
 - **Kategória = mi a termék** → `product_cat` (hierarchikus, több kategória termékenként)
 - **Márka = ki gyártja** → `product_brand` (WooCommerce beépített Brands taxonómia)
-- **Attribútum = milyen változat** → `pa_iz`, `pa_nikotin`, `pa_kiszereles`, `pa_puff`, `pa_kompatibilitas`, `pa_szin`
+- **Attribútum = tulajdonság, szűrő** → `pa_iz`, `pa_nikotin`, `pa_kiszereles`, `pa_puff`, `pa_kompatibilitas`, `pa_szin`, `pa_ellenallas`
   (a slugok nyelvfüggetlenek, a WPML / Polylang csak a címkéket fordítja; a mostani magyar slugok helyett érdemes angolt választani, pl. `pa_flavor` – egyeztetendő. A `pa_kompatibilitas` értéke a rendszer neve, pl. `ELFA`; a „Kompatibilné s …” / „Compatible …” felirat a megjelenítéskor kerül elé.)
-- **Termékadat** → normál ár, akciós ár, készlet, státusz (raktáron / készlethiányos / kifutott), SKU, EAN (`global_unique_id`), súly
+- **Termékadat** → normál ár, akciós ár, készlet, státusz (raktáron / készlethiányos / kifutott), SKU, EAN (`global_unique_id`), súly (csak a háttérben, a szállítási díjhoz; a vásárló nem látja)
+- **Minden termék SIMPLE** (az ügyfél CSV-je szerint): minden szín / íz / nikotin / ellenállás külön termék. A testvértermékeket a `Termékcsoport` mező (`_fv_group` meta) köti össze, a termékoldal ezekre linkel.
 
 A mintaadatok az `assets/js/data.js` fájlban vannak, pontosan ebben a szerkezetben.
 
 ## Megvalósított funkciók
 
-- Mega menü: alkategóriák darabszámmal, kategórián belüli márkák, puff gyorslinkek, kiemelt termék; mobilon lenyíló menü
+- Mega menü: alkategóriák darabszámmal, kategórián belüli márkák, slukkszám-sávok, kiemelt termék; mobilon lenyíló menü. Csak a termékkel rendelkező kategóriák és márkák jelennek meg.
 - Kereső: terméknév, márka, íz, puff, nikotin, kompatibilitás, kategória, SKU és EAN alapján; részleges egyezés;
   számnormalizálás (`40000` = `40 000` = `40k`); élő javaslatok márkára, kategóriára, puffra és ízre
-- Szűrők: márka, kategória, puff, íz, nikotin, kiszerelés, kompatibilitás, szín, elérhetőség és ár;
+- Szűrők főkategóriánként csak a ráérvényes szempontokkal (`FV.catFacets`): íz, slukkszám (tartomány, gyártói becslés), nikotin („20 mg/ml (2 %)”), márka, szín, kiszerelés, kompatibilitás, ellenállás (Ω), elérhetőség, ár;
   élő darabszámok, aktív szűrő chipek, a szűrők az URL-ben; mobilon oldalsó panel
-- Termékoldal: kiemelt specifikációk, változatválasztó, készletállapot, visszatérési értesítő, kifutott termék kezelése,
-  specifikációs táblázat (SKU, EAN, súly), nikotin figyelmeztetés, JSON-LD strukturált adat
-- Automatikus kapcsolódó termékek a `pa_kompatibilitas` alapján (készülék → podok, pod → készülék, alternatívák)
-- Kosár súlyalapú DPD díjszámítással, ingyenes szállítási küszöbbel
-- Pénztár piaconként: SK DPD házhoz / Pickup, FR házhoz / point relais (szállító TBD); Teya, utánvét, cégadatok (SK: IČO, DIČ / IČ DPH; FR: SIRET, TVA-szám), 18+ megerősítés, „Objednať s povinnosťou platby” / „Commander avec obligation de paiement” gomb, ÁFA-sor az összesítőben
+- Termékoldal: íz, szín, kiszerelés, nikotin, rendszer és ellenállás kiemelve; linkek a testvértermékekre; készletállapot, visszatérési értesítő, kifutott termék kezelése,
+  specifikációs táblázat (SKU, EAN), nikotin figyelmeztetés, JSON-LD strukturált adat
+- Automatikus kapcsolódó termékek a `pa_kompatibilitas` alapján, rendszermegjelöléssel (készülék → podok / patronok, pod → készülékek, további változatok, alternatívák)
+- Kosár jól látható „Odstrániť” gombbal, ingyenes szállítási küszöbbel; súly nem látszik
+- Pénztár piaconként: Packeta átvételi pont / Z-BOX kereshető listával (élesben a Packeta widget), házhoz szállítás eltérő szállítási címmel, mezőnkénti rövid hibaüzenet a piros keret alatt; Teya, utánvét, cégadatok (SK: IČO, DIČ / IČ DPH; FR: SIRET, TVA-szám), 18+ megerősítés, „Objednať s povinnosťou platby” / „Commander avec obligation de paiement” gomb, ÁFA-sor az összesítőben
 - 18+ korellenőrző ablak nyelvválasztóval, hírlevél, lábléc a brief szerinti blokkokkal
 - SK / FR nyelv- és piacváltó (felület, árak ÁFÁ-val, szállítás, fizetés, jogi oldalak)
+
+## Kategóriafa (az ügyféllel véglegesítve, 2. kör)
+
+1. **Készülékek / Kitek** (`keszulekek`): Előretöltött pod rendszerek · Utántölthető pod rendszerek · Mod / Tank kitek
+2. **Előretöltött podok** (`eloretoltott-podok`): külön vásárolható, gyárilag töltött cserepodok; szűrés márka szerint
+3. **E-liquidek** (`e-liquidek`): Nikotin booster · 10 ml kész liquidek · Aromák · Shortfill · Longfill; szűrés márka, íz, nikotin, kiszerelés szerint
+4. **Eldobható e-cigaretták** (`eldobhato`): egészében eldobott termékek (az ELFBAR NIO besorolása egyeztetendő)
+5. **Kiegészítők** (`kiegeszitok`): Üres cserepodok / patronok (pl. Geekvape Q Pod 0.4 / 0.6 / 0.8 Ω) · Porlasztók / coilok · Tankok · Akkumulátorok / töltők · Egyéb
+6. **Márkák**: külön főmenüpont, a márkaoldal minden terméktípust mutat
+7. **Akciók**: főmenüpont, nem kiemelve
+
+Élesítés előtti tesztlista: Packeta-díjak, ingyenes szállítási küszöb, utánvét díja, Teya-fizetés, SuperFaktúra-számla, rendelési visszaigazoló e-mail, majd teljes tesztrendelés mobilon és laptopon.
 
 ## Arculat
 
@@ -124,7 +137,8 @@ A régi oldal egészségügyi állításai („egészségesebb”, „40 káros 
 - `csv/firstvape-termekimport-sablon.csv` – teljes termékimport magyar fejlécekkel, a prototípus összes termékével mintaként
   (szlovák termékszövegekkel). Frissítésre is jó: a WooCommerce importáló SKU alapján frissíti a meglévő terméket.
 - `csv/firstvape-ar-keszlet-frissites.csv` – csak ár és készlet (SKU, Normál ár, Akciós ár, Készlet, Státusz).
-- Formátum: UTF-8, vessző elválasztó; több érték vesszővel egy cellában; alkategória `Szülő > Gyerek`; súly kg-ban;
+- `csv/kategoria-osszerendeles.csv` – a webshop szlovák (és francia) kategórianevei ↔ az ügyfél fájljának angol nevei ↔ slug. Az import az angol névből a szlovák kategóriát választja, így nem jön létre dupla kategória. **Az angol nevek javaslatok: az ügyfél Excel/CSV-jével a termékimport előtt egyeztetni kell.**
+- Formátum: UTF-8, vessző elválasztó; `Típus` = `simple`; kategória angol névvel, `Szülő > Gyerek`; több érték vesszővel egy cellában; súly kg-ban;
   státusz: Aktív / Készlethiányos / Kifutott. A kép URL-ek mintaértékek. A fejlécek nyelvét az ügyféllel egyeztetni kell.
 
 ## Ami szándékosan helyőrző
@@ -132,8 +146,8 @@ A régi oldal egészségügyi állításai („egészségesebb”, „40 káros 
 - A termékképek vektoros illusztrációk (típus és ízszín alapján). A témában a WooCommerce termékképek kerülnek a helyükre.
 - A márkalogók tipográfiai feliratok. A témában a márka taxonómia képmezője adja őket.
 - A jogi oldalak szövege HELYŐRZŐ, piaconként; a végleges szöveget és a cégadatokat az ügyfél (jogász) adja.
-- A francia szállítási díjtábla, a francia utánvét és a point relais címek mintaadatok.
-- A Teya, SuperFaktúra és DPD integrációk bővítményekkel működnek majd, a prototípusban csak a felületük látszik.
+- A Packeta díjai (SK, FR), a szállítási idők és az átvételi pontok mintaadatok („vzor”).
+- A Teya, SuperFaktúra és Packeta integrációk bővítményekkel működnek majd, a prototípusban csak a felületük látszik.
 
 ## WordPress terv (iu_theme + `firstvape` child téma)
 
@@ -141,10 +155,10 @@ A HelloProVision szabálya szerint kivétel nélkül:
 
 1. **Téma:** `iu_theme` (Infinite Unity) + `firstvape` child téma (`style.css`: `Template: iu_theme`), a design a child téma `vars.css`-ében és a `theme.json` palettában (a prototípus `:root` tokenjei). A keretrendszerhez nem nyúlunk. **Nincs page builder, űrlap-, slider- és wishlist-plugin.**
 2. **WooCommerce** klasszikus (shortcode-os) kosárral, pénztárral és fiókkal. Sablonok a child téma `templates/` mappájában: `global_header.html`, `global_footer.html`, `front_page_content.html`, `tax_product_cat_content.html`, `tax_product_brand_content.html`, `single_product_content.html`, `search_content.html`, `404_content.html`, `single_page_content.html`. Termékkártya: „Loop Product” `iu_pattern`.
-3. **Egyedi blokkok** (`iucb_add_block`, `inc/blocks/…`): mega menü, puff kereső, kompatibilitás blokk (pod ↔ készülék a `pa_kompatibilitas` alapján), márkák A–Z, készletfigyelő („értesítést kérek”), kifutott termék + helyettesítők, kedvencek (saját kód user meta-ban, wishlist-plugin nélkül), 18+ korkapu.
+3. **Egyedi blokkok** (`iucb_add_block`, `inc/blocks/…`): mega menü, slukkszám-kereső (tartományok), kompatibilitás blokk (pod ↔ készülék a `pa_kompatibilitas` alapján), márkák A–Z, készletfigyelő („értesítést kérek”), kifutott termék + helyettesítők, kedvencek (saját kód user meta-ban, wishlist-plugin nélkül), 18+ korkapu.
 4. **Többnyelvűség:** **WPML (WooCommerce Multilingual)** vagy **Polylang for WooCommerce**, nyelvenként saját URL-lel (`/sk/`, `/fr/`). **Élesítés előtt ki kell próbálni az `iu_theme`-mel** (a sablonok `iu_template` / fájl alapúak, a blokk-attribútumokban lévő szövegek és az `iu_pattern`-ek fordítása, a menük és az iu-woocommerce blokkok nyelvi kezelése). A felületi szövegek a child téma `.po` / `.mo` fájljaiban (text domain `firstvape`), az `iu_theme` magyar alapértelmezett feliratait az attribútumokban át kell írni.
-5. **Piacok:** WooCommerce adóbeállítás (SK 23%, FR 20% – könyvelő ellenőrzi, OSS), szállítási zónák piaconként (SK: DPD bővítmény súlyalapú díjjal, Pickup pontok; FR: szállító TBD), a nyelv és a számlázási/szállítási ország összehangolása.
-6. **Integrációk bővítménnyel** (fizetési kapu és szállító megengedett): Teya, SuperFaktúra, DPD (100×150 mm thermal címke); FR szállító bővítménye a választás után.
+5. **Piacok:** WooCommerce adóbeállítás (SK 23%, FR 20% – könyvelő ellenőrzi, OSS), szállítási zónák piaconként (Packeta bővítmény: átvételi pont / Z-BOX widget és házhoz szállítás, SK és FR), a nyelv és a számlázási/szállítási ország összehangolása.
+6. **Integrációk bővítménnyel** (fizetési kapu és szállító megengedett): Teya, SuperFaktúra, Packeta (címke és csomagátadás).
 7. **Űrlapok** (kapcsolat, készletfigyelő, hírlevél): `iu/form` blokk, űrlap-plugin nélkül; a küldést a child téma `iu_form_submit_{formId}` szűrője végzi (keretrendszer-hiba miatt), és ugyanitt kerülnek az érdeklődők a HelloProVision CRM-be a leads hídon (`hpv_leads_map()` → `hpv_leads_send()`).
 8. **SEO:** JSON-LD `Product` (a prototípusban már megvan: SKU, GTIN, márka, EUR ár) és `Organization` / `OnlineStore` a child témában, `hreflang` a nyelvi változatok között, a szűrt URL-ek canonical / noindex szabálya.
 9. **Telepítés kódként** (`inc/setup.php`, verziózott lépések): oldalak piaconként (jogi oldalak helyőrzővel), menük, WooCommerce beállítások.

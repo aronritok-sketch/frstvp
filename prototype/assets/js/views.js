@@ -14,53 +14,62 @@
       }).join('') + '</ol></nav>';
   }
 
+  // A kártyán az adott terméktípusnál értelmezhető fő adatok (rendszer, íz, nikotin, slukkszám, kiszerelés, ellenállás)
   function specsLine(p) {
-    var a = p.attrs, out = [];
-    (a.puff || []).slice(0, 1).forEach(function (x) { out.push(FV.puffLabel(x)); });
-    if (a.nikotin && a.nikotin.length) out.push(a.nikotin.join(' / '));
-    (a.ml || []).slice(0, 1).forEach(function (x) { out.push(x); });
-    if (!out.length && a.kompat && a.kompat.length) out.push(a.kompat[0]);
-    if (!out.length && a.szin && a.szin.length) out.push(FV.nw('wColors', a.szin.length));
-    return out;
+    var a = p.attrs, out = [], sys = (a.kompat || [])[0];
+    if (p.art === 'kit') {
+      if (sys) out.push(t('sysShort', { x: sys }));
+      (a.szin || []).forEach(function (x) { out.push(FV.colorName(x)); });
+    } else if (p.art === 'pod') {
+      if (sys) out.push(t('sysShort', { x: sys }));
+      (a.nikotin || []).forEach(function (x) { out.push(FV.nicLabel(x)); });
+      (a.puff || []).forEach(function (x) { out.push(FV.puffApprox(x)); });
+    } else if (p.art === 'disposable') {
+      (a.puff || []).forEach(function (x) { out.push(FV.puffApprox(x)); });
+      (a.nikotin || []).forEach(function (x) { out.push(FV.nicLabel(x)); });
+    } else if (p.art === 'liquid') {
+      (a.ml || []).forEach(function (x) { out.push(x); });
+      (a.nikotin || []).forEach(function (x) { out.push(FV.nicLabel(x)); });
+    } else {
+      if (sys) out.push(t('sysShort', { x: sys }));
+      (a.ohm || []).forEach(function (x) { out.push(x); });
+    }
+    return out.slice(0, 3);
   }
 
   function priceHtml(p, big) {
     return '<span class="price' + (big ? ' price-big' : '') + '">' +
-      (p.sale ? '<del class="num">' + money(FV.regular(p)) + '</del><ins class="num">' + money(FV.salePrice(p)) + '</ins>' : '<b class="num">' + money(FV.regular(p)) + '</b>') + '</span>';
+      (p.sale ? '<ins class="num">' + money(FV.salePrice(p)) + '</ins><del class="num">' + money(FV.regular(p)) + '</del>' : '<b class="num">' + money(FV.regular(p)) + '</b>') + '</span>';
   }
   FV.priceHtml = priceHtml;
 
-  function needsOptions(p) {
-    return p.variable && ['nikotin', 'szin', 'iz'].some(function (k) { return (p.attrs[k] || []).length > 1; });
-  }
-
-  FV.card = function (p) {
+  // Minden termék SIMPLE termék: a gomb mindig a tényleges műveletet írja (kosárba / értesítés / helyettesítő)
+  FV.card = function (p, opt) {
     var st = FV.stockInfo(p), d = FV.discount(p), b = FV.brand(p.brand), wished = FV.wish.has(p.id);
     var badges = (d ? '<span class="bdg bdg-sale">−' + d + '%</span>' : '') +
       (p.stock === 'discontinued' ? '<span class="bdg bdg-disc">' + t('stDiscShort') + '</span>' : '') +
       (p.stock === 'outofstock' ? '<span class="bdg bdg-out">' + t('stOutShort') + '</span>' : '');
     var action;
     if (p.stock === 'instock') {
-      action = needsOptions(p)
-        ? '<a class="pc-add pc-opt" href="#/termek/' + p.slug + '">' + t('options') + '</a>'
-        : '<button class="pc-add" type="button" data-act="add" data-id="' + p.id + '" aria-label="' + esc(t('addToCartAria', { x: p.name })) + '">' + I('plus') + '<span>' + t('toCart') + '</span></button>';
+      action = '<button class="pc-add" type="button" data-act="add" data-id="' + p.id + '" aria-label="' + esc(t('addToCartAria', { x: p.name })) + '">' + I('bag') + '<span>' + t('toCart') + '</span></button>';
     } else if (p.stock === 'outofstock') {
       action = '<a class="pc-add pc-notify" href="#/termek/' + p.slug + '">' + I('bell') + '<span>' + t('notifyShort') + '</span></a>';
     } else {
-      action = '<a class="pc-add pc-notify" href="#/termek/' + p.slug + '">' + t('substitute') + '</a>';
+      action = '<a class="pc-add pc-notify" href="#/termek/' + p.slug + '?to=rel-groups">' + I('swap') + '<span>' + t('substitute') + '</span></a>';
     }
+    var sys = opt && opt.sys && (p.attrs.kompat || [])[0];
     return '<article class="pcard' + (p.stock !== 'instock' ? ' is-' + p.stock : '') + '">' +
       '<a class="pc-media" href="#/termek/' + p.slug + '" style="--tint:' + FV.tint(p) + '" tabindex="-1" aria-hidden="true">' + FV.art(p) + '</a>' +
-      '<div class="pc-badges">' + badges + '</div>' +
+      '<div class="pc-badges">' + badges + (sys ? '<span class="bdg bdg-sys">' + esc(t('sysShort', { x: (p.attrs.kompat || []).join(' / ') })) + '</span>' : '') + '</div>' +
       '<button class="pc-wish' + (wished ? ' on' : '') + '" type="button" data-act="wish" data-id="' + p.id + '" aria-pressed="' + wished + '" aria-label="' + esc(t('wishAria', { x: p.name })) + '">' + I('heart') + '</button>' +
       '<div class="pc-body"><a class="pc-brand" href="#/marka/' + b.slug + '">' + esc(b.name) + '</a>' +
       '<h3 class="pc-name"><a href="#/termek/' + p.slug + '">' + esc(p.name) + '</a></h3>' +
-      '<ul class="pc-specs">' + specsLine(p).map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul>' +
-      '<div class="pc-foot"><div>' + priceHtml(p) + '<span class="stock ' + st.cls + '">' + esc(st.short) + '</span></div>' + action + '</div></div></article>';
+      '<ul class="pc-specs">' + specsLine(p).map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' +
+      '<div class="pc-foot"><div class="pc-price">' + priceHtml(p) + '</div><span class="stock ' + st.cls + '">' + esc(st.short) + '</span>' + action + '</div></div></article>';
   };
 
-  function grid(list, cls) {
-    return '<div class="pgrid ' + (cls || '') + '">' + list.map(FV.card).join('') + '</div>';
+  function grid(list, cls, opt) {
+    return '<div class="pgrid ' + (cls || '') + '">' + list.map(function (p) { return FV.card(p, opt); }).join('') + '</div>';
   }
 
   function sectionHead(title, link, linkLabel, eyebrow) {
@@ -69,37 +78,37 @@
   }
 
   /* ================= FŐOLDAL ================= */
-  var PUFF_STEPS = [600, 5000, 10000, 20000, 30000, 40000];
+  var PUFF_STEPS = FV.PUFF_BUCKETS.map(function (b) { return b.id; });
 
   FV.views.home = function () {
     var sale = FV.products.filter(function (p) { return p.sale && p.stock === 'instock'; }).sort(function (a, b) { return FV.discount(b) - FV.discount(a); }).slice(0, 4);
-    var elfaKit = FV.product('elfa-pro-kit-black');
-    var elfaPods = FV.products.filter(function (p) { return FV.inCat(p, 'elfa-podok'); });
+    var elfaKit = FV.product('elfbar-elfa-pro-kit-black');
+    var elfaPods = FV.products.filter(function (p) { return FV.inCat(p, 'eloretoltott-podok') && (p.attrs.kompat || []).indexOf('ELFA') !== -1 && FV.isActive(p); });
+    var brands = FV.visibleBrands(), active = FV.products.filter(FV.isActive);
     var tabs = ['eldobhato', 'eloretoltott-podok', 'e-liquidek', 'keszulekek'];
 
     return '<section class="hero"><div class="hero-smoke" aria-hidden="true"></div><div class="wrap hero-in">' +
       '<div class="hero-copy"><p class="eyebrow">' + t('heroEyebrow') + '</p>' +
       '<h1>' + t('heroH1') + '</h1>' +
       '<p class="lead">' + t('heroLead') + '</p>' +
-      '<div class="hero-cta"><a class="btn btn-primary btn-lg" href="#/kategoria/eldobhato">' + t('heroCta1') + '</a><a class="btn btn-ghost btn-lg" href="#/akciok">' + t('heroCta2') + '</a></div>' +
-      '<ul class="hero-facts"><li><b class="num">' + FV.products.length + '</b> ' + FV.pl('wProducts', FV.products.length) + '</li><li><b class="num">' + FV.brands.length + '</b> ' + FV.pl('wBrands', FV.brands.length) + '</li>' + (FV.lang === 'sk' ? '<li><b class="num">1–2</b> dni DPD</li>' : '<li><b class="num">100 %</b> authentiques</li>') + '</ul></div>' +
+      '<div class="hero-cta"><a class="btn btn-primary btn-lg" href="#/kategoria/eldobhato">' + t('heroCta1') + '</a><a class="btn btn-ghost btn-lg" href="#/markak">' + t('heroCta2') + '</a></div>' +
+      '<ul class="hero-facts"><li><b class="num">' + active.length + '</b> ' + FV.pl('wProducts', active.length) + '</li><li><b class="num">' + brands.length + '</b> ' + FV.pl('wBrands', brands.length) + '</li>' + (FV.lang === 'sk' ? '<li><b class="num">1–2</b> dni doručenie</li>' : '<li><b class="num">100 %</b> authentiques</li>') + '</ul></div>' +
       '<div class="pufffinder" data-pufffinder><p class="pf-label">' + t('pfLabel') + '</p>' +
       '<p class="pf-q">' + t('pfQ') + '</p>' +
-      '<output class="pf-val num" id="pf-out" for="pf-range">20&nbsp;000</output><span class="pf-unit">' + t('puffUnit') + '</span>' +
-      '<label class="sr" for="pf-range">' + t('a_puff') + '</label>' +
-      '<input id="pf-range" class="pf-range" type="range" min="0" max="' + (PUFF_STEPS.length - 1) + '" step="1" value="3" data-pf-range>' +
-      '<div class="pf-ticks" aria-hidden="true">' + PUFF_STEPS.map(function (n) { return '<span>' + (n >= 1000 ? n / 1000 + 'k' : n) + '</span>'; }).join('') + '</div>' +
-      '<a class="btn btn-primary pf-go" href="#/kategoria/eldobhato?puff=20000" data-pf-go><span>' + t('pfGo', { n: '<span data-pf-count>0</span>' }) + '</span></a></div>' +
+      '<output class="pf-val num" id="pf-out" for="pf-range"></output><span class="pf-unit">' + t('puffUnit') + '</span>' +
+      '<label class="sr" for="pf-range">' + t('a_puffF') + '</label>' +
+      '<input id="pf-range" class="pf-range" type="range" min="0" max="' + (PUFF_STEPS.length - 1) + '" step="1" value="2" data-pf-range>' +
+      '<div class="pf-ticks" aria-hidden="true">' + FV.PUFF_BUCKETS.map(function (b) { return '<span>' + esc(b.tick) + '</span>'; }).join('') + '</div>' +
+      '<p class="pf-note">' + t('puffNote') + '</p>' +
+      '<a class="btn btn-primary pf-go" href="#/kategoria/eldobhato" data-pf-go><span>' + t('pfGo', { n: '<span data-pf-count>0</span>' }) + '</span></a></div>' +
       '</div></section>' +
 
-      '<section class="wrap sec">' + sectionHead(t('rangeTitle'), '#/kategoria/eldobhato', t('allProducts'), t('rangeEyebrow')) + '<div class="catgrid">' + FV.categories.map(function (c) {
-        var rep = FV.productsInCat(c.slug).sort(function (a, b) { return b.pop - a.pop; })[0];
+      '<section class="wrap sec">' + sectionHead(t('rangeTitle'), null, null, t('rangeEyebrow')) + '<div class="catgrid">' + FV.categories.filter(function (c) { return FV.catHasProducts(c.slug); }).map(function (c) {
+        var rep = FV.productsInCat(c.slug).filter(FV.isActive).sort(function (a, b) { return b.pop - a.pop; })[0], kids = FV.visibleChildren(c).length;
         return '<a class="cattile" href="#/kategoria/' + c.slug + '" style="--tint:' + c.color + '">' +
           '<span class="ct-art">' + (rep ? FV.art(rep) : '') + '</span>' +
-          '<span class="ct-txt"><b>' + esc(c.name) + '</b><small>' + FV.nw('wProducts', FV.productsInCat(c.slug).length) + ' · ' + FV.nw('wSubcats', c.children.length) + '</small></span>' + I('chev', 'ct-go') + '</a>';
+          '<span class="ct-txt"><b>' + esc(c.name) + '</b><small>' + FV.nw('wProducts', FV.productsInCat(c.slug).filter(FV.isActive).length) + (kids ? ' · ' + FV.nw('wSubcats', kids) : '') + '</small></span>' + I('chev', 'ct-go') + '</a>';
       }).join('') + '</div></section>' +
-
-      '<section class="wrap sec">' + sectionHead(t('weeklyDeals'), '#/akciok', t('allDeals'), t('dealsEyebrow')) + grid(sale) + '</section>' +
 
       '<section class="sec why"><div class="wrap"><div class="why-head"><p class="eyebrow">' + t('whyEyebrow') + '</p><h2>' + t('whyTitle') + '</h2></div><div class="why-grid">' +
       t('whyItems').map(function (w) { return '<div class="why-item"><span class="why-ico">' + I(w[0]) + '</span><b>' + esc(w[1]) + '</b><p>' + esc(w[2]) + '</p></div>'; }).join('') +
@@ -120,6 +129,8 @@
         return '<button class="tab' + (i ? '' : ' on') + '" type="button" role="tab" aria-selected="' + (i ? 'false' : 'true') + '" data-act="home-tab" data-tab="' + c + '">' + esc(FV.cat(c).node.short) + '</button>';
       }).join('') + '</div><div data-home-tab>' + popular(tabs[0]) + '</div></section>' +
 
+      (sale.length ? '<section class="wrap sec sec-sale">' + sectionHead(t('weeklyDeals'), '#/akciok', t('allDeals')) + grid(sale) + '</section>' : '') +
+
       '<section class="sec best"><div class="wrap best-in"><div class="best-copy"><p class="eyebrow">First Vape</p><h2>' + t('bestTitle') + '</h2>' +
       '<p>' + t('bestText') + '</p><a class="btn btn-ghost" href="#/oldal/shipping">' + esc(FV.pageTitle('shipping')) + '</a></div><ul class="best-list">' +
       t('bestItems').map(function (x) { return '<li>' + I('check') + '<span>' + esc(x) + '</span></li>'; }).join('') + '</ul></div></section>' +
@@ -127,7 +138,7 @@
       '<section class="wrap sec">' + sectionHead(t('blogTitle'), '#/blog', t('moreArticles'), t('blog')) + blogCards(FV.posts.slice(0, 3)) + '</section>' +
 
       '<section class="wrap sec">' + sectionHead(t('partnersTitle'), '#/markak', t('allBrands'), t('brands')) + '<div class="brandstrip">' +
-      FV.brands.map(function (b) { return '<a class="brand-tile" href="#/marka/' + b.slug + '">' + FV.wordmark(b) + '<small>' + FV.nw('wProducts', FV.productsOfBrand(b.slug).length) + '</small></a>'; }).join('') + '</div></section>';
+      brands.map(function (b) { return '<a class="brand-tile" href="#/marka/' + b.slug + '">' + FV.wordmark(b) + '<small>' + FV.nw('wProducts', FV.productsOfBrand(b.slug).filter(FV.isActive).length) + '</small></a>'; }).join('') + '</div></section>';
   };
 
   function blogCards(list) {
@@ -152,7 +163,11 @@
   function usp(ic, t, d) { return '<div class="usp-item">' + I(ic) + '<div><b>' + esc(t) + '</b><p>' + esc(d) + '</p></div></div>'; }
 
   function popular(cat) {
-    return grid(FV.productsInCat(cat).filter(function (p) { return p.stock !== 'discontinued'; }).sort(function (a, b) { return b.pop - a.pop; }).slice(0, 4));
+    // egy csoportból (pl. színváltozatok) csak egy termék kerüljön a kiemelt sávba
+    var seen = {};
+    return grid(FV.productsInCat(cat).filter(FV.isActive).sort(function (a, b) { return b.pop - a.pop; }).filter(function (p) {
+      if (!p.group) return true; if (seen[p.group]) return false; seen[p.group] = 1; return true;
+    }).slice(0, 4));
   }
   FV.views.popular = popular;
   FV.PUFF_STEPS = PUFF_STEPS;
@@ -161,7 +176,7 @@
   FV.shopState = null;
 
   FV.views.shop = function (ctx, query) {
-    var base, title, desc = '', head = '', bc = [], subnav = '';
+    var base, title, desc = '', head = '', bc = [], subnav = '', allowed = null;
     if (ctx.type === 'cat') {
       var c = FV.cat(ctx.slug);
       if (!c) return FV.views.notfound();
@@ -169,14 +184,16 @@
       title = c.name;
       var parent = c.parent ? FV.cat(c.parent) : null;
       var root = parent ? parent.node : c.node;
-      desc = root.desc;
+      desc = c.node.desc || root.desc;
+      allowed = FV.catFacets[root.slug] || null;
       if (parent) bc.push({ label: parent.name, href: '#/kategoria/' + parent.slug });
       bc.push({ label: c.name });
-      subnav = '<div class="subnav" role="list">' +
-        '<a role="listitem" class="chip' + (!parent ? ' on' : '') + '" href="#/kategoria/' + root.slug + '">' + t('all') + '</a>' +
-        root.children.map(function (ch) {
+      var kids = FV.visibleChildren(root);
+      subnav = kids.length ? '<div class="subnav" role="list">' +
+        '<a role="listitem" class="chip' + (!parent ? ' on' : '') + '" href="#/kategoria/' + root.slug + '">' + t('all') + ' <span class="cnt">' + FV.productsInCat(root.slug).length + '</span></a>' +
+        kids.map(function (ch) {
           return '<a role="listitem" class="chip' + (ch.slug === c.slug ? ' on' : '') + '" href="#/kategoria/' + ch.slug + '">' + esc(ch.name) + ' <span class="cnt">' + FV.productsInCat(ch.slug).length + '</span></a>';
-        }).join('') + '</div>';
+        }).join('') + '</div>' : '';
     } else if (ctx.type === 'brand') {
       var b = FV.brand(ctx.slug);
       if (!b) return FV.views.notfound();
@@ -202,7 +219,7 @@
     }
 
     var f = parseFilters(query);
-    FV.shopState = { ctx: ctx, base: base, f: f };
+    FV.shopState = { ctx: ctx, base: base, f: f, allowed: allowed };
 
     var h1 = ctx.type === 'search' ? '' : '<div class="shop-title"><h1>' + esc(title) + '</h1>' + (desc ? '<p>' + esc(desc) + '</p>' : '') + '</div>';
 
@@ -225,7 +242,7 @@
   function searchHead(q, n) {
     var nq = FV.norm(q).split(' '), chips = [];
     FV.brands.forEach(function (b) { if (nq.indexOf(FV.norm(b.name)) !== -1) chips.push(t('a_marka') + ': ' + b.name); });
-    nq.forEach(function (x) { if (/^\d{3,}$/.test(x)) chips.push(t('sPuff') + ': ' + FV.num(x)); });
+    nq.forEach(function (x) { if (/^\d{3,}$/.test(x)) chips.push(t('sPuff') + ': ≈ ' + FV.num(x)); });
     nq.forEach(function (x) { if (/^\d+mg$/.test(x)) chips.push(t('a_nikotinShort') + ': ' + x.replace('mg', ' mg')); });
     return '<div class="srchead"><h1>' + t('srHead', { n: n, w: FV.pl('wResults', n), q: esc(q) }) + '</h1>' +
       (chips.length ? '<p class="sr-understood">' + t('understood') + ' ' + chips.map(function (c) { return '<span class="tag">' + esc(c) + '</span>'; }).join('') + '</p>' : '') +
@@ -311,11 +328,11 @@
   }
 
   function renderFacets() {
-    var s = FV.shopState, fcs = FV.facets(s.base, s.f), pb = priceBounds(s.base);
+    var s = FV.shopState, fcs = FV.facets(s.base, s.f, s.allowed), pb = priceBounds(s.base);
     var hide = s.ctx.type === 'brand' ? 'marka' : '';
     var open = FV.store.get('facets_closed', {});
     var html = fcs.filter(function (fc) { return fc.def.key !== hide; }).map(function (fc) {
-      return '<details class="facet" data-facet="' + fc.def.key + '"' + (open[fc.def.key] ? '' : ' open') + '><summary>' + esc(t(fc.def.lk)) + I('down') + '</summary>' + facetList(fc) + '</details>';
+      return '<details class="facet" data-facet="' + fc.def.key + '"' + (open[fc.def.key] ? '' : ' open') + '><summary>' + esc(t(fc.def.lk)) + I('down') + '</summary>' + (fc.def.note ? '<p class="f-note">' + t(fc.def.note) + '</p>' : '') + facetList(fc) + '</details>';
     }).join('');
     var lo = s.f.min != null ? s.f.min : pb[0], hi = s.f.max != null ? s.f.max : pb[1];
     html += '<details class="facet" open><summary>' + t('price') + I('down') + '</summary><div class="price-f" data-price-f data-lo="' + pb[0] + '" data-hi="' + pb[1] + '">' +
@@ -328,7 +345,7 @@
   }
 
   function updateFacetCounts() {
-    var s = FV.shopState, fcs = FV.facets(s.base, s.f);
+    var s = FV.shopState, fcs = FV.facets(s.base, s.f, s.allowed);
     fcs.forEach(function (fc) {
       fc.values.forEach(function (x) {
         var el = FV.$('[data-cnt="' + fc.def.key + '|' + CSS.escape(x.v) + '"]');
@@ -381,19 +398,21 @@
     if (leaf) bc.push({ label: leaf.name, href: '#/kategoria/' + leaf.slug });
     bc.push({ label: p.name });
 
-    var opts = ['iz', 'nikotin', 'szin'].filter(function (k) { return (a[k] || []).length > 1; });
-    var optHtml = opts.map(function (k) {
-      var label = t({ iz: 'a_iz', nikotin: 'a_nikotin', szin: 'a_szin' }[k]);
-      return '<fieldset class="opt"><legend>' + label + ': <b data-opt-val="' + k + '">' + t('choose') + '</b></legend><div class="opt-row">' +
-        a[k].map(function (v, i) {
-          var sw = k === 'szin' ? '<i class="sw" style="background:' + (FV.colorSwatches[v] || '#ccc') + '"></i>' : '';
-          return '<label class="opt-chip"><input type="radio" name="opt-' + k + '" id="opt-' + k + '-' + i + '" value="' + esc(v) + '" data-opt="' + k + '" data-opt-label="' + esc(k === 'szin' ? FV.colorName(v) : v) + '">' + sw + '<span class="' + (k === 'nikotin' ? 'num' : '') + '">' + esc(k === 'szin' ? FV.colorName(v) : v) + '</span></label>';
-        }).join('') + '</div></fieldset>';
-    }).join('');
+    // Változatok: minden változat külön SIMPLE termék (saját SKU); a testvértermékek linkként jelennek meg
+    var sibs = p.group ? FV.products.filter(function (x) { return x.group === p.group; }) : [];
+    var diffKey = ['szin', 'nikotin', 'ohm', 'iz'].filter(function (k) {
+      var vals = {}; sibs.forEach(function (x) { vals[(x.attrs[k] || []).join('/')] = 1; }); return Object.keys(vals).length > 1;
+    })[0];
+    var optHtml = sibs.length > 1 && diffKey ? '<div class="variants"><p class="variants-h">' + t({ szin: 'a_szin', nikotin: 'a_nikotin', ohm: 'a_ohm', iz: 'a_iz' }[diffKey]) + ':</p><div class="opt-row">' +
+      sibs.map(function (x) {
+        var v = (x.attrs[diffKey] || [])[0], lbl = diffKey === 'szin' ? FV.colorName(v) : diffKey === 'nikotin' ? FV.nicLabel(v) : v;
+        var sw = diffKey === 'szin' ? '<i class="sw" style="background:' + (FV.colorSwatches[v] || '#ccc') + '"></i>' : '';
+        return '<a class="opt-chip' + (x.id === p.id ? ' on' : '') + (x.stock !== 'instock' ? ' na' : '') + '" href="#/termek/' + x.slug + '"' + (x.id === p.id ? ' aria-current="true"' : '') + '>' + sw + '<span>' + esc(lbl) + '</span></a>';
+      }).join('') + '</div></div>' : '';
 
     var buy;
     if (p.stock === 'instock') {
-      buy = '<form class="buy" data-buy data-id="' + p.id + '">' + optHtml +
+      buy = '<form class="buy" data-buy data-id="' + p.id + '">' +
         '<div class="buy-row"><span class="qty"><button type="button" data-act="qty" data-d="-1" aria-label="' + esc(t('decrease')) + '">' + I('minus') + '</button>' +
         '<label class="sr" for="buy-qty">' + t('qty') + '</label><input id="buy-qty" class="num" type="number" min="1" max="' + p.qty + '" value="1" inputmode="numeric">' +
         '<button type="button" data-act="qty" data-d="1" aria-label="' + esc(t('increase')) + '">' + I('plus') + '</button></span>' +
@@ -401,33 +420,37 @@
         '<button class="icon-btn wish-lg' + (FV.wish.has(p.id) ? ' on' : '') + '" type="button" data-act="wish" data-id="' + p.id + '" aria-pressed="' + FV.wish.has(p.id) + '" aria-label="' + esc(t('toWish')) + '">' + I('heart') + '</button></div>' +
         '<p class="buy-err" data-buy-err hidden></p></form>';
     } else if (p.stock === 'outofstock') {
-      buy = '<form class="notify" data-notify><p>' + t('notifyText') + '</p>' +
+      buy = '<form class="notify" data-notify novalidate><p>' + t('notifyText') + '</p>' +
         '<div class="nl-row"><label class="sr" for="notify-mail">' + t('email') + '</label><input id="notify-mail" type="email" required placeholder="' + esc(t('emailPh')) + '"><button class="btn btn-primary" type="submit">' + I('bell') + ' ' + t('notifyMe') + '</button></div>' +
         '<p class="ok-msg" hidden>' + t('notifyOk') + '</p></form>';
     } else {
       buy = '<div class="notice-disc">' + I('info') + '<div><b>' + t('discTitle') + '</b><p>' + t('discText') + '</p><a class="btn btn-primary" href="#alternativak" data-act="scroll" data-t="rel-groups">' + t('substitutes') + '</a></div></div>';
     }
 
+    var sysLinks = (a.kompat || []).map(function (k) { return '<a href="#/kereses/' + encodeURIComponent(k) + '">' + esc(t('sysShort', { x: k })) + '</a>'; }).join(', ');
     var specs = [
       [t('a_marka'), '<a href="#/marka/' + b.slug + '">' + esc(b.name) + '</a>'],
-      [t('a_iz'), (a.iz || []).join(', ')],
-      [t('a_nikotin'), (a.nikotin || []).join(' / ')],
-      [t('a_ml'), (a.ml || []).join(', ')],
-      [t('a_puff'), (a.puff || []).map(FV.puffLabel).join(', ')],
-      [t('a_kompat'), (a.kompat || []).map(function (k) { return '<a href="#/kereses/' + encodeURIComponent(k) + '">' + esc(FV.compatLabel(k)) + '</a>'; }).join(', ')],
-      [t('a_szin'), (a.szin || []).map(FV.colorName).join(', ')],
+      [t('a_iz'), esc((a.iz || []).join(', '))],
+      [t('a_nikotin'), esc((a.nikotin || []).map(FV.nicLabel).join(', '))],
+      [t('a_ml'), esc((a.ml || []).join(', '))],
+      [t('a_puffF'), esc((a.puff || []).map(FV.puffApprox).join(', '))],
+      [t('a_kompat'), sysLinks],
+      [t('a_ohm'), esc((a.ohm || []).join(', '))],
+      [t('a_szin'), esc((a.szin || []).map(FV.colorName).join(', '))],
       [t('sku'), '<span class="num">' + esc(p.sku) + '</span>'],
-      ['EAN', '<span class="num">' + esc(p.ean) + '</span>'],
-      [t('weight'), '<span class="num">' + FV.kg(p.weight) + '</span>']
+      ['EAN', '<span class="num">' + esc(p.ean) + '</span>']
     ].filter(function (r) { return r[1]; });
 
+    // Íz, szín, kiszerelés, nikotin: mindig jól látható, akkor is, ha nincs a névben
     var keySpecs = [
-      a.puff && a.puff.length ? [t('puffShort'), FV.num(a.puff[0])] : null,
-      a.nikotin && a.nikotin.length ? [t('a_nikotinShort'), a.nikotin.join(' / ')] : null,
-      a.ml && a.ml.length ? [t('a_ml'), a.ml[0]] : null,
-      a.kompat && a.kompat.length ? [t('system'), a.kompat[0]] : null,
-      a.szin && a.szin.length ? [t('colorsShort'), String(a.szin.length)] : null
-    ].filter(Boolean).slice(0, 4);
+      a.iz && a.iz.length ? [t('a_iz'), a.iz.join(', ')] : null,
+      a.szin && a.szin.length ? [t('a_szin'), a.szin.map(FV.colorName).join(', ')] : null,
+      a.nikotin && a.nikotin.length ? [t('a_nikotinShort'), a.nikotin.map(FV.nicLabel).join(', ')] : null,
+      a.ml && a.ml.length ? [t('a_ml'), a.ml.join(', ')] : null,
+      a.kompat && a.kompat.length ? [t('system'), a.kompat.join(', ')] : null,
+      a.ohm && a.ohm.length ? [t('a_ohm'), a.ohm.join(', ')] : null,
+      a.puff && a.puff.length ? [t('puffEst'), FV.puffApprox(a.puff[0])] : null
+    ].filter(Boolean);
 
     var views = [0, 1, 2];
     var related = FV.related(p);
@@ -435,7 +458,7 @@
     var hasNic = (a.nikotin || []).some(function (x) { return x !== '0 mg'; });
 
     var ld = { '@context': 'https://schema.org', '@type': 'Product', name: p.name, sku: p.sku, gtin13: p.ean, brand: { '@type': 'Brand', name: b.name },
-      description: p.short, weight: { '@type': 'QuantitativeValue', value: p.weight, unitCode: 'GRM' },
+      description: p.short,
       offers: { '@type': 'Offer', priceCurrency: 'EUR', price: FV.price(p).toFixed(2), availability: 'https://schema.org/' + (p.stock === 'instock' ? 'InStock' : p.stock === 'outofstock' ? 'OutOfStock' : 'Discontinued') } };
 
     return '<div class="wrap">' + crumbs(bc) +
@@ -448,7 +471,7 @@
 
       '<div class="pinfo"><a class="pi-brand" href="#/marka/' + b.slug + '">' + FV.wordmark(b, 'sm') + '</a>' +
       '<h1>' + esc(p.name) + '</h1>' +
-      '<p class="pi-short">' + esc(p.short) + '</p>' +
+      '<p class="pi-short">' + esc(p.short) + '</p>' + optHtml +
       (keySpecs.length ? '<dl class="keyspecs">' + keySpecs.map(function (k) { return '<div><dt>' + k[0] + '</dt><dd class="num">' + esc(k[1]) + '</dd></div>'; }).join('') + '</dl>' : '') +
       '<div class="pi-price">' + priceHtml(p, true) + (p.sale ? '<span class="save">' + t('save', { x: money(FV.regular(p) - FV.salePrice(p)) }) + '</span>' : '') + '</div>' +
       '<p class="pi-vat muted small">' + t('priceVat', { r: FV.mkt().vatLabel }) + '</p>' +
@@ -467,12 +490,12 @@
       '<button class="tab" type="button" role="tab" aria-selected="false" data-act="ptab" data-t="szall">' + t('tabShip') + '</button></div>' +
       '<div class="tabpane" data-pane="leiras">' + longDesc(p) + '</div>' +
       '<div class="tabpane" data-pane="spec" hidden><div class="tbl-wrap"><table class="spec-tbl"><tbody>' + specs.map(function (r) { return '<tr><th scope="row">' + r[0] + '</th><td>' + r[1] + '</td></tr>'; }).join('') + '</tbody></table></div></div>' +
-      '<div class="tabpane" data-pane="szall" hidden><div class="prose"><p>' + t('shipPane', { w: FV.kg(p.weight), free: money(FV.ship().freeOver) }) + '</p>' + shipTable() +
+      '<div class="tabpane" data-pane="szall" hidden><div class="prose"><p>' + t('shipPane', { free: money(FV.ship().freeOver) }) + '</p>' + shipTable() +
       '<p>' + t('returnText', { link: '<a href="#/oldal/withdrawal">' + esc(FV.pageTitle('withdrawal')) + '</a>' }) + '</p></div></div>' +
       '</div>' +
 
       '<div id="rel-groups">' + related.map(function (g) {
-        return '<section class="sec">' + sectionHead(g.title) + grid(g.items) + '</section>';
+        return '<section class="sec">' + sectionHead(g.title) + grid(g.items, '', { sys: g.sys }) + '</section>';
       }).join('') + '</div>' +
       '</div>' +
       (p.stock === 'instock' ? '<div class="sticky-buy" data-sticky-buy><div class="wrap sb-in"><span class="sb-name">' + esc(p.name) + '</span>' + priceHtml(p) + '<button class="btn btn-primary" type="button" data-act="sticky-add">' + t('toCart') + '</button></div></div>' : '') +
@@ -497,16 +520,14 @@
     return parts.join('');
   }
 
+  // Szállítási díjak szállítási módonként (a csomag súlyát a vásárlói felületen nem mutatjuk; a díjszámítás a háttérben súlyalapú)
   function shipTable() {
     var sh = FV.ship();
-    return '<div class="tbl-wrap"><table class="ship-tbl"><thead><tr><th scope="col">' + t('parcelWeight') + '</th>' + sh.methods.map(function (m) { return '<th scope="col">' + esc(m.name) + '</th>'; }).join('') + '</tr></thead><tbody>' +
-      sh.methods[0].tiers.map(function (tier, i) {
-        var prev = i ? sh.methods[0].tiers[i - 1].max : 0;
-        return '<tr><td class="num">' + FV.kg(prev) + ' – ' + FV.kg(tier.max) + '</td>' + sh.methods.map(function (m) {
-          var tt = m.tiers[i];
-          return '<td class="num">' + (tt ? money(tt.price) : '–') + '</td>';
-        }).join('') + '</tr>';
-      }).join('') + '<tr class="free"><td>' + t('overX', { x: money(sh.freeOver) }) + '</td>' + sh.methods.map(function () { return '<td>' + t('free') + '</td>'; }).join('') + '</tr></tbody></table></div>';
+    return '<div class="tbl-wrap"><table class="ship-tbl"><thead><tr><th scope="col">' + t('shipMethod') + '</th><th scope="col">' + t('deliveryTime') + '</th><th scope="col">' + t('priceFrom') + '</th></tr></thead><tbody>' +
+      sh.methods.map(function (m) {
+        return '<tr><td>' + esc(m.name) + '</td><td>' + esc(m.eta) + '</td><td class="num">' + money(m.tiers[0].price) + '</td></tr>';
+      }).join('') + '<tr class="free"><td colspan="2">' + t('overX', { x: money(sh.freeOver) }) + '</td><td>' + t('free') + '</td></tr></tbody></table></div>' +
+      (sh.sample ? '<p class="muted small">' + t('shipSample') + '</p>' : '');
   }
   FV.shipTable = shipTable;
 
@@ -518,7 +539,7 @@
   function steps(n) {
     var s = t('steps');
     return '<ol class="steps" aria-label="' + esc(t('orderSteps')) + '">' + s.map(function (x, i) {
-      return '<li class="' + (i + 1 < n ? 'done' : i + 1 === n ? 'on' : '') + '"' + (i + 1 === n ? ' aria-current="step"' : '') + '><span class="num">' + (i + 1) + '</span>' + x + '</li>';
+      return '<li class="' + (i + 1 < n ? 'done' : i + 1 === n ? 'on' : '') + '"' + (i + 1 === n ? ' aria-current="step"' : '') + '><span class="num">' + (i + 1) + '</span><b>' + x + '</b></li>';
     }).join('') + '</ol>';
   }
 
@@ -536,9 +557,9 @@
       '<ul class="cart-lines">' + tt.lines.map(function (l, i) {
         return '<li class="cl"><a class="cl-art" href="#/termek/' + l.p.slug + '" style="--tint:' + FV.tint(l.p) + '">' + FV.art(l.p) + '</a>' +
           '<div class="cl-info"><a class="cl-name" href="#/termek/' + l.p.slug + '">' + esc(l.p.name) + '</a>' + FV.variantText(l.v) +
-          '<small class="muted">' + t('skuShort') + ' <span class="num">' + esc(l.p.sku) + '</span> · ' + t('weight') + ': <span class="num">' + FV.kg(l.p.weight) + '</span>' + t('perPc') + '</small>' +
+          '<small class="muted">' + t('skuShort') + ' <span class="num">' + esc(l.p.sku) + '</span></small>' +
           '<div class="cl-unit">' + priceHtml(l.p) + '</div></div>' +
-          '<div class="cl-qty">' + FV.qtyCtl(i, l.qty) + '<button type="button" class="linkbtn" data-act="line-remove" data-i="' + i + '">' + I('trash') + ' ' + t('remove') + '</button></div>' +
+          '<div class="cl-qty">' + FV.qtyCtl(i, l.qty) + '<button type="button" class="cl-remove" data-act="line-remove" data-i="' + i + '" aria-label="' + esc(t('removeAria', { x: l.p.name })) + '">' + I('trash') + '<span>' + t('remove') + '</span></button></div>' +
           '<b class="cl-total num">' + money(l.total) + '</b></li>';
       }).join('') + '</ul>' +
       '<form class="coupon" data-coupon><label for="cp">' + t('coupon') + '</label><div class="nl-row"><input id="cp" type="text" placeholder="' + esc(t('couponPh')) + '"><button class="btn btn-ghost" type="submit">' + t('apply') + '</button></div><p class="muted" data-cp-msg></p></form></div>' +
@@ -553,8 +574,7 @@
     var sh = FV.ship();
     return '<aside class="summary"><h2>' + t('summaryH') + '</h2>' +
       '<dl class="sum"><div><dt>' + t('subtotal') + '</dt><dd class="num">' + money(tt.sub) + '</dd></div>' +
-      (tt.save ? '<div class="sum-save"><dt>' + t('discount') + '</dt><dd class="num">−' + money(tt.save) + '</dd></div>' : '') +
-      '<div><dt>' + t('parcelWeight') + ' ' + I('info', 'tip') + '</dt><dd class="num">' + FV.kg(tt.weight) + '</dd></div></dl>' +
+      (tt.save ? '<div class="sum-save"><dt>' + t('discount') + '</dt><dd class="num">−' + money(tt.save) + '</dd></div>' : '') + '</dl>' +
       '<fieldset class="shipsel"><legend>' + t('shipping') + '</legend>' + sh.methods.map(function (m) {
         var c = FV.shippingCost(m.id, tt.weight, tt.sub);
         return '<label class="radio-card"><input type="radio" name="ship" id="ship-' + m.id + '" value="' + m.id + '" data-ship' + (m.id === method ? ' checked' : '') + '>' +
@@ -570,27 +590,38 @@
   FV.views.checkout = function () {
     var tt = FV.cart.totals(), mk = FV.mkt();
     if (!tt.lines.length) return '<div class="wrap">' + crumbs([{ label: t('titleCheckout') }]) + '<div class="empty big"><h1>' + t('cartEmptyH') + '</h1><a class="btn btn-primary" href="#/">' + t('backHome') + '</a></div></div>';
-    function fld(id, label, type, ph, extra, auto) {
-      return '<div class="fld ' + (extra || '') + '"><label for="' + id + '">' + label + '</label><input id="' + id + '" name="' + id + '" type="' + (type || 'text') + '" placeholder="' + esc(ph || '') + '"' + (auto ? ' autocomplete="' + auto + '"' : '') + ' required></div>';
+    // data-v: ellenőrzés típusa (email / phone / zip); a hibaüzenet a mező alatt jelenik meg (data-err)
+    function fld(id, label, type, ph, extra, auto, v, req) {
+      return '<div class="fld ' + (extra || '') + '"><label for="' + id + '">' + label + '</label><input id="' + id + '" name="' + id + '" type="' + (type || 'text') + '" placeholder="' + esc(ph || '') + '"' + (auto ? ' autocomplete="' + auto + '"' : '') + (v ? ' data-v="' + v + '"' : '') + (req === false ? ' data-req' : ' required') + ' aria-describedby="' + id + '-err"><p class="err-msg" id="' + id + '-err" data-err hidden></p></div>';
     }
     return '<div class="wrap">' + crumbs([{ label: t('cart'), href: '#/kosar' }, { label: t('titleCheckout') }]) + steps(2) +
       '<form class="checkout" data-checkout novalidate><div class="co-main">' +
-      '<div class="co-demo"><p>' + t('fillDemoText') + '</p><button class="btn btn-ghost" type="button" data-act="co-fill">' + t('fillDemo') + '</button></div>' +
-      '<section class="co-sec"><h2>' + t('coContact') + '</h2><div class="fgrid">' + fld('co-email', t('email'), 'email', t('emailPh'), '', 'email') + fld('co-phone', t('phone'), 'tel', mk.phonePh, '', 'tel') + '</div></section>' +
-      '<section class="co-sec"><h2>' + t('billing') + '</h2><div class="fgrid">' + fld('co-first', t('first'), '', '', '', 'given-name') + fld('co-last', t('last'), '', '', '', 'family-name') +
+      '<p class="co-err" data-co-err role="alert" hidden></p>' +
+      '<section class="co-sec"><h2>' + t('coContact') + '</h2><div class="fgrid">' + fld('co-email', t('email'), 'email', t('emailPh'), '', 'email', 'email') + fld('co-phone', t('phone'), 'tel', mk.phonePh, '', 'tel', 'phone') + '</div></section>' +
+      '<section class="co-sec"><h2>' + t('billing') + '</h2><div class="fgrid">' + fld('co-first', t('first'), '', '', 'half', 'given-name') + fld('co-last', t('last'), '', '', 'half', 'family-name') +
       '<label class="f-toggle span2"><input type="checkbox" id="co-company"><span>' + t('buyAsCompany') + '</span></label>' +
-      '<div class="span2 co-company" data-company hidden><div class="fgrid"><div class="fld span2"><label for="co-cname">' + t('companyName') + '</label><input id="co-cname" type="text" autocomplete="organization"></div><div class="fld"><label for="co-ico">' + mk.companyIds[0] + '</label><input id="co-ico" type="text"></div><div class="fld"><label for="co-dic">' + mk.companyIds[1] + '</label><input id="co-dic" type="text"></div></div></div>' +
+      '<div class="span2 co-company" data-company hidden><div class="fgrid">' + fld('co-cname', t('companyName'), '', '', 'span2', 'organization', '', false) + fld('co-ico', mk.companyIds[0], '', '', '', '', '', false) +
+      '<div class="fld"><label for="co-dic">' + mk.companyIds[1] + '</label><input id="co-dic" type="text"></div></div></div>' +
       '<div class="fld"><label for="co-country">' + t('country') + '</label><select id="co-country" autocomplete="country"><option value="' + mk.code + '">' + mk.country + '</option></select></div>' +
-      fld('co-zip', t('zip'), 'text', mk.zipPh, '', 'postal-code') + fld('co-city', t('city'), '', '', '', 'address-level2') + fld('co-street', t('street'), 'text', '', 'span2', 'street-address') + '</div></section>' +
+      fld('co-zip', t('zip'), 'text', mk.zipPh, 'half', 'postal-code', 'zip') + fld('co-city', t('city'), '', '', 'half', 'address-level2') + fld('co-street', t('street'), 'text', '', 'span2', 'street-address') + '</div></section>' +
       '<section class="co-sec"><h2>' + t('shipMethod') + '</h2><div class="shipsel" data-co-ship></div>' +
-      '<div class="fld pickup" data-pickup hidden><label for="co-pickup">' + mk.pickupLabel + '</label><select id="co-pickup"><option>' + t('choosePickup') + '</option>' + mk.pickupPoints.map(function (x) { return '<option>' + esc(x) + '</option>'; }).join('') + '</select></div></section>' +
+      // Packeta átvételi pont / Z-BOX választó (az éles oldalon a Packeta widget)
+      '<div class="pickup" data-pickup hidden><p class="pickup-h">' + esc(mk.pickupLabel) + '</p>' +
+      '<label class="sr" for="co-pickup-q">' + t('pickupSearch') + '</label><input class="pickup-q" id="co-pickup-q" type="search" placeholder="' + esc(t('pickupSearch')) + '" data-pickup-q>' +
+      '<div class="pp-list" role="radiogroup" aria-label="' + esc(mk.pickupLabel) + '" data-pp-list>' + mk.pickupPoints.map(function (x, i) {
+        return '<label class="pp-item"><input type="radio" name="pickup" id="pp-' + i + '" value="' + esc(x) + '"' + (FV.store.get('pickup', '') === x ? ' checked' : '') + '><span>' + esc(x) + '</span></label>';
+      }).join('') + '</div><p class="err-msg" data-pickup-err hidden>' + t('errPickup') + '</p></div>' +
+      // eltérő szállítási cím (csak házhozszállításnál)
+      '<div data-shipdiff-wrap><label class="f-toggle"><input type="checkbox" id="co-shipdiff"><span>' + t('shipDiff') + '</span></label>' +
+      '<div class="co-company" data-shipdiff hidden><div class="fgrid">' + fld('co-s-first', t('first'), '', '', 'half', 'shipping given-name', '', false) + fld('co-s-last', t('last'), '', '', 'half', 'shipping family-name', '', false) +
+      fld('co-s-zip', t('zip'), 'text', mk.zipPh, 'half', 'shipping postal-code', 'zip', false) + fld('co-s-city', t('city'), '', '', 'half', 'shipping address-level2', '', false) + fld('co-s-street', t('street'), 'text', '', 'span2', 'shipping street-address', '', false) + '</div></div></div></section>' +
       '<section class="co-sec"><h2>' + t('payment') + '</h2><div class="paysel">' +
       '<label class="radio-card"><input type="radio" name="pay" id="pay-teya" value="teya" checked><span><b>' + t('payCard') + '</b><small>' + t('payCardNote') + '</small></span><em class="paylogos"><i>VISA</i><i>MC</i><i>Teya</i></em></label>' +
       '<label class="radio-card"><input type="radio" name="pay" id="pay-cod" value="cod"><span><b>' + t('cod') + '</b><small>' + t('codNote') + '</small></span><em class="num">+' + money(mk.codFee) + '</em></label></div></section>' +
-      '<section class="co-sec"><h2>' + t('note') + '</h2><div class="fld"><label class="sr" for="co-note">' + t('noteLabel') + '</label><textarea id="co-note" rows="3" placeholder="' + esc(t('notePh')) + '"></textarea></div>' +
-      '<label class="f-toggle"><input type="checkbox" id="co-18" required><span>' + t('confirm18') + '</span></label>' +
-      '<label class="f-toggle"><input type="checkbox" id="co-terms" required><span>' + t('terms') + '</span></label>' +
-      '<p class="buy-err" data-co-err hidden></p></section></div>' +
+      '<section class="co-sec"><h2>' + t('note') + '</h2><div class="fld"><label class="sr" for="co-note">' + t('noteLabel') + '</label><textarea id="co-note" rows="2" placeholder="' + esc(t('notePh')) + '"></textarea></div>' +
+      '<div class="fld fld-check"><label class="f-toggle"><input type="checkbox" id="co-18" required aria-describedby="co-18-err"><span>' + t('confirm18') + '</span></label><p class="err-msg" id="co-18-err" data-err hidden></p></div>' +
+      '<div class="fld fld-check"><label class="f-toggle"><input type="checkbox" id="co-terms" required aria-describedby="co-terms-err"><span>' + t('terms') + '</span></label><p class="err-msg" id="co-terms-err" data-err hidden></p></div>' +
+      '</section></div>' +
       '<div class="co-side" data-co-summary></div></form></div>';
   };
 
@@ -602,9 +633,10 @@
     var cur = sh.methods.filter(function (m) { return m.id === method; })[0];
     FV.$('[data-co-ship]').innerHTML = sh.methods.map(function (m) {
       var c = FV.shippingCost(m.id, tt.weight, tt.sub);
-      return '<label class="radio-card"><input type="radio" name="coship" id="coship-' + m.id + '" value="' + m.id + '" data-ship' + (m.id === method ? ' checked' : '') + '><span><b>' + esc(m.name) + '</b><small>' + esc(m.eta) + ' · ' + t('parcelWeight').toLowerCase() + ' ' + FV.kg(tt.weight) + '</small></span><em class="num">' + (c === 0 ? t('free') : money(c)) + '</em></label>';
+      return '<label class="radio-card"><input type="radio" name="coship" id="coship-' + m.id + '" value="' + m.id + '" data-ship' + (m.id === method ? ' checked' : '') + '><span><b>' + esc(m.name) + '</b><small>' + esc(m.eta) + '</small></span><em class="num">' + (c === 0 ? t('free') : money(c)) + '</em></label>';
     }).join('');
     FV.$('[data-pickup]').hidden = !cur.pickup;
+    FV.$('[data-shipdiff-wrap]').hidden = !!cur.pickup;
     var total = tt.sub + ship + cod;
     box.innerHTML = '<aside class="summary"><h2>' + t('yourOrder') + '</h2><ul class="co-lines">' + tt.lines.map(function (l) {
       return '<li><span class="co-art" style="--tint:' + FV.tint(l.p) + '">' + FV.art(l.p) + '<em class="num">' + l.qty + '</em></span><span class="co-n">' + esc(l.p.name) + FV.variantText(l.v) + '</span><b class="num">' + money(l.total) + '</b></li>';
@@ -614,6 +646,7 @@
       '<dl class="sum total"><div><dt>' + t('total') + '</dt><dd class="num">' + money(total) + '</dd></div></dl>' + vatNote(total) +
       '<button class="btn btn-primary btn-lg btn-block" type="submit">' + t('placeOrder') + '</button>' +
       '<p class="muted small center">' + I('shield') + ' ' + t('cardNote') + '</p></aside>';
+    if (FV.fitSummary) FV.fitSummary();
   };
 
   FV.views.thanks = function () {
@@ -630,9 +663,9 @@
 
   /* ================= FIÓK ================= */
   var ORDERS = [
-    { no: 'FV-2026-10482', date: '2026-09-21', st: 'stShipped', cls: 'st-low', total: 64.3, track: '13852004816211' },
-    { no: 'FV-2026-10217', date: '2026-08-30', st: 'stDelivered', cls: 'st-in', total: 31.6, track: '13852004513877' },
-    { no: 'FV-2026-09874', date: '2026-07-12', st: 'stDelivered', cls: 'st-in', total: 19.9, track: '13852003998102' }
+    { no: 'FV-2026-10482', date: '2026-09-21', st: 'stShipped', cls: 'st-low', total: 64.3, track: 'Z4827301956' },
+    { no: 'FV-2026-10217', date: '2026-08-30', st: 'stDelivered', cls: 'st-in', total: 31.6, track: 'Z4827113580' },
+    { no: 'FV-2026-09874', date: '2026-07-12', st: 'stDelivered', cls: 'st-in', total: 19.9, track: 'Z4826690241' }
   ];
   FV.views.account = function (tab) {
     tab = tab || 'attekintes';
@@ -697,48 +730,49 @@
     var rows = [
       ['Főoldal', '#/', 'front_page_content.html – iu/section blokkok; kategória csempék, akciók (on_sale), kompatibilitás blokk, márkák, népszerű termékek; puff kereső: saját blokk (iucb_add_block)'],
       ['Kategória oldal + szűrők', '#/kategoria/eldobhato', 'tax_product_cat_content.html – [products class="mainquery"] + iu-woocommerce/filter (pa_* layered nav, márka, ár), AJAX frissítés'],
-      ['Alkategória, szűrt URL', '#/kategoria/eldobhato?puff=40000', 'Szűrt URL-ek: canonical / noindex szabály a child témában (SEO)'],
+      ['Alkategória, szűrt URL', '#/kategoria/eldobhato?puff=20000%2B', 'Slukkszám-szűrő tartományokra (pa_puff értékek → sávok), a szám gyártói becslés; szűrt URL-ek: canonical / noindex szabály a child témában (SEO)'],
       ['Márkaoldal', '#/marka/elfbar', 'tax_product_brand_content.html (WooCommerce Brands) – leírás, logó, szűrhető lista; a márka-archívum template_include javítása a child témában'],
-      ['Márkák A–Z', '#/markak', 'Oldal + saját blokk: összes product_brand kifejezés'],
+      ['Márkák A–Z', '#/markak', 'Főmenüpont; saját blokk: csak azok a product_brand kifejezések, amelyekhez van aktív termék'],
       ['Akciók', '#/akciok', 'Oldal: [products on_sale="true" class="mainquery"]'],
       ['Keresés', '#/kereses/Elfbar%2040000', 'search_content.html + kiterjesztett termékkereső (név, márka, pa_*, kategória, SKU, EAN, számnormalizálás) a child témában'],
       ['Termékoldal', '#/termek/elfbar-bc40000-blueberry-ice', 'single_product_content.html – iu-woocommerce blokkok (images, price, add-to-cart, stock, product-brand, product-attributes), nikotin-figyelmeztetés, JSON-LD Product'],
-      ['Változatos termék', '#/termek/vaporesso-xros-4-mini', 'Variable product: pa_szin / pa_nikotin változatok'],
+      ['Testvértermékek (SIMPLE)', '#/termek/vaporesso-xros-4-mini-black', 'Minden szín / íz / ellenállás külön SIMPLE termék (a CSV szerint); a termékoldal a csoport többi tagjára linkel (_fv_group meta)'],
+      ['Kompatibilitás', '#/termek/elfbar-elfa-pro-kit-black', 'pa_kompatibilitas alapján: kompatibilis podok / patronok és készülékek, rendszermegjelöléssel'],
       ['Készlethiányos termék', '#/termek/elfbar-bc40000-watermelon-ice', 'Készlet státusz: outofstock + visszatérési értesítő (saját blokk, iu/form nélkül is)'],
       ['Kifutott termék', '#/termek/drifter-bar-30000-grape', 'Egyedi készlet státusz: „discontinued” – oldal marad, helyettesítő termékek'],
-      ['Kosár', '#/kosar', 'Klasszikus [woocommerce_cart] – súlyalapú díj, ingyenes szállítási küszöb, ÁFA-sor piaconként'],
-      ['Pénztár', '#/penztar', 'Klasszikus [woocommerce_checkout] – SK: DPD / DPD Pickup (local_pickup helyett pickup-bővítmény), FR: szállító TBD; Teya, utánvét, cégadatok (IČO/DIČ, SIRET/TVA), 18+ megerősítés'],
+      ['Kosár', '#/kosar', 'Klasszikus [woocommerce_cart] – eltávolítás gomb, ingyenes szállítási küszöb, ÁFA-sor piaconként; a súly csak a háttérben (díjszámítás, Packeta)'],
+      ['Pénztár', '#/penztar', 'Klasszikus [woocommerce_checkout] – Packeta: výdajné miesto / Z-BOX (Packeta widget) és házhoz szállítás, eltérő szállítási cím, mezőnkénti hibaüzenet; Teya, utánvét, cégadatok (IČO/DIČ, SIRET/TVA), 18+ megerősítés'],
       ['Fiók', '#/fiok', 'My Account – rendelések követési számmal, számla letöltés, kedvencek (saját kód, wishlist-plugin nélkül)'],
       ['Információs és jogi oldalak', '#/oldal/shipping', 'Piaconként külön oldalak (SK: Obchodné podmienky …, FR: CGV, mentions légales …), inc/setup.php hozza létre; a szöveg HELYŐRZŐ']
     ];
-    var csv = ['Terméknév', 'SKU', 'EAN', 'Kategória', 'Márka', 'Íz', 'Nikotin', 'ML', 'Puff', 'Kompatibilitás', 'Szín', 'Normál ár', 'Akciós ár', 'Készlet', 'Státusz', 'Súly (kg)', 'Rövid leírás', 'Hosszú leírás', 'Kép URL-ek'];
+    var csv = ['Terméknév', 'SKU', 'EAN', 'Kategória', 'Márka', 'Íz', 'Nikotin', 'ML', 'Puff', 'Kompatibilitás', 'Szín', 'Ellenállás (Ω)', 'Normál ár', 'Akciós ár', 'Készlet', 'Státusz', 'Súly (kg)', 'Rövid leírás', 'Hosszú leírás', 'Kép URL-ek'];
     return '<div class="wrap" lang="hu">' + crumbs([{ label: 'Prototípus áttekintés' }]) +
       '<div class="shop-title"><h1>Prototípus áttekintés</h1><p>A First Vape új WooCommerce frontendjének kattintható HTML prototípusa. Piacok: <b>Szlovákia (SK)</b> és <b>Franciaország (FR)</b>, pénznem EUR. Jóváhagyás után ebből készül az <b>iu_theme + firstvape child téma</b>. Ez az átadó oldal szándékosan magyar, a bolt felülete szlovák és francia.</p></div>' +
       '<section class="sec"><h2>Piacok és nyelvek</h2><div class="model">' +
-      '<div><b>SK · slovenčina</b><span>alapértelmezett nyelv</span><code>DPH 23 % · DPD · Teya · dobierka</code></div>' +
-      '<div><b>FR · français</b><span>második nyelv</span><code>TVA 20 % · szállító TBD · Teya · utánvét?</code></div>' +
+      '<div><b>SK · slovenčina</b><span>alapértelmezett nyelv</span><code>DPH 23 % · Packeta · Teya · dobierka</code></div>' +
+      '<div><b>FR · français</b><span>második nyelv</span><code>TVA 20 % · Packeta (díjak TBD) · Teya · utánvét?</code></div>' +
       '<div><b>Ár</b><span>alap: szlovák bruttó ár</span><code>FR bruttó = ár / 1,23 × 1,20 (WooCommerce alap)</code></div>' +
       '<div><b>Nyitott</b><span>jogász, könyvelő</span><code>ÁFA-kulcsok, jogi szövegek, FR eldobható-tilalom (2025. febr.)</code></div></div>' +
       '<p class="muted">Váltás: a fejléc SK / FR gombjai (mobilon a menüben, első látogatáskor a 18+ ablakban). A választás a böngészőben marad (FV.store).</p></section>' +
       '<section class="sec"><h2>Az adatmodell alapelve</h2><div class="model">' +
       '<div><b>Kategória</b><span>mi a termék</span><code>product_cat</code></div>' +
       '<div><b>Márka</b><span>ki gyártja</span><code>product_brand</code></div>' +
-      '<div><b>Attribútum</b><span>milyen változat</span><code>pa_iz · pa_nikotin · pa_kiszereles · pa_puff · pa_kompatibilitas · pa_szin</code></div>' +
+      '<div><b>Attribútum</b><span>tulajdonság (szűrő)</span><code>pa_iz · pa_nikotin · pa_kiszereles · pa_puff · pa_kompatibilitas · pa_szin · pa_ellenallas</code></div>' +
       '<div><b>Termékadat</b><span>értékesítés és logisztika</span><code>ár · akciós ár · készlet · státusz · SKU · EAN · súly</code></div></div></section>' +
       '<section class="sec"><h2>Oldalak és megfelelőjük (iu_theme + firstvape child téma)</h2><div class="tbl-wrap"><table class="proto-tbl"><thead><tr><th scope="col">Oldal</th><th scope="col">Megvalósítás</th></tr></thead><tbody>' +
       rows.map(function (r) { return '<tr><td><a href="' + r[1] + '">' + esc(r[0]) + '</a></td><td>' + esc(r[2]) + '</td></tr>'; }).join('') + '</tbody></table></div></section>' +
       '<section class="sec"><h2>Mit érdemes kipróbálni</h2><ul class="try">' +
       '<li>Válts nyelvet a fejléc SK / FR gombjával: a felület, az árak (23% ↔ 20% ÁFA), a szállítás, a fizetés és a jogi oldalak is váltanak.</li>' +
       '<li>Írd a fejléc keresőjébe: <a href="#/kereses/Elfbar%2040000">Elfbar 40000</a>, <a href="#/kereses/40k">40k</a>, <a href="#/kereses/40%20000">40 000</a>, <a href="#/kereses/mango">mango</a> vagy <a href="#/kereses/xros">xros</a>.</li>' +
-      '<li>Vidd az egeret a főmenü pontjai fölé: mega menü alkategóriákkal, márkákkal és puff gyorslinkekkel.</li>' +
-      '<li>Szűrj a kategóriaoldalon több szempont szerint. A darabszámok élőben frissülnek, mobilon a szűrő lenyíló panelben nyílik.</li>' +
-      '<li>Nyiss meg egy készüléket (pl. <a href="#/termek/elfa-pro-kit-black">ELFA Pro</a>): alul automatikusan megjelennek a kompatibilis podok.</li>' +
-      '<li>Tegyél termékeket a kosárba: a csomag súlya és a szállítási díj automatikusan számolódik.</li></ul></section>' +
-      '<section class="sec"><h2>CSV import sablon</h2><p class="muted">Automatikus leképezés a WooCommerce importálóra. Ugyanazzal a sablonnal lehet új termékeket feltölteni és meglévőket frissíteni (SKU alapján); az ár- és készletfrissítéshez elég az öt oszlopos rövid sablon. Több érték vesszővel, alkategória „Szülő &gt; Gyerek” formában. A fejlécek nyelvét az ügyféllel egyeztetni kell (a csapat nyelve). Sablonfájlok a repóban: <code>prototype/csv/firstvape-termekimport-sablon.csv</code>, <code>prototype/csv/firstvape-ar-keszlet-frissites.csv</code>.</p><div class="csvcols">' +
+      '<li>Vidd az egeret a főmenü pontjai fölé: mega menü alkategóriákkal, márkákkal és slukkszám-sávokkal. Csak a termékkel rendelkező kategóriák és márkák jelennek meg.</li>' +
+      '<li>Szűrj a kategóriaoldalon: minden főkategória csak a rá értelmezhető szűrőket mutatja (pl. e-liquideknél íz, nikotin, kiszerelés; kiegészítőknél ellenállás). Mobilon a szűrő lenyíló panelben nyílik.</li>' +
+      '<li>Nyiss meg egy készüléket (pl. <a href="#/termek/elfbar-elfa-pro-kit-black">ELFA Pro Kit</a>): alul megjelennek a kompatibilis előretöltött podok, rendszermegjelöléssel.</li>' +
+      '<li>Tegyél termékeket a kosárba, majd a pénztárban válassz Packeta átvételi pontot vagy házhoz szállítást. Hiányzó adatnál a mező alatt rövid hibaüzenet jelenik meg.</li></ul></section>' +
+      '<section class="sec"><h2>CSV import sablon</h2><p class="muted">Automatikus leképezés a WooCommerce importálóra. Ugyanazzal a sablonnal lehet új termékeket feltölteni és meglévőket frissíteni (SKU alapján); az ár- és készletfrissítéshez elég az öt oszlopos rövid sablon. Minden termék SIMPLE. A kategória a fájl angol nevével is megadható, a webshop a szlovák kategóriához rendeli (<code>prototype/csv/kategoria-osszerendeles.csv</code>), így nem jön létre dupla kategória. Alkategória „Szülő &gt; Gyerek” formában. A súly csak a szállítási díjhoz kell, a vásárló nem látja. A fejlécek nyelvét az ügyféllel egyeztetni kell (a csapat nyelve). Sablonfájlok a repóban: <code>prototype/csv/firstvape-termekimport-sablon.csv</code>, <code>prototype/csv/firstvape-ar-keszlet-frissites.csv</code>.</p><div class="csvcols">' +
       csv.map(function (c) { return '<code>' + esc(c) + '</code>'; }).join('') + '</div></section>' +
       '<section class="sec"><h2>Integrációk (bővítményekkel)</h2><div class="acc-cards">' +
       '<div class="acc-card">' + I('card') + '<b>Teya</b><span>Online kártyás fizetés (fizetési kapu bővítmény)</span></div>' +
       '<div class="acc-card">' + I('receipt') + '<b>SuperFaktúra</b><span>Automatikus számlázás rendeléskor</span></div>' +
-      '<div class="acc-card">' + I('truck') + '<b>DPD (SK)</b><span>Rendelésátadás, 100×150 mm thermal címke; FR szállító TBD</span></div></div></section></div>';
+      '<div class="acc-card">' + I('truck') + '<b>Packeta (SK, FR)</b><span>Átvételi pont / Z-BOX választó, házhoz szállítás, címke a Packeta bővítménnyel; díjak élesítés előtt tesztelve</span></div></div></section></div>';
   };
 })(window.FV);

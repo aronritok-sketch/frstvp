@@ -1,0 +1,19 @@
+﻿Szint,Szülő (slug),Slug,Szlovák név (webshop),Francia név,"Angol név a CSV-ben (javaslat, egyeztetendő)",Termékek a prototípusban,Megjegyzés
+1,,keszulekek,Zariadenia / kity,Appareils / kits,Devices / Kits,15,
+2,keszulekek,eloretoltott-pod-rendszerek,Predplnené pod systémy,Systèmes à pods préremplis,Prefilled Pod Systems,6,"Gyárilag töltött, ízes podokkal működő készülékek (pl. ELFA, JOIN ONE)"
+2,keszulekek,utantoltheto-pod-rendszerek,Plniteľné pod systémy,Systèmes à pods à remplir,Refillable Pod Systems,5,"Saját liquiddel tölthető pod / patron (pl. Wenax, Aegis Boost, GTX GO)"
+2,keszulekek,mod-tank-kitek,Mod / tank kity,Kits box / clearomiseur,Mod / Tank Kits,4,"Mod + tank készletek (pl. GEN MAX, GEN SE, Aegis Legend)"
+1,,eloretoltott-podok,Predplnené pody,Pods préremplis,Prefilled Pods,8,"Külön vásárolható, gyárilag töltött cserepodok; szűrés márka szerint"
+1,,e-liquidek,E-liquidy,E-liquides,E-liquids,10,
+2,e-liquidek,nikotin-booster,Nikotínové boostery,Boosters de nicotine,Nicotine Boosters,1,
+2,e-liquidek,kesz-liquidek-10ml,Hotové liquidy 10 ml,E-liquides prêts 10 ml,Ready-made E-liquids 10 ml,5,
+2,e-liquidek,aromak,Príchute (arómy),Arômes concentrés,Flavour Concentrates,2,
+2,e-liquidek,shortfill,Shortfill,Shortfills,Shortfill,1,
+2,e-liquidek,longfill,Longfill,Longfills,Longfill,1,
+1,,eldobhato,Jednorazové e-cigarety,Cigarettes électroniques jetables,Disposable E-cigarettes,15,"Egyszer használatos, egészében eldobott termékek. ELFBAR NIO besorolása a termék felépítése alapján véglegesítendő"
+1,,kiegeszitok,Príslušenstvo,Accessoires,Accessories,15,
+2,kiegeszitok,ures-podok,Prázdne pody / cartridge,Pods vides / cartouches,Empty Pods / Cartridges,6,Üres cserepodok / patronok (pl. Geekvape Q Pod 0.4 / 0.6 / 0.8 Ω)
+2,kiegeszitok,porlasztok,Žhaviace hlavy / coily,Résistances,Coils,3,
+2,kiegeszitok,tankok,Tanky,Clearomiseurs,Tanks,2,
+2,kiegeszitok,akkuk-toltok,Batérie / nabíjačky,Accus / chargeurs,Batteries / Chargers,2,
+2,kiegeszitok,egyeb-kiegeszitok,Ostatné príslušenstvo,Autres accessoires,Other Accessories,2,
