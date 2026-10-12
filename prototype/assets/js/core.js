@@ -90,16 +90,29 @@
 
   /* ---------- Tároló (localStorage, hibatűrő) ---------- */
   var mem = {};
+  // A portál weboldal-előnézete homokozóban fut (CSP sandbox, átlátszatlan eredet): ott a localStorage kivételt dob.
+  // Ilyenkor a window.name őrzi az állapotot (18+ választás, nyelv, kosár) újratöltés után is, a lap bezárásáig.
+  function nameStore() {
+    try { var o = JSON.parse(window.name || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; }
+  }
   FV.store = {
     get: function (k, d) {
       try {
         var v = window.localStorage.getItem('fv_' + k);
         return v == null ? (k in mem ? mem[k] : d) : JSON.parse(v);
-      } catch (e) { return k in mem ? mem[k] : d; }
+      } catch (e) {
+        if (k in mem) return mem[k];
+        var o = nameStore();
+        return ('fv_' + k) in o ? o['fv_' + k] : d;
+      }
     },
     set: function (k, v) {
       mem[k] = v;
-      try { window.localStorage.setItem('fv_' + k, JSON.stringify(v)); } catch (e) { /* privát mód */ }
+      try { window.localStorage.setItem('fv_' + k, JSON.stringify(v)); } catch (e) {
+        var o = nameStore();
+        o['fv_' + k] = v;
+        try { window.name = JSON.stringify(o); } catch (e2) { /* nincs tárhely */ }
+      }
     }
   };
 

@@ -1,23 +1,20 @@
 #!/usr/bin/env python3
 """
-First Vape – egyfájlos, ügyfélnek küldhető prototípus (portál / e-mail).
+First Vape – egyfájlos prototípus (e-mailhez, offline megnyitáshoz).
 
     python3 prototype/tools/build_single.py
 
 Kimenet: prototype/dist/firstvape-prototipus.html
 - minden CSS, JS és kép beágyazva (data URI), letöltve internet nélkül is megnyílik
-  (a Google Fonts betűkhöz net kell, anélkül tartalék betűvel jelenik meg)
+  (a betűk is beágyazva)
 - noindex, alul „Dizájn-prototípus” sáv bezárás gombbal
 - a belső „Prototípus infó” gomb (fejlesztői átadó oldal) kimarad
-Portálra: python3 prototype/tools/build_single.py --zip
-→ prototype/dist/FirstVape-prototipus.zip (HTML + a két CSV-sablon + OLVASS-EL.txt)
+A portál weboldal-előnézetéhez a zip kell: python3 prototype/tools/build_zip.py
 Függőség nincs (Python 3 standard könyvtár).
 """
 import base64
 import pathlib
 import re
-import sys
-import zipfile
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / 'dist' / 'firstvape-prototipus.html'
@@ -30,7 +27,8 @@ def data_uri(rel, mime):
 def main():
     index = (ROOT / 'index.html').read_text(encoding='utf-8')
     scripts = re.findall(r'<script src="assets/js/([\w.-]+)"></script>', index)
-    fonts = re.search(r'<link rel="stylesheet" href="(https://fonts\.googleapis\.com/[^"]+)">', index).group(1)
+    fonts = (ROOT / 'assets/css/fonts.css').read_text(encoding='utf-8')
+    fonts = re.sub(r'url\(\.\./fonts/([\w.-]+)\)', lambda m: 'url(%s)' % data_uri('assets/fonts/' + m.group(1), 'font/woff2'), fonts)
 
     css = (ROOT / 'assets/css/style.css').read_text(encoding='utf-8')
     css = css.replace('url("../img/smoke.jpg")', 'url("%s")' % data_uri('assets/img/smoke.jpg', 'image/jpeg'))
@@ -77,10 +75,8 @@ def main():
 <title>First Vape – webshop prototípus</title>
 <meta name="theme-color" content="#151017">
 <link rel="icon" href="%(favicon)s">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="%(fonts)s">
 <style>
+%(fonts)s
 %(css)s
 %(bar_css)s
 </style>
@@ -107,38 +103,7 @@ window.FV = window.FV || {}; FV.assetMap = { %(asset_map)s };
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(html, encoding='utf-8')
     print('%s (%d KB)' % (OUT.relative_to(ROOT.parent), OUT.stat().st_size // 1024))
-    if '--zip' in sys.argv:
-        make_zip()
 
-
-README_TXT = """First Vape – az új webshop kattintható prototípusa
-=================================================
-
-Megnyitás
-- Csomagold ki a mappát, és nyisd meg a firstvape-prototipus.html fájlt böngészőben (Chrome, Safari vagy Edge).
-- Telefonon is működik. Internet nélkül is megnyílik (net nélkül egyszerűbb betűtípussal).
-- Ez nem élő oldal: a rendelés, a hírlevél és az üzenetek nem mennek el.
-- Szlovák / francia váltás: jobb felül, telefonon a menü alján.
-
-CSV-sablonok (termékadatokhoz)
-- firstvape-termekimport-sablon.csv – teljes termékimport (új termékek és frissítés SKU alapján)
-- firstvape-ar-keszlet-frissites.csv – gyors ár- és készletfrissítés
-  Formátum: UTF-8, vessző elválasztó; több érték vesszővel egy cellában; alkategória „Szülő > Gyerek”; súly kg-ban;
-  státusz: Aktív / Készlethiányos / Kifutott. A sablonokban lévő termékek mintaadatok.
-
-HelloProVision
-"""
-
-
-def make_zip():
-    out = ROOT / 'dist' / 'FirstVape-prototipus.zip'
-    folder = 'FirstVape-prototipus/'
-    with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as z:
-        z.write(OUT, folder + OUT.name)
-        for name in ('firstvape-termekimport-sablon.csv', 'firstvape-ar-keszlet-frissites.csv'):
-            z.write(ROOT / 'csv' / name, folder + name)
-        z.writestr(folder + 'OLVASS-EL.txt', README_TXT.replace('\n', '\r\n'))
-    print('%s (%d KB)' % (out.relative_to(ROOT.parent), out.stat().st_size // 1024))
 
 
 if __name__ == '__main__':

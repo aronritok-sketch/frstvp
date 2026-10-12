@@ -31,7 +31,7 @@ Jóváhagyás után ebből készül a WordPress / WooCommerce oldal: **Infinite 
 
 ## Megnyitás
 
-Build lépés nincs. Nyisd meg az `index.html` fájlt böngészőben, vagy indíts helyi szervert:
+Fejlesztéshez build lépés nincs. Nyisd meg az `index.html` fájlt böngészőben, vagy indíts helyi szervert:
 
 ```bash
 cd prototype
@@ -39,16 +39,22 @@ python3 -m http.server 8000
 # http://localhost:8000
 ```
 
-### Ügyfélnek küldhető, egyfájlos változat (portál / e-mail)
+### Ügyfélnek: portál-előnézet (zip)
 
 ```bash
-python3 prototype/tools/build_single.py   # → prototype/dist/firstvape-prototipus.html
-python3 prototype/tools/build_single.py --zip   # + prototype/dist/FirstVape-prototipus.zip a portálra (HTML + 2 CSV + OLVASS-EL.txt)
+python3 prototype/tools/build_zip.py      # → prototype/dist/firstvape-elonezet.zip (index.html + assets/)
 ```
 
-Minden CSS, JS és kép beágyazva, letöltve internet nélkül is megnyílik (a Google Fonts betűkhöz net kell, anélkül tartalék betű).
-`noindex`, alul „Dizájn-prototípus” sáv, a belső „Prototípus infó” gomb kimarad. A `dist/` mappában van a kísérőszöveg
-(`KISEROSZOVEG.md`) és a két CSV-sablon is, ezeket együtt kell feltölteni a portálra. Változtatás után a buildet újra kell futtatni.
+**Ügyfélnek a portálon:** `dist/firstvape-elonezet.zip` → ügyfélportál, Tartalom → anyag → Weboldal-előnézet (zip), nem
+külső linkként. Kísérőüzenet: `dist/KISERO-UZENET.md`. A két CSV-sablont (`csv/`) a portál Fájlok részébe kell feltölteni
+(a portál előnézete csak weboldal-fájlokat fogad el).
+A portál homokozóban futtatja (CSP sandbox, átlátszatlan eredet, nincs `localStorage`): ott a `window.name` őrzi a 18+
+választást, a nyelvet és a kosarat (újratöltés után is, a lap bezárásáig). A betűk a csomagban vannak (`assets/fonts`),
+külső kérés nincs. A portál homokozójával (CSP sandbox + sandbox iframe) kipróbálva: 18+, nyelv, kosár újratöltés után,
+navigáció, pénztár, betűk, asztali és mobil szélesség.
+
+Egyfájlos változat e-mailhez / offline megnyitáshoz (mindent beágyaz, a betűket is):
+`python3 prototype/tools/build_single.py` → `dist/firstvape-prototipus.html`.
 
 A prototípus egyetlen oldalas alkalmazás, hash alapú útvonalakkal (`#/kategoria/eldobhato`, `#/termek/...`).
 A WordPressben ezek valódi, nyelvenként fordított permalinkek lesznek (pl. `/sk/…`, `/fr/…`).
