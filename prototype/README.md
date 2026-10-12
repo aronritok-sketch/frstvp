@@ -43,6 +43,7 @@ python3 -m http.server 8000
 
 ```bash
 python3 prototype/tools/build_single.py   # → prototype/dist/firstvape-prototipus.html
+python3 prototype/tools/build_single.py --zip   # + prototype/dist/FirstVape-prototipus.zip a portálra (HTML + 2 CSV + OLVASS-EL.txt)
 ```
 
 Minden CSS, JS és kép beágyazva, letöltve internet nélkül is megnyílik (a Google Fonts betűkhöz net kell, anélkül tartalék betű).

@@ -2,12 +2,12 @@
 
 Szia!
 
-Csatoltam az új First Vape webshop kattintható prototípusát. Ez még nem a kész webshop, hanem egy bemutató. Ezen nézzük át együtt a kinézetet, a menüt, a keresőt, a szűrőket és a vásárlás menetét, mielőtt nekiállunk a WordPress / WooCommerce-es építésnek.
+Csatoltam az új First Vape webshop kattintható prototípusát (`FirstVape-prototipus.zip`). Ez még nem a kész webshop, hanem egy bemutató. Ezen nézzük át együtt a kinézetet, a menüt, a keresőt, a szűrőket és a vásárlás menetét, mielőtt nekiállunk a WordPress / WooCommerce-es építésnek.
 
 A dizájn a mostani firstvape.sk sötét arculatára épül: ugyanazok a színek, a logó és a füstös hangulat, csak modernebb, gyorsabb és mobilon is kényelmes. A háttérben a füst lassan mozog, görgetésre áramlik.
 
 **Hogyan nyisd meg**
-- Töltsd le a `firstvape-prototipus.html` fájlt, és nyisd meg böngészőben (Chrome, Safari vagy Edge). Telefonon is működik.
+- Töltsd le és csomagold ki a zip-fájlt, majd nyisd meg benne a `firstvape-prototipus.html` fájlt böngészőben (Chrome, Safari vagy Edge). Telefonon is működik.
 - Ez nem élő oldal: a rendelés, a hírlevél és az üzenetek nem mennek el, nyugodtan kattints végig mindent.
 - Jobb felül (telefonon a menü alján) válthatsz a szlovák és a francia változat között. A nyelvvel együtt vált az ÁFA, a szállítás és a jogi oldalak is.
 
@@ -31,7 +31,7 @@ A dizájn a mostani firstvape.sk sötét arculatára épül: ugyanazok a színek
   - Melyik futárcég szállítson Franciaországba?
   - Tudomásunk szerint Franciaországban 2025 óta tilos az eldobható e-cigaretta forgalmazása, ezért ott valószínűleg el kell rejtenünk ezt a kategóriát. Kérjük, egyeztessétek a jogászotokkal.
   - A szlovák felület tegező, a francia magázó (a francia webshopok szokása szerint). Így jó?
-- **Termékadatok a csatolt CSV-sablonokban:**
+- **Termékadatok a zip-ben lévő CSV-sablonokban:**
   - `firstvape-termekimport-sablon.csv`: teljes termékimport;
   - `firstvape-ar-keszlet-frissites.csv`: gyors ár- és készletfrissítés.
 
