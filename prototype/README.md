@@ -94,6 +94,10 @@ A jelenlegi firstvape.sk sötét témáját követi, modernizálva (a színek az
 - fejléc `#002460 → #38203F` (90°), mint az eredeti felső sáv
 - betű: Barlow Semi Condensed (címek, nagybetűs menü), Barlow (szöveg)
 - eredeti logó (`assets/img/first-vape-logo.png`), favicon és füstös háttér (`assets/img/smoke.jpg`)
+- **élő füst háttér** (`assets/js/smoke.js`): WebGL-lel rajzolt piros–lila–kék füst az egész oldal mögött. Folyamatosan áramlik,
+  görgetéskor felfelé úszik a tartalommal, gyors görgetésnél jobban kavarog. Középen halványabb az olvashatóság miatt.
+  Fél felbontáson, kb. 40 fps-sel renderel, rejtett fülön megáll; „csökkentett mozgás” beállításnál álló kép; WebGL nélkül a statikus `smoke.jpg` marad.
+  A WordPress témában ugyanez a fájl kerül a child témába (`wp_enqueue_script`, láblécben).
 - a főoldal az eredeti szerkezetét követi: füstös hero, termékválaszték, „Miért vape?”, „A First Vape a legjobb vape!”, blog, partnerek, hírlevél
 
 A régi oldal egészségügyi állításai („egészségesebb”, „40 káros anyag”) nem kerültek át, mert az EU-s TPD tiltja az e-cigaretta ilyen reklámozását.

@@ -869,6 +869,20 @@ a.acc-card:hover { border-color: var(--red); }
 .fld select { max-width: 100%; text-overflow: ellipsis; }
 .pickup { margin-top: 4px; }
 
+/* ---------- Élő füst háttér (assets/js/smoke.js) ----------
+   A vászon fixen a tartalom mögött van; a szekciók háttere áttetsző lesz, hogy a füst átlátszódjon.
+   WebGL nélkül a has-fx-smoke osztály nem kerül fel, és marad a statikus füstkép. */
+.fx-smoke { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; display: block; }
+.has-fx-smoke body { background: transparent; }
+.has-fx-smoke .hero { background: transparent; }
+.has-fx-smoke .hero-smoke { background: linear-gradient(180deg, rgba(21, 16, 23, 0), rgba(21, 16, 23, .55) 95%); }
+.has-fx-smoke .hero-smoke::after { opacity: .55; }
+.has-fx-smoke .why { background: rgba(27, 20, 31, .55); backdrop-filter: blur(2px); }
+.has-fx-smoke .best { background: linear-gradient(90deg, rgba(0, 36, 96, .78), rgba(56, 32, 63, .78)); }
+.has-fx-smoke .newsletter { background: rgba(26, 18, 34, .35); }
+.has-fx-smoke .newsletter::before { opacity: 0; }
+.has-fx-smoke .ftr { background: rgba(12, 9, 14, .9); }
+
 /* ---------- Reszponzív ---------- */
 @media (max-width: 1180px) {
   .catgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
