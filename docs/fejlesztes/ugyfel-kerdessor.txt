@@ -1,0 +1,34 @@
+# Termékadatok
+Töltsd fel a portál Fájlok részébe az Excel/CSV-t, amire a javításoknál hivatkoztál (termékek, angol kategórianevek, árak, készlet). Ha máshol van, írd meg, hol érjük el. *
+> Ebből írjuk be a pontos angol kategórianeveket a kategória-összerendelésbe, és ebből töltjük fel a valódi termékeket.
+Honnan vegyük a termékfotókat: a fájlban vannak linkként, a mostani webshopról, vagy külön küldöd őket? *
+Az ELFBAR NIO kit a használat végén egészében eldobható, vagy cserélhető (előretöltött) podos készülék? *
+> Ha egészében eldobható: Eldobható e-cigaretták. Ha cserélhető podos: Készülékek / Kitek → Előretöltött pod rendszerek.
+Van olyan márka vagy terméktípus a mostani kínálatban, ami nincs benne a fájlban? [hosszú]
+
+# Szállítás (Packeta)
+Van már Packeta-szerződésetek Szlovákiára és Franciaországra? Melyik szolgáltatásokat kéritek (výdajné miesto, Z-BOX, házhoz szállítás)? [hosszú] *
+> Az API-kulcsot ide ne írd: a portál hozzáférések részében add meg, vagy szólj, és biztonságos úton kérjük el.
+Mennyi legyen a szállítási díj piaconként és módonként, és mekkora rendelési értéktől legyen ingyenes a szállítás? [hosszú] *
+Kéritek az utánvétet (dobierka) Szlovákiában és Franciaországban? Ha igen, mennyi a díja? *
+
+# Fizetés és számlázás
+Megvan már a Teya-szerződés a webshopra? Ki a kapcsolattartótok a Teyánál? *
+Melyik SuperFaktúra-fiókot használjuk (a fiók e-mail címe), melyik számlasorba menjenek a webshop számlái, és milyen nyelvűek legyenek a francia számlák? [hosszú] *
+Kártya és utánvét mellett kell más fizetési mód (pl. előre utalás)?
+
+# Piacok, árak, jogi szövegek
+Ugyanaz legyen a bruttó ár Szlovákiában és Franciaországban, vagy változzon az ÁFA-kulccsal (SK 23 %, FR 20 %)? Kérlek, egyeztesd a könyvelőddel. *
+A francia vásárlók külön francia domainen (pl. .fr) vagy a firstvape.sk francia nyelvű változatán vásároljanak? *
+Mit mondott a jogászotok a franciaországi eldobható e-cigaretta-tilalomról: rejtsük el ezt a kategóriát a francia piacon? *
+Ki adja a jogi szövegeket (ÁSZF, adatvédelem, elállás, cookie, FR mentions légales), és mikorra? [hosszú] *
+Add meg a cégadatokat a jogi oldalakhoz és a számlákhoz: cégnév, székhely, IČO, DIČ, IČ DPH, cégjegyzék. [hosszú] *
+Átvegyük a régi webshopból a vásárlókat és a korábbi rendeléseket, vagy tiszta lappal induljunk?
+
+# Domain, tárhely, e-mail
+Hol van a firstvape.sk domain és tárhely, és ki tud belépni? *
+> Csak a szolgáltató nevét írd ide, jelszót ne. A hozzáféréseket a portál hozzáférések részében add meg.
+Melyik címről menjenek a rendelési levelek (pl. info@firstvape.sk), és ki kapja a rendelésekről az értesítőt? *
+
+# Tesztelés
+Ki fogja nálatok végigvinni a teljes tesztrendelést mobilon és laptopon, és hogyan érjük el? *
