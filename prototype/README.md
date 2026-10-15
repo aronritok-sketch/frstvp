@@ -1,6 +1,7 @@
 # First Vape – WooCommerce frontend prototípus (HTML)
 
 A Joomla/VirtueMart alapú First Vape webshop új frontendjének kattintható HTML prototípusa.
+**Az ügyfél 2026-10-15-én jóváhagyta.** A WooCommerce-fejlesztés anyagai (Laci teendőlistája, ügyfél-kérdéssor): `docs/fejlesztes/`.
 Jóváhagyás után ebből készül a WordPress / WooCommerce oldal: **Infinite Unity (`iu_theme`) + `firstvape` child téma**.
 
 ## Piacok, nyelvek, ÁFA
