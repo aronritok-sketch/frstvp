@@ -36,7 +36,7 @@ OPEN = [
     "Packeta-szerződés: API-kulcs, díjak SK és FR, ingyenes szállítás határa, utánvét díja, FR szolgáltatások.",
     "Teya: melyik WooCommerce-kapcsolatot adják (bővítmény vagy fizetési oldal), teszt- és éles kulcsok.",
     "SuperFaktúra: fiók, API-kulcs, számlasor, nyelv (SK / FR).",
-    "Nyelv és piac: egy bolt két nyelvvel vagy két bolt (firstvape.sk + francia domain) – Áron dönt, mielőtt a 08-as fázis indul.",
+    "Nyelv és piac: egy bolt két nyelvvel vagy két bolt (firstvape.sk + francia domain) – Áron dönt, mielőtt a 09-es fázis indul.",
     "Bruttó ár piaconként: ugyanaz a bruttó vagy az ÁFA-kulccsal változó (SK 23 %, FR 20 %) – ügyfél + könyvelő.",
     "Franciaország: eldobható e-cigaretta forgalmazási tilalma – jogász; valószínűleg rejteni kell a kategóriát.",
     "Régi vásárlók és rendelések átvétele a VirtueMartból – csak ha az ügyfél kéri (GDPR).",
@@ -48,7 +48,7 @@ LACI = dict(
     lead="Az ügyfél 2026-10-15-én jóváhagyta a webshop előnézetét (mobilon és laptopon is). Ebből kell megépíteni az éles "
          "WordPress / WooCommerce webshopot: <b>iu_theme + <code>firstvape</code> child téma</b>, klasszikus pénztár, "
          "Packeta, Teya, SuperFaktúra, szlovák és francia piac (EUR). Az előnézet a minta: ami ott működik, annak itt is "
-         "ugyanúgy kell. Haladj a fázisok sorrendjében; a 10–13. fázis a CRM négy élesítési feladata, a projekt saját "
+         "ugyanúgy kell. Haladj a fázisok sorrendjében; a 11–14. fázis a CRM négy élesítési feladata, a projekt saját "
          "lépéseivel. Pipáld ki, ami kész (a CRM-feladat ellenőrzőlistáján is), és a megjegyzésbe írd, ha valami eltért.",
     phases=[
         dict(id="prep", title="Előkészítés", intro="Mielőtt kódot írsz: nézd végig az előnézetet, és állítsd össze a dev környezetet.", items=[
@@ -271,7 +271,7 @@ LACI = dict(
         ]),
         dict(id="golive1", title="Élesítés 1/4 – Előfeltételek", intro="A CRM „Élesítés 1/4” feladata. A következő fázis csak akkor indul, ha ez kész.", items=[
             dict(id="gl1", who="Laci", title="Fejlesztés kész, dev szerveren, belső teszt, jóváhagyás",
-                 desc="<p>FEJLESZTÉS kész · PRODUKTUM (fájlok + adatbázis) a dev szerveren · BELSŐ TESZTELÉS (a 09-es fázis) · "
+                 desc="<p>FEJLESZTÉS kész · PRODUKTUM (fájlok + adatbázis) a dev szerveren · BELSŐ TESZTELÉS (a 10-es fázis) · "
                       "ÉLESÍTÉS JÓVÁHAGYVA (Áron belső ellenőrzése).</p>",
                  check="a CRM-feladat négy pontja ki van pipálva."),
         ]),
