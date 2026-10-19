@@ -2,8 +2,8 @@
 
 **Hova:** ügyfélportál → a „Képfeltöltés” kérés (CRM: Firstvape → Kérések) válaszaként, nem e-mailben.
 **Melléklet:** `prototype/csv/javitando-a-termekfajlban.csv` (Excelben nyitható, soronként mit kell javítani).
-**Előtte:** az új előnézet (`prototype/dist/firstvape-elonezet.zip`) új verzióként a portál előnézet-anyagához, hogy az ügyfél
-ott lássa a termékkártyákat és a termékoldalakat a saját termékeivel és képeivel.
+**Előtte:** az új előnézet (`prototype/dist/firstvape-elonezet.zip`) új portál-anyagként (a régi már jóvá van hagyva), és a kérdőív.
+**Kiküldve:** 2026-10-19, Claude, Áron kérésére.
 
 ---
 
@@ -14,8 +14,9 @@ Köszi a mintát és a termékfájlt, mindkettőt feldolgoztuk.
 **Termékképek**
 - Mind a 392 termékképet átalakítottuk a mintád szerint: átlátszó háttér, bal felső sarokban FIRSTVAPE logó. A webshop sötét
   hátterén így fehér keret nélkül jelennek meg.
-- Az előnézetet feltöltöttük a portálra, már a te termékeiddel és ezekkel a képekkel. A termékkártyákon és a termékoldalakon is
-  megnézheted, hogyan mutatnak, például: E-liquidy → Hotové liquidy 10 ml, vagy bármelyik ELFA pod.
+- Az előnézetet feltöltöttük a portálra („Webshop-előnézet a saját termékeiddel és képeiddel”), már a te termékeiddel és ezekkel a
+  képekkel. A termékkártyákon és a termékoldalakon is megnézheted, hogyan mutatnak, például: E-liquidy → Hotové liquidy 10 ml,
+  vagy bármelyik ELFA pod. Ha így jó, ott hagyd jóvá; ha valamit másképp szeretnél, írd meg ott.
 - Feltöltéskor az átlátszó háttér megmarad: a képeket WebP-formátumban töltjük fel, és semmi nem alakítja őket JPEG-re.
 
 **A gyengébb képek**
@@ -35,6 +36,10 @@ javítani kell a fájlban, mielőtt élesben importáljuk – soronként a mell�
 5. Súly egyik terméknél sincs – a Packeta-díjhoz kell.
 6. A készlet szinte mindenhol 10 db: ha ez mintaszám, élesítés előtt a valódi készlet kell.
 7. A leírások a nagykereskedő angol szövegei, ezek így nem kerülhetnek ki. Szlovák és francia leírás kell – ha szeretnéd, megírjuk.
+
+**Kérdőív**
+A portálon küldtünk egy rövid kérdőívet is: Packeta-díjak, Teya, SuperFaktúra, árak SK / FR, francia domain, jogi szövegek,
+cégadatok, tárhely. Ezek kellenek az éles webshop beállításához; menet közben elmentheted és később folytathatod.
 
 **Két kérdés**
 - A fájlban az előretöltött podok rendszerenként alkategóriában vannak (ELFBAR ELFA, VAPORESSO DOJO, ELFBAR JOINONE, DRIFTER BAR).

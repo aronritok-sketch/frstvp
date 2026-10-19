@@ -1,10 +1,8 @@
 # Termékadatok
-Töltsd fel a portál Fájlok részébe az Excel/CSV-t, amire a javításoknál hivatkoztál (termékek, angol kategórianevek, árak, készlet). Ha máshol van, írd meg, hol érjük el. *
-> Ebből írjuk be a pontos angol kategórianeveket a kategória-összerendelésbe, és ebből töltjük fel a valódi termékeket.
-Honnan vegyük a termékfotókat: a fájlban vannak linkként, a mostani webshopról, vagy külön küldöd őket? *
-Az ELFBAR NIO kit a használat végén egészében eldobható, vagy cserélhető (előretöltött) podos készülék? *
-> Ha egészében eldobható: Eldobható e-cigaretták. Ha cserélhető podos: Készülékek / Kitek → Előretöltött pod rendszerek.
-Van olyan márka vagy terméktípus a mostani kínálatban, ami nincs benne a fájlban? [hosszú]
+Van olyan márka vagy terméktípus a mostani kínálatban, ami nincs benne a termékfájlban? [hosszú]
+> A fájlodat megkaptuk és feldolgoztuk (395 termék). A javítandókat a „Képfeltöltés” kérésedre adott válaszban küldtük.
+A termékfájlban a súly üres. Megadod termékenként, vagy elég kategóriánként egy átlagsúly (pl. egy 10 ml-es liquid, egy pod kit)? [hosszú] *
+> A Packeta a díjat és a címkét a súly alapján számolja.
 
 # Szállítás (Packeta)
 Van már Packeta-szerződésetek Szlovákiára és Franciaországra? Melyik szolgáltatásokat kéritek (výdajné miesto, Z-BOX, házhoz szállítás)? [hosszú] *
