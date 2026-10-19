@@ -11,6 +11,7 @@ Kimenet:
   prototype/csv/import-ellenorzes.md           hibák és javítások listája (HU) – az ügyfélnek és Lacinak
   prototype/csv/kategoria-osszerendeles.csv    a fájl pontos angol kategórianevei ↔ SK kategória ↔ slug
   prototype/csv/termekkepek.csv                termék ↔ forráskép ↔ feldolgozott kép (tools/product_images.py ebből dolgozik)
+  prototype/csv/javitando-a-termekfajlban.csv  az ügyfélnek: soronként mit kell javítani a fájlban (pontosvesszős, Excel)
 
 Szabályok (az ügyféllel véglegesített kategóriafa szerint, DONTESEK 2026-10-15):
 - a fájl angol kategóriája a szlovák kategóriához kerül, új kategória nem jön létre;
@@ -331,6 +332,7 @@ def main():
     write_import(products)
     write_mapping(products)
     write_report(products, issues, rows)
+    write_fixlist(products, issues)
     w = csv.writer(open(os.path.join(ROOT, 'csv/termekkepek.csv'), 'w', newline='', encoding='utf-8'))
     w.writerow(['slug', 'sku', 'name', 'source_url', 'file'])
     for p in products:
@@ -437,6 +439,42 @@ def write_mapping(products):
         names = en_by_slug.get(slug)
         en_txt = ' | '.join(sorted(names)) if names else (en if parent is None and slug != 'eldobhato' else '')
         w.writerow([2 if parent else 1, parent or '', slug, sk, fr, en_txt, count[slug], notes.get(slug, '')])
+
+
+def write_fixlist(products, iss):
+    """Az ügyfélnek: soronként mit kell javítani a termékfájlban (tegező, Excelben nyitható)."""
+    by_sku = {p['sku']: p for p in products}
+    out = []
+    for s, n, new in iss['sku_dup']:
+        out.append((s, n, 'Ugyanez az SKU több terméknél is szerepel – az import egymásra írná őket.', 'Adj egyedi SKU-t (ideiglenesen: %s).' % new))
+    for s, t in iss['type']:
+        out.append((s, by_sku.get(s, {}).get('name', ''), 'A Type oszlopban „%s” áll.' % t, 'Legyen: simple.'))
+    for s, n, c in iss['no_category']:
+        out.append((s, n, 'Nincs kategóriája.', 'Kategória: DISPOSABLE E-CIGARETTES (Jednorazové e-cigarety) – ha jó így, írd be.'))
+    for s, bad in iss['cross_missing']:
+        out.append((s, by_sku.get(s, {}).get('name', ''), 'A Cross-sells oszlopban nem létező SKU: ' + ', '.join(bad),
+                    'Valószínűleg Excel-lehúzás számolta tovább. Javítsd a valódi SKU-ra, vagy töröld.'))
+    for n, ss in iss['same_name']:
+        out.append((', '.join(ss), n, 'Több termék neve teljesen azonos – a vásárló nem tudja megkülönböztetni őket.',
+                    'A név tartalmazza a különbséget (pl. „0 mg” / „20 mg”, „PG/VG 50/50”).'))
+    for s, n in iss['french_name']:
+        out.append((s, n, 'Francia terméknév.', 'Szlovák / semleges név (pl. „Prázdna fľaša Chubby 120 ml”).'))
+    for u, ss in iss['dup_image']:
+        out.append((', '.join(ss), '', 'Ugyanaz a kép több terméknél (%s).' % u, 'Ellenőrizd, jó-e; ha nem, küldd a helyes képet.'))
+    q = os.path.join(ROOT, 'csv/termekkepek-minoseg.csv')  # a product_images.py jelentése, ha már lefutott
+    if os.path.exists(q):
+        for r in csv.DictReader(open(q, encoding='utf-8')):
+            if r.get('new_source'):
+                out.append((r['sku'], r['name'], 'A forrásképen a termék nagyon kicsi (kb. %s px) – feljavítás után is homályos.' % r['object_px'],
+                            'Küldj jobb fotót (gyártói kép, vagy amiből a mintaképed készült).'))
+    out.append(('mind', '', 'Egyik terméknél sincs súly (Weight (kg)).', 'Add meg – a Packeta-díjhoz és a címkéhez kell.'))
+    out.append(('mind', '', 'A készlet szinte mindenhol 10 db (3 terméknél 15).', 'Ha ez mintaszám, élesítés előtt a valódi készlet kell.'))
+    out.append(('%d termék' % len(iss['desc_wholesaler']), '', 'A leírás a nagykereskedő angol szövege (pl. „available in the ADNS catalog”).',
+                'Szlovák és francia leírás kell – ha szeretnéd, megírjuk.'))
+    with open(os.path.join(ROOT, 'csv/javitando-a-termekfajlban.csv'), 'w', newline='', encoding='utf-8-sig') as f:
+        w = csv.writer(f, delimiter=';')
+        w.writerow(['SKU', 'Termék', 'Mi a gond', 'Mit kérünk'])
+        w.writerows(out)
 
 
 def write_report(products, iss, rows):
