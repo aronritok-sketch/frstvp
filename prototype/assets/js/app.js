@@ -32,6 +32,8 @@
         html = FV.views.shop({ type: 'cat', slug: p[1] }, r.q); after = FV.renderShop; title = (FV.cat(p[1]) || {}).name; break;
       case 'marka':
         html = FV.views.shop({ type: 'brand', slug: p[1] }, r.q); after = FV.renderShop; title = (FV.brand(p[1]) || {}).name; break;
+      case 'produkty':
+        html = FV.views.shop({ type: 'all' }, r.q); after = FV.renderShop; title = T('allProducts'); break;
       case 'akciok':
         html = FV.views.shop({ type: 'sale' }, r.q); after = FV.renderShop; title = T('sale'); break;
       case 'kereses':
@@ -131,10 +133,10 @@
     if (!r) return;
     function upd() {
       var id = FV.PUFF_STEPS[+r.value];
-      var cnt = FV.products.filter(function (p) { return FV.inCat(p, 'eldobhato') && FV.isActive(p) && (p.attrs.puff || []).some(function (x) { return FV.puffBucket(x) === id; }); }).length;
+      var cnt = FV.products.filter(function (p) { return FV.isActive(p) && (p.attrs.puff || []).some(function (x) { return FV.puffBucket(x) === id; }); }).length;
       $('#pf-out').textContent = FV.puffBucketLabel(id);
       $('[data-pf-count]').textContent = cnt;
-      $('[data-pf-go]').href = '#/kategoria/eldobhato?puff=' + encodeURIComponent(id);
+      $('[data-pf-go]').href = '#/produkty?puff=' + encodeURIComponent(id);
       r.style.setProperty('--p', (r.value / (FV.PUFF_STEPS.length - 1) * 100) + '%');
     }
     r.addEventListener('input', upd);
@@ -251,6 +253,7 @@
 
   document.addEventListener('change', function (e) {
     var t = e.target;
+    if (t.matches('[data-variant-select]')) { location.hash = '#/termek/' + t.value; return; }
     if (t.matches('[data-f]')) {
       var s = FV.shopState, k = t.dataset.f, arr = s.f[k] || [];
       if (t.checked) arr.push(t.value); else arr = arr.filter(function (v) { return v !== t.value; });

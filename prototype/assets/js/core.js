@@ -115,11 +115,13 @@
     return null;
   };
 
+  FV.LOW_STOCK = 3;
   FV.stockInfo = function (p) {
     var t = FV.t;
     if (p.stock === 'discontinued') return { cls: 'st-disc', label: t('stDisc'), short: t('stDiscShort') };
     if (p.stock === 'outofstock') return { cls: 'st-out', label: t('stOut'), short: t('stOutShort') };
-    if (p.qty <= 15) return { cls: 'st-low', label: t('stLow', { n: p.qty }), short: t('stLowShort') };
+    // alacsony készlet (WooCommerce: „Alacsony készlet küszöbértéke”; az alapja 2, itt 3)
+    if (p.qty <= FV.LOW_STOCK) return { cls: 'st-low', label: t('stLow', { n: p.qty }), short: t('stLowShort') };
     return { cls: 'st-in', label: t('stIn'), short: t('stIn') };
   };
 
@@ -158,8 +160,8 @@
       // Az első megnyitáskor két mintatétel, hogy a kosár és a pénztár kitöltve látszódjon
       if (FV.store.get('cart_seeded', false)) return [];
       var seed = [
-        { id: FV.product('elfbar-bc40000-blueberry-ice').id, qty: 2, v: {} },
-        { id: FV.product('elfbar-elfa-pro-pod-blueberry').id, qty: 3, v: {} }
+        { id: FV.product('elfbar-elfa-turbo-black').id, qty: 1, v: {} },
+        { id: FV.product('elfbar-elfa-pro-pod-pi-20').id, qty: 3, v: {} }
       ];
       FV.store.set('cart', seed);
       FV.store.set('cart_seeded', true);
@@ -299,6 +301,7 @@
 
   /* ---------- Szűrők (WooCommerce layered nav megfelelője) ---------- */
   FV.facetDefs = [
+    { key: 'typ', lk: 'a_typ', get: function (p) { return [FV.primaryCat(p).slug]; }, name: function (v) { return FV.cat(v).name; } },
     { key: 'kat', lk: 'a_kat', get: function (p) { return p.cats.filter(function (c) { return FV.cat(c) && FV.cat(c).parent; }); }, name: function (v) { return FV.cat(v).name; } },
     { key: 'marka', lk: 'a_marka', get: function (p) { return [p.brand]; }, name: function (v) { var b = FV.brand(v); return b ? b.name : v; } },
     { key: 'kompat', lk: 'a_kompat', get: function (p) { return p.attrs.kompat || []; }, name: function (v) { return v; } },
@@ -312,11 +315,13 @@
   ];
   // Csak az adott fő kategóriában értelmezhető szűrők (az ügyfél kérése); márka / akció / keresés oldalon minden, aminek van értéke
   FV.catFacets = {
-    'keszulekek': ['kat', 'marka', 'kompat', 'szin', 'ohm', 'keszlet'],
+    'keszulekek': ['kat', 'marka', 'kompat', 'iz', 'puff', 'nikotin', 'szin', 'ohm', 'keszlet'],
     'eloretoltott-podok': ['marka', 'kompat', 'iz', 'nikotin', 'puff', 'keszlet'],
     'e-liquidek': ['kat', 'marka', 'iz', 'nikotin', 'ml', 'keszlet'],
     'eldobhato': ['marka', 'iz', 'puff', 'nikotin', 'keszlet'],
-    'kiegeszitok': ['kat', 'marka', 'kompat', 'ohm', 'keszlet']
+    'kiegeszitok': ['kat', 'marka', 'kompat', 'ohm', 'keszlet'],
+    // Všetky produkty (#/produkty): a slukkszám-kereső ide visz
+    'all': ['typ', 'marka', 'kompat', 'iz', 'puff', 'nikotin', 'keszlet']
   };
 
   FV.applyFilters = function (list, f, skipKey) {
@@ -376,6 +381,13 @@
     var others = FV.products.filter(function (x) { return x.id !== p.id && FV.isActive(x); });
     var sys = (p.attrs.kompat || []).join(', ');
     var out = [];
+    // az ügyfél saját ajánlásai (a termékfájl Cross-sells oszlopa)
+    if (p.cross && p.cross.length) {
+      var bySku = {};
+      others.forEach(function (x) { bySku[x.sku] = x; });
+      var cross = p.cross.map(function (k) { return bySku[k]; }).filter(Boolean);
+      if (cross.length) out.push({ title: FV.t('relCross'), items: cross });
+    }
     if (isDevice && sys) {
       var parts = others.filter(function (x) { return !FV.inCat(x, 'keszulekek') && shares(p, x); });
       // először a predplnené pody, utána a prázdne pody / hlavy / tanky
@@ -397,7 +409,13 @@
     var seenGrp = {};
     alt = alt.filter(function (x) { if (!x.group) return true; if (seenGrp[x.group]) return false; seenGrp[x.group] = 1; return true; });
     out.push({ title: FV.t(p.stock === 'discontinued' ? 'relInstead' : 'relAlt'), items: alt });
-    return out.map(function (g) { g.items = g.items.slice(0, 4); return g; }).filter(function (g) { return g.items.length; });
+    // ugyanaz a termék csak egyszer jelenjen meg (az első csoportban)
+    var shown = {};
+    return out.map(function (g) {
+      g.items = g.items.filter(function (x) { return !shown[x.id]; }).slice(0, 4);
+      g.items.forEach(function (x) { shown[x.id] = 1; });
+      return g;
+    }).filter(function (g) { return g.items.length; });
   };
 
   /* ---------- Termékillusztrációk (SVG) ----------
@@ -420,6 +438,10 @@
 
   FV.art = function (p, opt) {
     opt = opt || {};
+    // valódi termékfotó (feldolgozva: átlátszó háttér, FIRSTVAPE logó); az egyfájlos változat a rajzot használja (FV.noImg)
+    if (p.img && !FV.noImg) {
+      return '<img class="art art-img" src="' + FV.asset(p.img) + '" alt="' + FV.esc(p.name) + '" width="640" height="640" loading="lazy" decoding="async">';
+    }
     var c = p.color, id = 'g' + (++gid), dark = shade(c, -0.35), light = shade(c, 0.35);
     var brand = FV.brand(p.brand), bname = FV.esc(brand ? brand.name.toUpperCase() : '');
     var puff = (p.attrs.puff || [])[0] || 0;

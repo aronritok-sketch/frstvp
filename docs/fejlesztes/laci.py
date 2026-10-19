@@ -31,7 +31,7 @@ TREE = [
 ]
 
 OPEN = [
-    "Az ügyfél Excel/CSV-je (valódi termékek, fotók, árak, készlet, a pontos angol kategórianevek) – a kérdéssorban kérjük.",
+    "Az ügyfél fájljának hibái (dupla SKU, hiányzó súly, mintaszámnak tűnő készlet, nagyker-leírások, rossz cross-sell SKU-k): prototype/csv/import-ellenorzes.md.",
     "ELFBAR NIO: Eldobható vagy Készülékek / Előretöltött pod rendszerek – az ügyfél dönt.",
     "Packeta-szerződés: API-kulcs, díjak SK és FR, ingyenes szállítás határa, utánvét díja, FR szolgáltatások.",
     "Teya: melyik WooCommerce-kapcsolatot adják (bővítmény vagy fizetési oldal), teszt- és éles kulcsok.",
@@ -138,24 +138,30 @@ LACI = dict(
                       "(pl. Farba: Čierna · Strieborná · Modrá), a nem raktáros szaggatott kerettel.</p>",
                  check="az ELFA Pro Kit oldalán a három szín link, a jelenlegi kiemelve."),
         ]),
-        dict(id="import", title="Termékimport", intro="A valódi adatok az ügyfél Excel/CSV-jéből jönnek (még nincs meg, a kérdéssorban kérjük). "
-             "Addig a <code>prototype/csv/firstvape-termekimport-sablon.csv</code> mintaadataival építs.", items=[
+        dict(id="import", title="Termékimport", intro="Az ügyfél fájlja megérkezett (2026-10-19, <code>prototype/csv/ugyfel/</code>, 395 SIMPLE termék). "
+             "A tisztított importfájl és a hibalista kész: <code>prototype/csv/firstvape-woocommerce-import.csv</code>, <code>prototype/csv/import-ellenorzes.md</code> "
+             "(generátor: <code>prototype/tools/client_import.py</code> – ha az ügyfél javított fájlt küld, ezt futtasd újra).", items=[
             dict(id="imp-map", who="Laci", title="Angol kategória → szlovák kategória, dupla nélkül",
-                 desc="<p>Az ügyfél fájljában a kategóriák angolul vannak. Az importáló (<code>woocommerce_product_import_pre_insert_product_object</code> "
-                      "vagy saját importáló) az angol nevet / „Szülő &gt; Gyerek” útvonalat a <code>_fv_en_name</code> alapján a meglévő "
-                      "szlovák kategóriához rendeli, <b>új kategóriát nem hoz létre</b>. Ismeretlen angol név: hibalista, nem új kategória.</p>",
-                 check="ugyanazt a fájlt kétszer importálva sincs új kategória; az ismeretlen nevek listában jönnek."),
-            dict(id="imp-columns", who="Laci", title="Oszlop-hozzárendelés és frissítés SKU alapján",
-                 desc="<p>Az ügyfél fájljának oszlopait rendeld a WooCommerce mezőihez és a <code>pa_*</code> attribútumokhoz "
-                      "(<code>woocommerce_csv_product_import_mapping_*</code> szűrők). Fallback: a mi sablonunk fejlécei "
-                      "(Típus, Terméknév, SKU, EAN, Kategória (EN), Márka, Termékcsoport, Íz, Nikotin, ML, Puff, Kompatibilitás, Szín, "
-                      "Ellenállás (Ω), árak, Készlet, Státusz, Súly (kg), leírások, Kép URL-ek). EAN → <code>global_unique_id</code>. "
-                      "Ár- és készletfrissítés az ötoszlopos rövid sablonnal.</p>",
-                 check="a minta CSV hiba nélkül bejön, másodszorra csak frissít (nincs dupla termék)."),
-            dict(id="imp-images", who="Laci", title="Valódi termékfotók",
-                 desc="<p>A képek az ügyfél fájljából (URL) vagy a régi VirtueMart-oldalról jönnek; <code>alt</code> = terméknév. "
-                      "A prototípus rajzolt illusztrációi nem kerülnek át.</p>",
-                 check="minden terméknek van fotója; a listában egységes képarány."),
+                 desc="<p>Az ügyfél fájljában a kategóriák angolul vannak (pl. <code>DEVICES / KITS &gt; PREFILLED POD KITS</code>). A pontos párosítás: "
+                      "<code>prototype/csv/kategoria-osszerendeles.csv</code>. A tisztított importfájl már a szlovák kategóriautat tartalmazza "
+                      "(„Zariadenia / kity &gt; Predplnené pod systémy”); az eredeti angol név a <code>Meta: _fv_en_category</code> oszlopban van. "
+                      "A „PREFILLED PODS &gt; ELFBAR ELFA / VAPORESSO DOJO / ELFBAR JOINONE / DRIFTER BAR” alkategóriák helyett egy kategória + "
+                      "Systém attribútum. Ha az ügyfél angol nevekkel tölt fel később is: az importáló a <code>_fv_en_name</code> term meta alapján "
+                      "rendeljen, <b>új kategóriát ne hozzon létre</b>.</p>",
+                 check="a tisztított CSV kétszeri importja után sincs új vagy dupla kategória."),
+            dict(id="imp-columns", who="Laci", title="Import a tisztított CSV-ből, frissítés SKU alapján",
+                 desc="<p><code>prototype/csv/firstvape-woocommerce-import.csv</code>: WooCommerce-fejlécek, SK kategóriák, attribútumok SK címkével "
+                      "(Príchuť, Nikotín „20 mg/ml (2 %)”, Objem, Počet potiahnutí, Systém, Farba, Odpor), <code>Meta: _fv_group</code> (testvértermékek), "
+                      "érvényes Cross-sells. A dupla SKU-k ideiglenes végződést kaptak (pl. <code>-PINEAPPLE-LEMON</code>) – a véglegeset az ügyfél adja. "
+                      "A súly üres (az ügyfél adja meg), a leírás üres (a nagyker angol szövege nem kerülhet ki; szlovák és francia szöveg kell).</p>",
+                 check="mind a 395 termék bejön, másodszorra csak frissít (nincs dupla termék)."),
+            dict(id="imp-images", who="Laci", title="Feldolgozott termékfotók, átlátszó háttérrel",
+                 desc="<p>Az ügyfél kérése: átlátszó háttér, FIRSTVAPE logó bal felül. Kész: <code>prototype/tools/product_images.py</code> "
+                      "(háttér-eltávolítás, a gyenge képek feljavítása, 1200 × 1200 px WebP). A mesterképek zipje a CRM-feladatnál; a fájlnév a termék slugja "
+                      "(az import <code>Images</code> oszlopa erre hivatkozik). <b>Az átlátszóság maradjon meg:</b> WebP-ként töltsd fel, ne alakítsa JPEG-re semmi "
+                      "(képoptimalizáló bővítmény, tárhely), a WooCommerce bélyegképei is legyenek WebP / PNG. A 26 túl kicsi forrásképhez (főleg ELFLIQ) "
+                      "az ügyféltől jobb fotót kérünk – ha jön, a szkript újrafuttatható.</p>",
+                 check="a termékoldalon és a listában a kép mögött a webshop sötét háttere látszik, nincs fehér keret."),
             dict(id="imp-redirect", who="Laci", title="301 a régi VirtueMart-címekről",
                  desc="<p>A régi oldal termék- és kategóriacímeit (feltérképezés vagy a Search Console listája) az új címekre irányítsd, "
                       "SKU vagy név alapján párosítva.</p>",

@@ -58,7 +58,7 @@
         FV.visibleBrands().sort(function (a, b) { return a.name.localeCompare(b.name); }).map(function (b) {
           return '<a class="brand-tile" href="#/marka/' + b.slug + '">' + FV.wordmark(b, 'sm') + '<small>' + FV.nw('wProducts', FV.productsOfBrand(b.slug).filter(FV.isActive).length) + '</small></a>';
         }).join('') + '</div></div>' +
-        '<div class="mega-col mega-promo"><p class="mega-h">' + t('featuredBrand') + '</p>' + promo(FV.product('elfbar-elfa-pro-kit-black'), t('elfaPromoTitle'), t('elfaPromoText')) + '</div>' +
+        '<div class="mega-col mega-promo"><p class="mega-h">' + t('featuredBrand') + '</p>' + promo(FV.product('elfbar-elfa-turbo-black'), t('elfaPromoTitle'), t('elfaPromoText')) + '</div>' +
         '</div></div>';
     }
     if (!item.cat) return '';
@@ -71,9 +71,11 @@
       kids.map(function (ch) {
         return '<li><a href="#/kategoria/' + ch.slug + '">' + esc(ch.name) + '<span class="cnt">' + FV.productsInCat(ch.slug).length + '</span></a></li>';
       }).join('') + '<li class="mega-all"><a href="#/kategoria/' + c.slug + '">' + t('seeAll') + ' <span class="cnt">' + FV.productsInCat(c.slug).length + '</span> ' + I('chev') + '</a></li></ul></div>';
-    var puff = item.puffLinks ? '<div class="mega-col"><p class="mega-h">' + t('byPuffs') + '</p><div class="puff-chips">' +
-      FV.PUFF_BUCKETS.map(function (b) {
-        return '<a class="puff-chip" href="#/kategoria/eldobhato?puff=' + encodeURIComponent(b.id) + '"><b>' + esc(FV.puffBucketLabel(b.id)) + '</b></a>';
+    // slukkszám-sávok: csak azok, amelyekben van termék ebben a kategóriában (legalább kettő kell, különben nincs értelme)
+    var pb = puffBuckets(prods);
+    var puff = item.puffLinks && pb.length > 1 ? '<div class="mega-col"><p class="mega-h">' + t('byPuffs') + '</p><div class="puff-chips">' +
+      pb.map(function (b) {
+        return '<a class="puff-chip" href="#/kategoria/' + c.slug + '?puff=' + encodeURIComponent(b.id) + '"><b>' + esc(FV.puffBucketLabel(b.id)) + '</b></a>';
       }).join('') + '</div><p class="mega-note">' + t('puffNote') + '</p></div>' : '';
     var br = '<div class="mega-col"><p class="mega-h">' + t('brandsInCat') + '</p><ul class="mega-list">' +
       Object.keys(brands).map(function (s) {
@@ -82,6 +84,18 @@
       }).join('') + '</ul></div>';
     return '<div class="mega"><div class="wrap mega-in">' + sub + puff + br +
       '<div class="mega-col mega-promo"><p class="mega-h">' + t('popularNow') + '</p>' + (feat ? promo(feat) : '') + '</div></div></div>';
+  }
+
+  // az Akciók menüpont csak akkor látszik, ha van akciós termék (az ügyfél ritkán akciózik)
+  function menuItems() {
+    var hasSale = FV.products.some(function (p) { return p.sale; });
+    return FV.menu.filter(function (m) { return !m.sale || hasSale; });
+  }
+
+  function puffBuckets(prods) {
+    return FV.PUFF_BUCKETS.filter(function (b) {
+      return prods.some(function (p) { return (p.attrs.puff || []).some(function (x) { return FV.puffBucket(x) === b.id; }); });
+    });
   }
 
   function promo(p, title, text) {
@@ -103,7 +117,7 @@
   FV.langSwitch = langSwitch;
 
   FV.renderHeader = function () {
-    var nav = FV.menu.map(function (m, i) {
+    var nav = menuItems().map(function (m, i) {
       var href = m.href || (m.cat ? '#/kategoria/' + m.cat : '#/markak');
       var hasMega = !!(m.cat || m.brands);
       return '<li class="nav-item' + (hasMega ? ' has-mega' : '') + (m.sale ? ' is-sale' : '') + '" data-nav="' + i + '">' +
@@ -141,13 +155,13 @@
   };
 
   function mobileMenu() {
-    var items = FV.menu.map(function (m) {
+    var items = menuItems().map(function (m) {
       if (m.cat) {
         var c = FV.cat(m.cat).node;
         return '<li><details><summary>' + esc(menuLabel(m)) + I('down') + '</summary><ul>' +
           '<li><a href="#/kategoria/' + c.slug + '">' + t('seeAll') + ': ' + esc(c.short) + '</a></li>' +
           FV.visibleChildren(c).map(function (ch) { return '<li><a href="#/kategoria/' + ch.slug + '">' + esc(ch.name) + '</a></li>'; }).join('') +
-          (m.puffLinks ? '<li class="mm-puffs">' + FV.PUFF_BUCKETS.map(function (b) { return '<a class="puff-chip sm" href="#/kategoria/eldobhato?puff=' + encodeURIComponent(b.id) + '"><b>' + esc(FV.puffBucketLabel(b.id)) + '</b></a>'; }).join('') + '</li>' : '') +
+          (m.puffLinks && puffBuckets(FV.productsInCat(c.slug)).length > 1 ? '<li class="mm-puffs">' + puffBuckets(FV.productsInCat(c.slug)).map(function (b) { return '<a class="puff-chip sm" href="#/kategoria/' + c.slug + '?puff=' + encodeURIComponent(b.id) + '"><b>' + esc(FV.puffBucketLabel(b.id)) + '</b></a>'; }).join('') + '</li>' : '') +
           '</ul></details></li>';
       }
       if (m.brands) {

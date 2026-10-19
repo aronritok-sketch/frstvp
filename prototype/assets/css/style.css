@@ -393,7 +393,7 @@ a.tag:hover { border-color: var(--red); color: #fff; }
 .art { filter: drop-shadow(0 12px 18px rgba(0, 0, 0, .45)); }
 .pcard.is-discontinued .pc-media .art { filter: grayscale(.85); opacity: .5; }
 .pcard.is-outofstock .pc-media .art { opacity: .65; }
-.pc-badges { position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.pc-badges { position: absolute; top: 56px; right: 10px; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; } /* jobb oldalon: a termékkép bal felső sarkában a FIRSTVAPE logó van */
 .bdg { display: inline-flex; align-items: center; height: 26px; padding: 0 9px; border-radius: 6px; font: 700 14px/1 var(--f-display); letter-spacing: .04em; text-transform: uppercase; }
 .bdg-sale { background: var(--red); color: #fff; }
 .bdg-disc { background: #000; color: #fff; border: 1px solid var(--line-2); }
@@ -641,7 +641,7 @@ a.tag:hover { border-color: var(--red); color: #fff; }
 .gallery { position: sticky; top: var(--stick-top); display: grid; gap: 12px; }
 .g-main { position: relative; display: grid; place-items: center; aspect-ratio: 1 / 1; max-width: 100%; border-radius: 20px; border: 1px solid var(--line); background: radial-gradient(circle at 50% 55%, color-mix(in srgb, var(--tint) 38%, transparent), transparent 62%), #1D1621; }
 .g-main .art { width: 76%; height: 76%; }
-.g-main .pc-badges { top: 18px; left: 18px; }
+.g-main .pc-badges { top: 18px; right: 18px; }
 .g-thumbs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; max-width: 420px; }
 .g-th { display: grid; place-items: center; aspect-ratio: 1 / 1; max-width: 100%; border-radius: var(--r); background: radial-gradient(circle at 50% 55%, color-mix(in srgb, var(--tint) 30%, transparent), transparent 65%), var(--surface); border: 1px solid var(--line); padding: 0; }
 .g-th.on { border: 2px solid var(--red); }
@@ -1085,3 +1085,16 @@ a.acc-card:hover { border-color: var(--red); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
+
+/* ---------- Valódi termékfotók (tools/product_images.py: átlátszó háttér, FIRSTVAPE logó bal felül) ---------- */
+.art-img { display: block; object-fit: contain; }
+.pc-media .art-img, .g-main .art-img { width: 100%; height: 100%; }
+.pcard:hover .pc-media .art-img { transform: scale(1.03); }
+.ct-art .art-img { width: 170px; height: 170px; }
+.mini span .art-img { width: 104px; height: 104px; }
+.promo-art .art-img { width: 120px; height: 120px; }
+/* sok testvértermék: választólista */
+.var-sel { width: 100%; min-height: 48px; padding: 10px 14px; border-radius: var(--r-sm); border: 1px solid var(--line-2); background: var(--surface-2); color: var(--text); font: 600 15px/1.2 var(--f-body); }
+.var-sel:focus { outline: none; border-color: var(--red); box-shadow: 0 0 0 3px rgba(236, 47, 75, .2); }
+.variants .muted.small { margin-top: 4px; }
+.pg-gap { display: inline-grid; place-items: center; min-width: 24px; color: var(--muted); }

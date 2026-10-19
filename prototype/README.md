@@ -104,6 +104,23 @@ A mintaadatok az `assets/js/data.js` fájlban vannak, pontosan ebben a szerkezet
 - 18+ korellenőrző ablak nyelvválasztóval, hírlevél, lábléc a brief szerinti blokkokkal
 - SK / FR nyelv- és piacváltó (felület, árak ÁFÁ-val, szállítás, fizetés, jogi oldalak)
 
+## Valódi termékadatok és termékfotók (2026-10-19)
+
+Az ügyfél termékfájlja (WooCommerce-CSV.xlsx, a portálon) az előnézet adatforrása: 395 SIMPLE termék, 12 márka.
+
+```
+python3 prototype/tools/client_import.py                 # csv/ugyfel/*.csv → assets/js/products.js, csv/firstvape-woocommerce-import.csv,
+                                                         # csv/import-ellenorzes.md, csv/kategoria-osszerendeles.csv, csv/termekkepek.csv
+.venv/bin/python prototype/tools/product_images.py --work <mappa>   # pillow, numpy, opencv-contrib-python-headless, rembg[cpu]
+```
+
+- A termékfotók (a nagykereskedő 800 px-es, fehér hátterű képei) háttér nélkül, a FIRSTVAPE logóval bal felül, 1200 × 1200 px WebP-ként
+  (az ügyfél kérése). Az előnézetben 640 px (`assets/img/p/`); a mesterképek a CRM-ben, Laci feladatánál.
+- A túl kicsi vagy életlen forrásképeket a szkript feljavítja (Lanczos + élesítés); ahol a termék kisebb 250 px-nél, új forrásképet kér
+  (`csv/termekkepek-minoseg.csv`). Mesterséges intelligenciás felnagyítást (EDSR) is kipróbáltunk: a címkék szövegét olvashatatlanná tette.
+- A fájl hibái és a mi javításaink: `csv/import-ellenorzes.md`.
+- Az egyfájlos változat (`build_single.py`) termékfotók nélkül, rajzolt képekkel készül (méret miatt).
+
 ## Kategóriafa (az ügyféllel véglegesítve, 2. kör)
 
 1. **Készülékek / Kitek** (`keszulekek`): Előretöltött pod rendszerek · Utántölthető pod rendszerek · Mod / Tank kitek

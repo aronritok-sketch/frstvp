@@ -89,7 +89,7 @@ def main():
 <div class="toast" data-toast role="status" aria-live="polite" hidden></div>
 %(bar)s
 <script>
-window.FV = window.FV || {}; FV.assetMap = { %(asset_map)s };
+window.FV = window.FV || {}; FV.assetMap = { %(asset_map)s }; FV.noImg = true; /* egyfájlos változat: termékfotók nélkül, rajzolt képekkel */
 %(js)s
 %(bar_js)s
 </script>

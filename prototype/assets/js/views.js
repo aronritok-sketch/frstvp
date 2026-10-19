@@ -82,16 +82,20 @@
 
   FV.views.home = function () {
     var sale = FV.products.filter(function (p) { return p.sale && p.stock === 'instock'; }).sort(function (a, b) { return FV.discount(b) - FV.discount(a); }).slice(0, 4);
-    var elfaKit = FV.product('elfbar-elfa-pro-kit-black');
-    var elfaPods = FV.products.filter(function (p) { return FV.inCat(p, 'eloretoltott-podok') && (p.attrs.kompat || []).indexOf('ELFA') !== -1 && FV.isActive(p); });
+    var elfaKit = FV.product('elfbar-elfa-turbo-black');
+    var elfaAll = FV.products.filter(function (p) { return FV.inCat(p, 'eloretoltott-podok') && (p.attrs.kompat || []).indexOf('ELFA') !== -1 && FV.isActive(p); });
+    var seenIz = {};
+    var elfaPods = elfaAll.filter(function (p) { var k = (p.attrs.iz || [''])[0]; if (seenIz[k]) return false; seenIz[k] = 1; return true; });
+    var elfaFlavors = elfaPods.length;
+    elfaPods = elfaPods.slice(0, 8);
     var brands = FV.visibleBrands(), active = FV.products.filter(FV.isActive);
-    var tabs = ['eldobhato', 'eloretoltott-podok', 'e-liquidek', 'keszulekek'];
+    var tabs = ['eloretoltott-podok', 'keszulekek', 'e-liquidek', 'kiegeszitok'];
 
     return '<section class="hero"><div class="hero-smoke" aria-hidden="true"></div><div class="wrap hero-in">' +
       '<div class="hero-copy"><p class="eyebrow">' + t('heroEyebrow') + '</p>' +
       '<h1>' + t('heroH1') + '</h1>' +
       '<p class="lead">' + t('heroLead') + '</p>' +
-      '<div class="hero-cta"><a class="btn btn-primary btn-lg" href="#/kategoria/eldobhato">' + t('heroCta1') + '</a><a class="btn btn-ghost btn-lg" href="#/markak">' + t('heroCta2') + '</a></div>' +
+      '<div class="hero-cta"><a class="btn btn-primary btn-lg" href="#/produkty">' + t('heroCta1') + '</a><a class="btn btn-ghost btn-lg" href="#/markak">' + t('heroCta2') + '</a></div>' +
       '<ul class="hero-facts"><li><b class="num">' + active.length + '</b> ' + FV.pl('wProducts', active.length) + '</li><li><b class="num">' + brands.length + '</b> ' + FV.pl('wBrands', brands.length) + '</li>' + (FV.lang === 'sk' ? '<li><b class="num">1–2</b> dni doručenie</li>' : '<li><b class="num">100 %</b> authentiques</li>') + '</ul></div>' +
       '<div class="pufffinder" data-pufffinder><p class="pf-label">' + t('pfLabel') + '</p>' +
       '<p class="pf-q">' + t('pfQ') + '</p>' +
@@ -100,7 +104,7 @@
       '<input id="pf-range" class="pf-range" type="range" min="0" max="' + (PUFF_STEPS.length - 1) + '" step="1" value="2" data-pf-range>' +
       '<div class="pf-ticks" aria-hidden="true">' + FV.PUFF_BUCKETS.map(function (b) { return '<span>' + esc(b.tick) + '</span>'; }).join('') + '</div>' +
       '<p class="pf-note">' + t('puffNote') + '</p>' +
-      '<a class="btn btn-primary pf-go" href="#/kategoria/eldobhato" data-pf-go><span>' + t('pfGo', { n: '<span data-pf-count>0</span>' }) + '</span></a></div>' +
+      '<a class="btn btn-primary pf-go" href="#/produkty" data-pf-go><span>' + t('pfGo', { n: '<span data-pf-count>0</span>' }) + '</span></a></div>' +
       '</div></section>' +
 
       '<section class="wrap sec">' + sectionHead(t('rangeTitle'), null, null, t('rangeEyebrow')) + '<div class="catgrid">' + FV.categories.filter(function (c) { return FV.catHasProducts(c.slug); }).map(function (c) {
@@ -115,12 +119,12 @@
       '</div></div></section>' +
 
       '<section class="sec system"><div class="wrap sys-in"><div class="sys-copy"><p class="eyebrow">' + t('a_kompat') + '</p>' +
-      '<h2>' + t('sysTitle', { n: elfaPods.length, w: FV.pl('wFlavors', elfaPods.length) }) + '</h2>' +
+      '<h2>' + t('sysTitle', { n: elfaFlavors, w: FV.pl('wFlavors', elfaFlavors) }) + '</h2>' +
       '<p>' + t('sysText') + '</p>' +
-      '<div class="sys-tags">' + [['eloretoltott-podok', 'ELFA'], ['kiegeszitok', 'Vaporesso XROS'], ['eloretoltott-podok', 'Lost Mary TAPPO']].map(function (x) {
+      '<div class="sys-tags">' + [['eloretoltott-podok', 'ELFA'], ['eloretoltott-podok', 'JOIN ONE'], ['eloretoltott-podok', 'DOJO BLAST'], ['eloretoltott-podok', 'DRIFTER BAR']].map(function (x) {
         return '<a class="tag" href="#/kategoria/' + x[0] + '?kompat=' + encodeURIComponent(x[1]) + '">' + esc(FV.compatLabel(x[1])) + '</a>';
       }).join('') + '</div></div>' +
-      '<div class="sys-combo"><div class="sys-kit">' + FV.card(elfaKit) + '</div><span class="sys-plus" aria-hidden="true">' + I('plus') + '</span><div class="sys-pods">' +
+      '<div class="sys-combo"><div class="sys-kit">' + (elfaKit ? FV.card(elfaKit) : '') + '</div><span class="sys-plus" aria-hidden="true">' + I('plus') + '</span><div class="sys-pods">' +
       elfaPods.map(function (p) { return '<a class="mini" href="#/termek/' + p.slug + '" style="--tint:' + FV.tint(p) + '"><span>' + FV.art(p) + '</span><b>' + esc(p.attrs.iz[0]) + '</b><small class="num">' + money(FV.price(p)) + '</small></a>'; }).join('') +
       '</div></div></div></section>' +
 
@@ -206,6 +210,11 @@
         '<div class="subnav">' + Object.keys(cats).map(function (k) {
           return '<a class="chip" href="#/kategoria/' + k + '?marka=' + b.slug + '">' + esc(FV.cat(k).name) + ' <span class="cnt">' + cats[k] + '</span></a>';
         }).join('') + '</div></div></div>';
+    } else if (ctx.type === 'all') {
+      base = FV.products.slice();
+      title = t('allProducts');
+      allowed = FV.catFacets.all;
+      bc.push({ label: t('allProducts') });
     } else if (ctx.type === 'sale') {
       base = FV.products.filter(function (p) { return p.sale; });
       title = t('sale');
@@ -249,7 +258,7 @@
       (n ? '' : '<div class="empty"><p>' + t('srEmpty', { a1: '<a href="#/kereses/Elfbar">Elfbar</a>', a2: '<a href="#/kereses/mango">mango</a>', a3: '<a href="#/kereses/40000">40000</a>' }) + '</p></div>') + '</div>';
   }
 
-  var FKEYS = ['marka', 'kat', 'puff', 'iz', 'nikotin', 'ml', 'kompat', 'szin', 'keszlet'];
+  var FKEYS = ['typ', 'marka', 'kat', 'puff', 'iz', 'nikotin', 'ml', 'kompat', 'szin', 'ohm', 'keszlet'];
   function parseFilters(q) {
     var f = { rend: q.rend || 'pop', oldal: +(q.oldal || 1) };
     FKEYS.forEach(function (k) { f[k] = q[k] ? q[k].split(',') : []; });
@@ -287,8 +296,12 @@
     FV.$('[data-rcount]').innerHTML = '<b class="num">' + list.length + '</b> ' + FV.pl('wProducts', list.length);
 
     var pager = FV.$('[data-pager]');
-    pager.innerHTML = pages > 1 ? Array.apply(null, Array(pages)).map(function (_, i) {
-      return '<button type="button" class="pg' + (i + 1 === f.oldal ? ' on' : '') + '" data-act="page" data-p="' + (i + 1) + '"' + (i + 1 === f.oldal ? ' aria-current="page"' : '') + '>' + (i + 1) + '</button>';
+    // lapozó: első, utolsó és az aktuális ±1, közte „…” (sok oldalnál sem lóg ki)
+    var nums = [];
+    for (var n = 1; n <= pages; n++) if (n === 1 || n === pages || Math.abs(n - f.oldal) <= 1) nums.push(n);
+    pager.innerHTML = pages > 1 ? nums.map(function (n, i) {
+      var gap = i && n - nums[i - 1] > 1 ? '<span class="pg-gap" aria-hidden="true">…</span>' : '';
+      return gap + '<button type="button" class="pg' + (n === f.oldal ? ' on' : '') + '" data-act="page" data-p="' + n + '"' + (n === f.oldal ? ' aria-current="page"' : '') + '>' + n + '</button>';
     }).join('') : '';
 
     // aktív szűrő chipek
@@ -400,15 +413,32 @@
 
     // Változatok: minden változat külön SIMPLE termék (saját SKU); a testvértermékek linkként jelennek meg
     var sibs = p.group ? FV.products.filter(function (x) { return x.group === p.group; }) : [];
-    var diffKey = ['szin', 'nikotin', 'ohm', 'iz'].filter(function (k) {
+    var diffKeys = ['szin', 'iz', 'nikotin', 'ohm', 'ml'].filter(function (k) {
       var vals = {}; sibs.forEach(function (x) { vals[(x.attrs[k] || []).join('/')] = 1; }); return Object.keys(vals).length > 1;
-    })[0];
-    var optHtml = sibs.length > 1 && diffKey ? '<div class="variants"><p class="variants-h">' + t({ szin: 'a_szin', nikotin: 'a_nikotin', ohm: 'a_ohm', iz: 'a_iz' }[diffKey]) + ':</p><div class="opt-row">' +
-      sibs.map(function (x) {
-        var v = (x.attrs[diffKey] || [])[0], lbl = diffKey === 'szin' ? FV.colorName(v) : diffKey === 'nikotin' ? FV.nicLabel(v) : v;
-        var sw = diffKey === 'szin' ? '<i class="sw" style="background:' + (FV.colorSwatches[v] || '#ccc') + '"></i>' : '';
-        return '<a class="opt-chip' + (x.id === p.id ? ' on' : '') + (x.stock !== 'instock' ? ' na' : '') + '" href="#/termek/' + x.slug + '"' + (x.id === p.id ? ' aria-current="true"' : '') + '>' + sw + '<span>' + esc(lbl) + '</span></a>';
-      }).join('') + '</div></div>' : '';
+    });
+    var diffKey = diffKeys[0];
+    var vLabel = function (x) {
+      return diffKeys.map(function (k) {
+        var v = (x.attrs[k] || [])[0];
+        return v == null ? '' : k === 'szin' ? FV.colorName(v) : k === 'nikotin' ? FV.nicLabel(v) : String(v);
+      }).filter(Boolean).join(' · ');
+    };
+    var vHead = diffKeys.map(function (k) { return t({ szin: 'a_szin', nikotin: 'a_nikotinShort', ohm: 'a_ohm', iz: 'a_iz', ml: 'a_ml' }[k]); }).join(' · ');
+    var optHtml = '';
+    if (sibs.length > 1 && diffKey && sibs.length > 12) {
+      // sok testvértermék (pl. 49 ízű ELFA pod): választólista, ami a kiválasztott termékoldalra visz
+      optHtml = '<div class="variants"><label class="variants-h" for="var-sel">' + esc(vHead) + ':</label>' +
+        '<select id="var-sel" class="var-sel" data-variant-select>' + sibs.slice().sort(function (a, b) { return vLabel(a).localeCompare(vLabel(b)); }).map(function (x) {
+          return '<option value="' + x.slug + '"' + (x.id === p.id ? ' selected' : '') + '>' + esc(vLabel(x)) + (x.stock !== 'instock' ? ' – ' + esc(FV.stockInfo(x).short) : '') + '</option>';
+        }).join('') + '</select><p class="muted small">' + t('variantsCount', { n: sibs.length }) + '</p></div>';
+    } else if (sibs.length > 1 && diffKey) {
+      optHtml = '<div class="variants"><p class="variants-h">' + esc(vHead) + ':</p><div class="opt-row">' +
+        sibs.map(function (x) {
+          var v = (x.attrs.szin || [])[0];
+          var sw = diffKey === 'szin' ? '<i class="sw" style="background:' + (FV.colorSwatches[v] || '#ccc') + '"></i>' : '';
+          return '<a class="opt-chip' + (x.id === p.id ? ' on' : '') + (x.stock !== 'instock' ? ' na' : '') + '" href="#/termek/' + x.slug + '"' + (x.id === p.id ? ' aria-current="true"' : '') + '>' + sw + '<span>' + esc(vLabel(x)) + '</span></a>';
+        }).join('') + '</div></div>';
+    }
 
     var buy;
     if (p.stock === 'instock') {
@@ -438,7 +468,7 @@
       [t('a_ohm'), esc((a.ohm || []).join(', '))],
       [t('a_szin'), esc((a.szin || []).map(FV.colorName).join(', '))],
       [t('sku'), '<span class="num">' + esc(p.sku) + '</span>'],
-      ['EAN', '<span class="num">' + esc(p.ean) + '</span>']
+      ['EAN', p.ean ? '<span class="num">' + esc(p.ean) + '</span>' : '']
     ].filter(function (r) { return r[1]; });
 
     // Íz, szín, kiszerelés, nikotin: mindig jól látható, akkor is, ha nincs a névben
@@ -452,12 +482,12 @@
       a.puff && a.puff.length ? [t('puffEst'), FV.puffApprox(a.puff[0])] : null
     ].filter(Boolean);
 
-    var views = [0, 1, 2];
+    var views = p.gallery > 1 ? [0, 1, 2] : [];
     var related = FV.related(p);
     var cats = p.cats.map(function (c) { return FV.cat(c) ? '<a href="#/kategoria/' + c + '">' + esc(FV.cat(c).name) + '</a>' : ''; }).join(', ');
     var hasNic = (a.nikotin || []).some(function (x) { return x !== '0 mg'; });
 
-    var ld = { '@context': 'https://schema.org', '@type': 'Product', name: p.name, sku: p.sku, gtin13: p.ean, brand: { '@type': 'Brand', name: b.name },
+    var ld = { '@context': 'https://schema.org', '@type': 'Product', name: p.name, sku: p.sku, gtin13: p.ean || undefined, image: p.img ? FV.asset(p.img) : undefined, brand: { '@type': 'Brand', name: b.name },
       description: p.short,
       offers: { '@type': 'Offer', priceCurrency: 'EUR', price: FV.price(p).toFixed(2), availability: 'https://schema.org/' + (p.stock === 'instock' ? 'InStock' : p.stock === 'outofstock' ? 'OutOfStock' : 'Discontinued') } };
 
@@ -465,9 +495,9 @@
       '<div class="pdp">' +
       '<div class="gallery"><div class="g-main" style="--tint:' + FV.tint(p) + '" data-g-main>' + FV.art(p) +
       '<div class="pc-badges">' + (FV.discount(p) ? '<span class="bdg bdg-sale">−' + FV.discount(p) + '%</span>' : '') + (p.stock === 'discontinued' ? '<span class="bdg bdg-disc">' + t('stDiscShort') + '</span>' : '') + '</div></div>' +
-      '<div class="g-thumbs" role="list">' + views.map(function (v) {
+      (views.length ? '<div class="g-thumbs" role="list">' : '') + views.map(function (v) {
         return '<button role="listitem" type="button" class="g-th' + (v ? '' : ' on') + '" data-act="gview" data-v="' + v + '" data-id="' + p.id + '" style="--tint:' + FV.tint(p) + '" aria-label="' + esc(t('img', { n: v + 1 })) + '">' + FV.art(p, { view: v }) + '</button>';
-      }).join('') + '</div></div>' +
+      }).join('') + (views.length ? '</div>' : '') + '</div>' +
 
       '<div class="pinfo"><a class="pi-brand" href="#/marka/' + b.slug + '">' + FV.wordmark(b, 'sm') + '</a>' +
       '<h1>' + esc(p.name) + '</h1>' +
@@ -729,17 +759,17 @@
   FV.views.proto = function () {
     var rows = [
       ['Főoldal', '#/', 'front_page_content.html – iu/section blokkok; kategória csempék, akciók (on_sale), kompatibilitás blokk, márkák, népszerű termékek; puff kereső: saját blokk (iucb_add_block)'],
-      ['Kategória oldal + szűrők', '#/kategoria/eldobhato', 'tax_product_cat_content.html – [products class="mainquery"] + iu-woocommerce/filter (pa_* layered nav, márka, ár), AJAX frissítés'],
-      ['Alkategória, szűrt URL', '#/kategoria/eldobhato?puff=20000%2B', 'Slukkszám-szűrő tartományokra (pa_puff értékek → sávok), a szám gyártói becslés; szűrt URL-ek: canonical / noindex szabály a child témában (SEO)'],
+      ['Kategória oldal + szűrők', '#/kategoria/eloretoltott-podok', 'tax_product_cat_content.html – [products class="mainquery"] + iu-woocommerce/filter (pa_* layered nav, márka, ár), AJAX frissítés'],
+      ['Összes termék, szűrt URL', '#/produkty?puff=20000%2B', 'Slukkszám-szűrő tartományokra (pa_puff értékek → sávok), a szám gyártói becslés; szűrt URL-ek: canonical / noindex szabály a child témában (SEO)'],
       ['Márkaoldal', '#/marka/elfbar', 'tax_product_brand_content.html (WooCommerce Brands) – leírás, logó, szűrhető lista; a márka-archívum template_include javítása a child témában'],
       ['Márkák A–Z', '#/markak', 'Főmenüpont; saját blokk: csak azok a product_brand kifejezések, amelyekhez van aktív termék'],
       ['Akciók', '#/akciok', 'Oldal: [products on_sale="true" class="mainquery"]'],
       ['Keresés', '#/kereses/Elfbar%2040000', 'search_content.html + kiterjesztett termékkereső (név, márka, pa_*, kategória, SKU, EAN, számnormalizálás) a child témában'],
-      ['Termékoldal', '#/termek/elfbar-bc40000-blueberry-ice', 'single_product_content.html – iu-woocommerce blokkok (images, price, add-to-cart, stock, product-brand, product-attributes), nikotin-figyelmeztetés, JSON-LD Product'],
-      ['Testvértermékek (SIMPLE)', '#/termek/vaporesso-xros-4-mini-black', 'Minden szín / íz / ellenállás külön SIMPLE termék (a CSV szerint); a termékoldal a csoport többi tagjára linkel (_fv_group meta)'],
-      ['Kompatibilitás', '#/termek/elfbar-elfa-pro-kit-black', 'pa_kompatibilitas alapján: kompatibilis podok / patronok és készülékek, rendszermegjelöléssel'],
-      ['Készlethiányos termék', '#/termek/elfbar-bc40000-watermelon-ice', 'Készlet státusz: outofstock + visszatérési értesítő (saját blokk, iu/form nélkül is)'],
-      ['Kifutott termék', '#/termek/drifter-bar-30000-grape', 'Egyedi készlet státusz: „discontinued” – oldal marad, helyettesítő termékek'],
+      ['Termékoldal', '#/termek/elfbar-kit-joinone-40k-ci', 'single_product_content.html – iu-woocommerce blokkok (images, price, add-to-cart, stock, product-brand, product-attributes), nikotin-figyelmeztetés, JSON-LD Product'],
+      ['Testvértermékek (SIMPLE)', '#/termek/geekvape-kit-wenax-q2-ra', 'Minden szín / íz / ellenállás külön SIMPLE termék (a CSV szerint); a termékoldal a csoport többi tagjára linkel (_fv_group meta)'],
+      ['Kompatibilitás', '#/termek/elfbar-elfa-turbo-black', 'pa_kompatibilitas alapján: kompatibilis podok / patronok és készülékek, rendszermegjelöléssel'],
+      ['Sok testvértermék', '#/termek/elfbar-elfa-pro-pod-pi-20', '12-nél több változatnál (pl. 49 ELFA Pro pod íz × nikotin) választólista a linkek helyett'],
+      ['Készlethiányos / kifutott termék', '', 'Készlet státusz: outofstock + visszatérési értesítő; egyedi „discontinued” – oldal marad, helyettesítők. A valódi termékfájlban most nincs ilyen termék, a funkció kész.'],
       ['Kosár', '#/kosar', 'Klasszikus [woocommerce_cart] – eltávolítás gomb, ingyenes szállítási küszöb, ÁFA-sor piaconként; a súly csak a háttérben (díjszámítás, Packeta)'],
       ['Pénztár', '#/penztar', 'Klasszikus [woocommerce_checkout] – Packeta: výdajné miesto / Z-BOX (Packeta widget) és házhoz szállítás, eltérő szállítási cím, mezőnkénti hibaüzenet; Teya, utánvét, cégadatok (IČO/DIČ, SIRET/TVA), 18+ megerősítés'],
       ['Fiók', '#/fiok', 'My Account – rendelések követési számmal, számla letöltés, kedvencek (saját kód, wishlist-plugin nélkül)'],
@@ -760,13 +790,13 @@
       '<div><b>Attribútum</b><span>tulajdonság (szűrő)</span><code>pa_iz · pa_nikotin · pa_kiszereles · pa_puff · pa_kompatibilitas · pa_szin · pa_ellenallas</code></div>' +
       '<div><b>Termékadat</b><span>értékesítés és logisztika</span><code>ár · akciós ár · készlet · státusz · SKU · EAN · súly</code></div></div></section>' +
       '<section class="sec"><h2>Oldalak és megfelelőjük (iu_theme + firstvape child téma)</h2><div class="tbl-wrap"><table class="proto-tbl"><thead><tr><th scope="col">Oldal</th><th scope="col">Megvalósítás</th></tr></thead><tbody>' +
-      rows.map(function (r) { return '<tr><td><a href="' + r[1] + '">' + esc(r[0]) + '</a></td><td>' + esc(r[2]) + '</td></tr>'; }).join('') + '</tbody></table></div></section>' +
+      rows.map(function (r) { return '<tr><td>' + (r[1] ? '<a href="' + r[1] + '">' + esc(r[0]) + '</a>' : esc(r[0])) + '</td><td>' + esc(r[2]) + '</td></tr>'; }).join('') + '</tbody></table></div></section>' +
       '<section class="sec"><h2>Mit érdemes kipróbálni</h2><ul class="try">' +
       '<li>Válts nyelvet a fejléc SK / FR gombjával: a felület, az árak (23% ↔ 20% ÁFA), a szállítás, a fizetés és a jogi oldalak is váltanak.</li>' +
-      '<li>Írd a fejléc keresőjébe: <a href="#/kereses/Elfbar%2040000">Elfbar 40000</a>, <a href="#/kereses/40k">40k</a>, <a href="#/kereses/40%20000">40 000</a>, <a href="#/kereses/mango">mango</a> vagy <a href="#/kereses/xros">xros</a>.</li>' +
+      '<li>Írd a fejléc keresőjébe: <a href="#/kereses/Elfbar%2040000">Elfbar 40000</a>, <a href="#/kereses/40k">40k</a>, <a href="#/kereses/40%20000">40 000</a>, <a href="#/kereses/mango">mango</a> vagy <a href="#/kereses/wenax">wenax</a>.</li>' +
       '<li>Vidd az egeret a főmenü pontjai fölé: mega menü alkategóriákkal, márkákkal és slukkszám-sávokkal. Csak a termékkel rendelkező kategóriák és márkák jelennek meg.</li>' +
       '<li>Szűrj a kategóriaoldalon: minden főkategória csak a rá értelmezhető szűrőket mutatja (pl. e-liquideknél íz, nikotin, kiszerelés; kiegészítőknél ellenállás). Mobilon a szűrő lenyíló panelben nyílik.</li>' +
-      '<li>Nyiss meg egy készüléket (pl. <a href="#/termek/elfbar-elfa-pro-kit-black">ELFA Pro Kit</a>): alul megjelennek a kompatibilis előretöltött podok, rendszermegjelöléssel.</li>' +
+      '<li>Nyiss meg egy készüléket (pl. <a href="#/termek/elfbar-elfa-turbo-black">ELFA TURBO</a>): alul az ügyfél ajánlásai (cross-sell), majd a kompatibilis podok, rendszermegjelöléssel.</li>' +
       '<li>Tegyél termékeket a kosárba, majd a pénztárban válassz Packeta átvételi pontot vagy házhoz szállítást. Hiányzó adatnál a mező alatt rövid hibaüzenet jelenik meg.</li></ul></section>' +
       '<section class="sec"><h2>CSV import sablon</h2><p class="muted">Automatikus leképezés a WooCommerce importálóra. Ugyanazzal a sablonnal lehet új termékeket feltölteni és meglévőket frissíteni (SKU alapján); az ár- és készletfrissítéshez elég az öt oszlopos rövid sablon. Minden termék SIMPLE. A kategória a fájl angol nevével is megadható, a webshop a szlovák kategóriához rendeli (<code>prototype/csv/kategoria-osszerendeles.csv</code>), így nem jön létre dupla kategória. Alkategória „Szülő &gt; Gyerek” formában. A súly csak a szállítási díjhoz kell, a vásárló nem látja. A fejlécek nyelvét az ügyféllel egyeztetni kell (a csapat nyelve). Sablonfájlok a repóban: <code>prototype/csv/firstvape-termekimport-sablon.csv</code>, <code>prototype/csv/firstvape-ar-keszlet-frissites.csv</code>.</p><div class="csvcols">' +
       csv.map(function (c) { return '<code>' + esc(c) + '</code>'; }).join('') + '</div></section>' +
