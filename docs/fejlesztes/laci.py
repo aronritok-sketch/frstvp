@@ -36,7 +36,7 @@ OPEN = [
     "Packeta-szerződés: API-kulcs, díjak SK és FR, ingyenes szállítás határa, utánvét díja, FR szolgáltatások.",
     "Teya: melyik WooCommerce-kapcsolatot adják (bővítmény vagy fizetési oldal), teszt- és éles kulcsok.",
     "SuperFaktúra: fiók, API-kulcs, számlasor, nyelv (SK / FR).",
-    "Nyelv és piac: egy bolt két nyelvvel vagy két bolt (firstvape.sk + francia domain) – Áron dönt, mielőtt a 09-es fázis indul.",
+    "Francia domain: firstvape.fr – megvan-e már, kinél van regisztrálva, ki fér hozzá (a DNS-hez kell).",
     "Bruttó ár piaconként: ugyanaz a bruttó vagy az ÁFA-kulccsal változó (SK 23 %, FR 20 %) – ügyfél + könyvelő.",
     "Franciaország: eldobható e-cigaretta forgalmazási tilalma – jogász; valószínűleg rejteni kell a kategóriát.",
     "Régi vásárlók és rendelések átvétele a VirtueMartból – csak ha az ügyfél kéri (GDPR).",
@@ -67,7 +67,8 @@ LACI = dict(
                  check="a dev oldal a child témával fut, a téma kódja a frstvp repóban van, verziózva."),
             dict(id="prep-plugins", who="Laci", title="Csak a megengedett bővítmények",
                  desc="<p>WooCommerce, Packeta, SuperFaktúra, a Teya fizetési kapcsolata, WP Mail SMTP, Yoast SEO. "
-                      "Többnyelvű bővítmény csak Áron döntése után (lásd a nyitott kérdéseket). <b>Nincs</b> page builder, űrlap-, "
+                      "Többnyelvűség: <b>WPML + WooCommerce Multilingual</b> (Áron döntése, 2026-10-19: egy webshop két domainnel, "
+                      "lásd a 09-es fázist). <b>Nincs</b> page builder, űrlap-, "
                       "slider- és wishlist-bővítmény: a hiányzó funkció saját blokk (<code>iucb_add_block</code>) vagy a child téma PHP-ja.</p>",
                  check="a Bővítmények listáján csak ezek vannak."),
         ]),
@@ -250,19 +251,35 @@ LACI = dict(
                       "WP Mail SMTP a tárhely postafiókjával.</p>",
                  check="a rendelés visszaigazolása megérkezik a vásárlónak és az adminnak, nem spamként."),
         ]),
-        dict(id="market", title="Nyelvek és piacok", intro="A nyelv és a piac együtt vált: SK = szlovák felület + 23 % + SK szállítás, "
-             "FR = francia felület + 20 % + FR szállítás. A megoldás módja Áron döntése (lásd nyitott kérdések).", items=[
+        dict(id="market", title="Nyelvek és piacok", intro="Áron döntése (2026-10-19): <b>egy webshop két domainnel</b>. "
+             "<b>firstvape.sk</b> = szlovák felület + SK piac, <b>firstvape.fr</b> = francia felület + FR piac. Egy WordPress, egy "
+             "termékkatalógus, egy készlet és egy rendeléslista; a nyelv és a piac a domainnel együtt vált.", items=[
+            dict(id="mk-domain", who="Laci", title="Egy WordPress, két domain (WPML: külön domain nyelvenként)",
+                 desc="<p>WPML + WooCommerce Multilingual, nyelvi URL-formátum: <b>„Different domain per language”</b> – SK alapnyelv a "
+                      "<code>firstvape.sk</code>-n, FR a <code>firstvape.fr</code>-en (nem <code>/fr/</code> almappa). Mindkét domain ugyanarra "
+                      "a WordPress-telepítésre mutat (alias / parkolt domain), mindkettőn SSL. A domain határozza meg a piacot: "
+                      "pénznem EUR mindkettőn; alapértelmezett ország, ÁFA-kulcs és szállítási zóna a domain szerint (SK / FR). "
+                      "A nyelvváltó a másik domain megfelelő oldalára visz (termék ↔ fordított termék, kategória ↔ kategória).</p>"
+                      "<p>Ellenőrizd: a kosár és a belépés sütije domainhez kötött – a domainváltásnál a kosár piaconként külön marad "
+                      "(eltérő ÁFA és szállítás miatt ez így helyes), a WPML „bejelentkezés a többi domainen” opcióját kapcsold be. "
+                      "Termékimportnál a fordítások összekötése (WPML import / <code>_fv_group</code> és SKU alapján), a készlet közös. "
+                      "<code>hreflang</code> a két domain megfelelő oldalai között, külön <code>sitemap</code> és külön Search Console-tulajdon "
+                      "domainenként; GA4 egy tulajdon, két adatfolyam vagy domainek közötti mérés.</p>",
+                 check="a firstvape.sk szlovákul, a firstvape.fr franciául jön be ugyanabból a WordPressből; a nyelvváltó a megfelelő "
+                       "oldalra visz; FR-en francia ÁFA és szállítás; egy rendelés mindkét domainről ugyanabba a rendeléslistába kerül."),
             dict(id="mk-lang", who="Laci", title="SK alapnyelv + FR",
                  desc="<p>Minden felületi szöveg az <code>i18n.js</code>-ből (SK tegező, FR magázó). A kategóriák, márkaleírások, "
-                      "termékszövegek fordítása; <code>hreflang</code> a két változat között.</p>",
+                      "termékszövegek fordítása WPML-lel; a menük, a fejléc / lábléc és az <code>iu_pattern</code>-ek nyelvenként. "
+                      "A levelek, a számla és a jogi oldalak a rendelés domainjének nyelvén.</p>",
                  check="FR-re váltva nincs szlovák maradvány a felületen, az árak és a szállítás a francia piacé."),
             dict(id="mk-legal", who="Laci", title="Jogi oldalak piaconként (helyőrzővel)",
                  desc="<p>SK: Doprava a platba, Obchodné podmienky, Ochrana osobných údajov, Odstúpenie od zmluvy, Súbory cookie, Kontakt · "
-                      "FR: Livraison et paiement, CGV, Politique de confidentialité, Droit de rétractation, Mentions légales, Cookies, Contact. "
+                      "FR (a firstvape.fr-en): Livraison et paiement, CGV, Politique de confidentialité, Droit de rétractation, Mentions légales, Cookies, Contact. "
                       "A szöveget az ügyfél jogásza adja; addig jelölt helyőrző. Süti-hozzájárulás, GA4 csak hozzájárulással.</p>",
                  check="az oldalak telepítő lépésként jönnek létre, a pénztár az ÁSZF-re linkel."),
             dict(id="mk-fr", who="Laci", title="Eldobható e-cigaretták Franciaországban",
-                 desc="<p>Előkészítés: piaconként rejthető kategória (menü, lista, kereső, közvetlen cím). Hogy rejteni kell-e, a jogász mondja meg.</p>",
+                 desc="<p>Előkészítés: a firstvape.fr-en rejthető kategória (menü, lista, kereső, közvetlen cím, francia szállítási cím). "
+                      "Hogy rejteni kell-e, a jogász mondja meg.</p>",
                  check="egy kapcsolóval az FR piacon a kategória és termékei eltűnnek, a közvetlen cím nem rendelhető."),
         ]),
         dict(id="test", title="Belső tesztelés", intro="Ez a CRM „Élesítés 1/4” feladat BELSŐ TESZTELÉS pontja előtt fut.", items=[
@@ -283,22 +300,23 @@ LACI = dict(
         ]),
         dict(id="golive2", title="Élesítés 2/4 – Domain és tárhely", intro="A hozzáféréseket az ügyfél a portálon adja meg.", items=[
             dict(id="gl2", who="Laci", title="Hozzáférés, domain, SSL, e-mail, staging, éles mappa",
-                 desc="<p>SZERVER HOZZÁFÉRÉS (portálon) · a firstvape.sk (és ha lesz, a francia domain) a tárhelyre mutat · SSL + https-átirányítás · "
+                 desc="<p>SZERVER HOZZÁFÉRÉS (portálon) · a firstvape.sk és a firstvape.fr is ugyanarra a tárhelyre és WordPressre mutat · SSL mindkettőre + https-átirányítás · "
                       "a régi Joomla / VirtueMart oldal a váltásig fut, a postafiókok megmaradnak (MX-hez ne nyúlj) · e-mail fiókok · "
                       "staging aldomain / almappa · éles mappa előkészítve.</p>",
                  check="a CRM „Élesítés 2/4” feladat minden pontja kész."),
         ]),
         dict(id="golive3", title="Élesítés 3/4 – Staging", items=[
             dict(id="gl3", who="Laci", title="Staging az ügyfél valódi adataival",
-                 desc="<p>Feltöltés · Better Search Replace (a JSON-escape-elt <code>https:\\/\\/</code> alakra is) · permalinkek · e-mail címek · SMTP · "
+                 desc="<p>Feltöltés · Better Search Replace (a JSON-escape-elt <code>https:\\/\\/</code> alakra is, <b>mindkét domainre</b>; a staging két aldomainnel, a WPML domainbeállítása ezekre átírva) · permalinkek · e-mail címek · SMTP · "
                       "IMPORTÁLÁS az ügyfél Excel/CSV-jéből (a 04-es fázis importálójával) · Packeta, Teya, SuperFaktúra <b>teszt</b> adatokkal · "
                       "belső teszt · az ügyfél a portálon végigvisz egy teljes tesztrendelést mobilon és laptopon, és jóváhagyja.</p>",
                  check="az ügyfél jóváhagyása a portálon megvan."),
         ]),
         dict(id="golive4", title="Élesítés 4/4 – Élesítés", items=[
             dict(id="gl4", who="Laci", title="Éles oldal, éles kulcsok, mérés, keresőrobotok utoljára",
-                 desc="<p>Másolás · Better Search Replace · permalinkek · e-mail · Packeta, Teya, SuperFaktúra <b>éles</b> adatokkal · "
-                      "301-ek a régi címekről · GTM, GA4 (hozzájárulással), Yoast, SEO OS Connect · belső teszt (egy valódi kis rendelés, "
+                 desc="<p>Másolás · Better Search Replace (mindkét domain) · a WPML domainbeállítása az éles domainekre · permalinkek · e-mail · "
+                      "Packeta, Teya, SuperFaktúra <b>éles</b> adatokkal (a Teyánál mindkét domain engedélyezve) · "
+                      "301-ek a régi címekről (ha a régi oldalon volt francia változat, az a firstvape.fr-re) · GTM, GA4 (hozzájárulással), Yoast, SEO OS Connect · belső teszt (egy valódi kis rendelés, "
                       "utána sztornó) · ügyfél-jóváhagyás · végül a „Keresőmotorok ne indexeljék” jelölő kivétele.</p>",
                  check="a CRM „Élesítés 4/4” feladat minden pontja kész, az oldal indexelhető."),
         ]),
