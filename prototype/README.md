@@ -82,8 +82,8 @@ A WordPressben ezek valódi, nyelvenként fordított permalinkek lesznek (pl. `/
 
 - **Kategória = mi a termék** → `product_cat` (hierarchikus, több kategória termékenként)
 - **Márka = ki gyártja** → `product_brand` (WooCommerce beépített Brands taxonómia)
-- **Attribútum = tulajdonság, szűrő** → `pa_iz`, `pa_nikotin`, `pa_kiszereles`, `pa_puff`, `pa_kompatibilitas`, `pa_szin`, `pa_ellenallas`
-  (a slugok nyelvfüggetlenek, a WPML / Polylang csak a címkéket fordítja; a mostani magyar slugok helyett érdemes angolt választani, pl. `pa_flavor` – egyeztetendő. A `pa_kompatibilitas` értéke a rendszer neve, pl. `ELFA`; a „Kompatibilné s …” / „Compatible …” felirat a megjelenítéskor kerül elé.)
+- **Attribútum = tulajdonság, szűrő** → a WordPress-témában `pa_prichut`, `pa_nikotin`, `pa_objem`, `pa_pocet-potiahnuti`, `pa_system`, `pa_farba`, `pa_odpor`
+  (a slug a szlovák felirat, így az ügyfél fájljából készült import CSV a WooCommerce importerével ugyanezekre a globális attribútumokra kerül; a francia felirat a téma szótárából jön. A `pa_system` értéke a rendszer neve, pl. `ELFA`; a „Kompatibilné s …” / „Compatible …” felirat a megjelenítéskor kerül elé.)
 - **Termékadat** → normál ár, akciós ár, készlet, státusz (raktáron / készlethiányos / kifutott), SKU, EAN (`global_unique_id`), súly (csak a háttérben, a szállítási díjhoz; a vásárló nem látja)
 - **Minden termék SIMPLE** (az ügyfél CSV-je szerint): minden szín / íz / nikotin / ellenállás külön termék. A testvértermékeket a `Termékcsoport` mező (`_fv_group` meta) köti össze, a termékoldal ezekre linkel.
 
@@ -167,6 +167,10 @@ A régi oldal egészségügyi állításai („egészségesebb”, „40 káros 
 - A Packeta díjai (SK, FR), a szállítási idők és az átvételi pontok mintaadatok („vzor”).
 - A Teya, SuperFaktúra és Packeta integrációk bővítményekkel működnek majd, a prototípusban csak a felületük látszik.
 
+## WordPress-téma (kész, 2026-10-20)
+
+A child téma: `wp-theme/firstvape` (zip: `dist/firstvape-tema.zip`, képek: `dist/firstvape-media.zip`). Telepítés: `docs/wp/TELEPITES.md`, felépítés: `docs/wp/DEVELOPER.md`, tesztek: `tests/wp/`. Az előnézet maradt a minta: a téma ugyanazt a CSS-t és szótárat használja (`node tools/wp/build_data.mjs`).
+
 ## WordPress terv (iu_theme + `firstvape` child téma)
 
 A HelloProVision szabálya szerint kivétel nélkül:
@@ -174,7 +178,7 @@ A HelloProVision szabálya szerint kivétel nélkül:
 1. **Téma:** `iu_theme` (Infinite Unity) + `firstvape` child téma (`style.css`: `Template: iu_theme`), a design a child téma `vars.css`-ében és a `theme.json` palettában (a prototípus `:root` tokenjei). A keretrendszerhez nem nyúlunk. **Nincs page builder, űrlap-, slider- és wishlist-plugin.**
 2. **WooCommerce** klasszikus (shortcode-os) kosárral, pénztárral és fiókkal. Sablonok a child téma `templates/` mappájában: `global_header.html`, `global_footer.html`, `front_page_content.html`, `tax_product_cat_content.html`, `tax_product_brand_content.html`, `single_product_content.html`, `search_content.html`, `404_content.html`, `single_page_content.html`. Termékkártya: „Loop Product” `iu_pattern`.
 3. **Egyedi blokkok** (`iucb_add_block`, `inc/blocks/…`): mega menü, slukkszám-kereső (tartományok), kompatibilitás blokk (pod ↔ készülék a `pa_kompatibilitas` alapján), márkák A–Z, készletfigyelő („értesítést kérek”), kifutott termék + helyettesítők, kedvencek (saját kód user meta-ban, wishlist-plugin nélkül), 18+ korkapu.
-4. **Többnyelvűség – egy webshop két domainnel** (Áron döntése, 2026-10-19): **WPML + WooCommerce Multilingual** „Different domain per language” módban – `firstvape.sk` a szlovák, `firstvape.fr` a francia; egy WordPress, közös katalógus, készlet és rendeléslista, a domain szerint vált a nyelv, az ÁFA és a szállítás (részletek: `docs/fejlesztes/` 09.1). **Élesítés előtt ki kell próbálni az `iu_theme`-mel** (a sablonok `iu_template` / fájl alapúak, a blokk-attribútumokban lévő szövegek és az `iu_pattern`-ek fordítása, a menük és az iu-woocommerce blokkok nyelvi kezelése). A felületi szövegek a child téma `.po` / `.mo` fájljaiban (text domain `firstvape`), az `iu_theme` magyar alapértelmezett feliratait az attribútumokban át kell írni.
+4. **Többnyelvűség – egy webshop két domainnel** (Áron döntése, 2026-10-19): `firstvape.sk` a szlovák, `firstvape.fr` a francia; egy WordPress, közös katalógus, készlet és rendeléslista, a domain szerint vált a nyelv, az ÁFA és a szállítás. **A téma maga kezeli** (WPML nélkül): `wp-theme/firstvape/inc/lang.php`, a felületi szövegek a téma szótárában (az előnézet `i18n.js`-éből) – `docs/wp/DEVELOPER.md`.
 5. **Piacok:** WooCommerce adóbeállítás (SK 23%, FR 20% – könyvelő ellenőrzi, OSS), szállítási zónák piaconként (Packeta bővítmény: átvételi pont / Z-BOX widget és házhoz szállítás, SK és FR), a nyelv és a számlázási/szállítási ország összehangolása.
 6. **Integrációk bővítménnyel** (fizetési kapu és szállító megengedett): Teya, SuperFaktúra, Packeta (címke és csomagátadás).
 7. **Űrlapok** (kapcsolat, készletfigyelő, hírlevél): `iu/form` blokk, űrlap-plugin nélkül; a küldést a child téma `iu_form_submit_{formId}` szűrője végzi (keretrendszer-hiba miatt), és ugyanitt kerülnek az érdeklődők a HelloProVision CRM-be a leads hídon (`hpv_leads_map()` → `hpv_leads_send()`).

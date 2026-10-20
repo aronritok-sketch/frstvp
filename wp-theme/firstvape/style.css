@@ -1,0 +1,16 @@
+/*
+Theme Name: First Vape
+Theme URI: https://firstvape.sk
+Description: A First Vape (John&Jen s.r.o.) WooCommerce-webshopjának child témája az Infinite Unity (iu_theme) keretrendszerre. Egy webshop két domainnel: firstvape.sk (szlovák) és firstvape.fr (francia). A jóváhagyott előnézet kinézete és működése: mega menü, kategóriánkénti szűrők, slukkszám-sávok, testvértermékek, kompatibilitás, Packeta, 18+ kapu, telepítő.
+Author: HelloProVision
+Author URI: https://helloprovision.com
+Template: iu_theme
+Version: 1.0.0
+Requires at least: 6.5
+Requires PHP: 8.1
+Text Domain: firstvape
+License: Proprietary
+*/
+
+/* A kinézet az assets/css fájlokban van (a jóváhagyott előnézetből): fonts.css → site.css (az előnézet style.css-e) →
+   wp.css (WordPress / WooCommerce illesztés). Az iu_theme alap-CSS-éből csak a variables.css töltődik (inc/theme.php). */

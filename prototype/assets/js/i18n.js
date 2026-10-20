@@ -306,7 +306,7 @@
   FV.PAGES = {
     sk: {
       shipping: function () {
-        return '<h2>Doprava</h2><p>Zásielky doručuje Packeta – na výdajné miesto, do Z-BOXu alebo na adresu. Objednávky prijaté v pracovné dni do 14:00 odosielame ešte v ten deň. Cena dopravy sa počíta podľa celkovej hmotnosti produktov v košíku, preto pri každom produkte uvádzame jeho hmotnosť.</p>{shipTable}' +
+        return '<h2>Doprava</h2><p>Zásielky doručuje Packeta – na výdajné miesto, do Z-BOXu alebo na adresu. Objednávky prijaté v pracovné dni do 14:00 odosielame ešte v ten deň. Cena dopravy sa počíta podľa celkovej hmotnosti zásielky.</p>{shipTable}' +
           '<h2>Platba</h2><ul><li><b>Online platba kartou</b> (Visa, Mastercard, Apple Pay, Google Pay) na zabezpečenej platobnej stránke Teya.</li><li><b>Dobierka</b>: platba pri prevzatí zásielky, poplatok {cod}.</li></ul>' +
           '<h2>Faktúra</h2><p>Faktúru automaticky vystavíme po objednávke a pošleme ti ju e-mailom. Stiahnuť si ju môžeš aj vo svojom účte v časti Objednávky.</p><p>Všetky ceny sú uvedené vrátane DPH 23 %.</p>';
       },
@@ -336,7 +336,7 @@
     },
     fr: {
       shipping: function () {
-        return '<h2>Livraison</h2><p>Les commandes sont expédiées depuis notre entrepôt en Slovaquie. Les commandes passées en semaine avant 14 h partent le jour même. Les frais de port sont calculés selon le poids total des produits du panier ; le poids est indiqué sur chaque fiche produit.</p>' +
+        return '<h2>Livraison</h2><p>Les commandes sont expédiées depuis notre entrepôt en Slovaquie. Les commandes passées en semaine avant 14 h partent le jour même. Les frais de port sont calculés selon le poids total du colis.</p>' +
           '<p class="legal-ph">Transporteur, délais et tarifs pour la France : à confirmer. Le tableau ci-dessous est un exemple.</p>{shipTable}' +
           '<h2>Paiement</h2><ul><li><b>Paiement en ligne par carte</b> (Visa, Mastercard, Apple Pay, Google Pay) sur la page de paiement sécurisée de Teya.</li><li><b>Paiement à la livraison</b> : frais de {cod}, sous réserve de disponibilité chez le transporteur.</li></ul>' +
           '<h2>Facture</h2><p>La facture est émise automatiquement après la commande et vous est envoyée par e-mail. Vous pouvez aussi la télécharger depuis votre compte, rubrique Commandes.</p><p>Tous les prix sont indiqués TTC (TVA française de 20 %).</p>';

@@ -45,252 +45,162 @@ OPEN = [
 LACI = dict(
     key="laci",
     title="First Vape – WooCommerce webshop",
-    lead="Az ügyfél 2026-10-15-én jóváhagyta a webshop előnézetét (mobilon és laptopon is). Ebből kell megépíteni az éles "
-         "WordPress / WooCommerce webshopot: <b>iu_theme + <code>firstvape</code> child téma</b>, klasszikus pénztár, "
-         "Packeta, Teya, SuperFaktúra, szlovák és francia piac (EUR). Az előnézet a minta: ami ott működik, annak itt is "
-         "ugyanúgy kell. Haladj a fázisok sorrendjében; a 11–14. fázis a CRM négy élesítési feladata, a projekt saját "
-         "lépéseivel. Pipáld ki, ami kész (a CRM-feladat ellenőrzőlistáján is), és a megjegyzésbe írd, ha valami eltért.",
+    lead="Az ügyfél 2026-10-15-én jóváhagyta a webshop előnézetét. <b>A <code>firstvape</code> child téma kész</b> (2026-10-20): "
+         "az előnézet kinézete és működése WordPress + WooCommerce alatt, az ügyfél 395 termékével és képeivel, két domainnel, "
+         "telepítővel – <code>dist/firstvape-tema.zip</code>, leírás: <code>docs/wp/TELEPITES.md</code>, kód: <code>docs/wp/DEVELOPER.md</code>. "
+         "A „Kész – ellenőrizd” pontoknál csak nézd meg a dev oldalon, és pipáld ki; a „Laci” pontok a te munkád: telepítés, "
+         "bővítmények (Packeta, Teya, SuperFaktúra, SMTP, Yoast), kulcsok, jogi szövegek, 301-ek, tesztrendelés, élesítés. "
+         "A 11–14. fázis a CRM négy élesítési feladata. A megjegyzésbe írd, ha valami eltért.",
     phases=[
         dict(id="prep", title="Előkészítés", intro="Mielőtt kódot írsz: nézd végig az előnézetet, és állítsd össze a dev környezetet.", items=[
             dict(id="prep-read", who="Laci", title="Az előnézet és a prototípus átnézése",
-                 desc="<p>Nyisd meg a prototípust (<code>cd prototype &amp;&amp; python3 -m http.server 8765</code>), és kattints végig "
-                      "SK és FR nyelven: főoldal, mega menü, kategória + szűrők, márkaoldal, termékoldal, kosár, pénztár, fiók. "
-                      "A <code>#/prototipus</code> oldal megmondja, melyik nézet melyik sablon lesz. A <code>prototype/README.md</code> "
-                      "„Kategóriafa” és „WordPress terv” fejezete a specifikáció.</p>",
-                 check="minden nézetnél tudod, melyik <code>templates/*.html</code> vagy shortcode-os WooCommerce-oldal lesz belőle."),
+                 desc="<p>Nézd végig az előnézetet (<code>prototype/</code>) és a kész témát a dev oldalon, SK és FR nyelven (<code>?lang=fr</code>): főoldal, mega menü, kategória + szűrők, márka, termékoldal, kosár, pénztár, fiók. A téma felépítése: <code>docs/wp/DEVELOPER.md</code>.</p>",
+                 check="tudod, melyik oldal melyik sablon / blokk (DEVELOPER.md táblázata)."),
             dict(id="prep-env", who="Laci", title="Dev WordPress: WooCommerce + iu_theme 0.2.2 + firstvape child",
-                 desc="<p>Friss WordPress a dev tárhelyen, <code>noindex</code>-szel (Beállítások → Olvasás). Alap téma: a hlprv repó "
-                      "<code>themes/iu_theme</code> (0.2.2, javított), <code>HPV_GITHUB_TOKEN</code> a wp-config.php-ban az automatikus "
-                      "frissítéshez. Child téma a frstvp repóban: <code>wp-theme/firstvape/</code> (<code>Template: iu_theme</code>). "
-                      "Mintaprojekt a felépítéshez: <b>Mandala</b> (<code>mdn</code> repó, <code>wp-theme/mandala</code>: child téma, "
-                      "telepítő lépések, költöztető) és a <code>vasskisgep</code> <code>dev/</code> eszközei.</p>",
-                 check="a dev oldal a child témával fut, a téma kódja a frstvp repóban van, verziózva."),
+                 desc="<p><b>A téma kész</b> (<code>dist/firstvape-tema.zip</code>, a CRM-feladat melléklete). Dev WordPress szlovákul + francia nyelvi csomag, WooCommerce, <code>iu_theme</code> 0.2.2 (hlprv <code>themes/iu_theme</code>, <code>HPV_GITHUB_TOKEN</code> a wp-config.php-ba), a <code>firstvape</code> téma zipből, a képcsomag a <code>wp-content/uploads/firstvape-media/</code> mappába, végül Megjelenés → First Vape → Telepítés (vagy <code>wp firstvape setup --media=…</code>). Lépésenként: <code>docs/wp/TELEPITES.md</code>.</p>",
+                 check="a dev oldalon 395 termék képekkel, a <code>wp firstvape check</code> csak a várt figyelmeztetéseket adja (domain, díjak, kulcsok, jogi szövegek)."),
             dict(id="prep-plugins", who="Laci", title="Csak a megengedett bővítmények",
-                 desc="<p>WooCommerce, Packeta, SuperFaktúra, a Teya fizetési kapcsolata, WP Mail SMTP, Yoast SEO. "
-                      "Többnyelvűség: <b>WPML + WooCommerce Multilingual</b> (Áron döntése, 2026-10-19: egy webshop két domainnel, "
-                      "lásd a 09-es fázist). <b>Nincs</b> page builder, űrlap-, "
-                      "slider- és wishlist-bővítmény: a hiányzó funkció saját blokk (<code>iucb_add_block</code>) vagy a child téma PHP-ja.</p>",
+                 desc="<p>Csak: WooCommerce, Packeta, a Teya fizetési kapcsolata, SuperFaktúra, WP Mail SMTP, Yoast SEO. <b>WPML / Polylang nem kell</b>: a két domaint a téma kezeli (09-es fázis). <b>Nincs</b> page builder, űrlap-, slider- és wishlist-bővítmény (a kedvencek, űrlapok, 18+ kapu, szűrők a témában vannak).</p>",
                  check="a Bővítmények listáján csak ezek vannak."),
         ]),
         dict(id="theme", title="Child téma és arculat", intro="A jóváhagyott sötét arculat: az eredeti firstvape.sk modernizálva. "
              "A tokenek a <code>prototype/assets/css/style.css</code> <code>:root</code> részéből jönnek.", items=[
-            dict(id="theme-tokens", who="Laci", title="Színek, betűk, theme.json paletta",
-                 desc="<p><code>vars.css</code>: alap <code>#151017</code>, kártya <code>#231B26</code>, fő színátmenet "
-                      "<code>linear-gradient(45deg, #EC2F4B 0%, #1F2250 80%)</code>, fejléc <code>linear-gradient(90deg, #002460, #38203F)</code>. "
-                      "Betű: Barlow (szöveg) és Barlow Semi Condensed (címek), helyi woff2-ből (<code>prototype/assets/fonts/</code>, latin + latin-ext). "
-                      "A paletta slugjait (pl. <code>dark</code>, <code>surface</code>, <code>primary</code>) a <code>theme.json</code>-ba is vedd fel, "
-                      "mert az <code>iu/section</code> <code>bgColor</code>-ja slugot kér.</p>",
-                 check="az előnézettel egymás mellett nézve a színek, betűk, lekerekítések egyeznek."),
-            dict(id="theme-head", who="Laci", title="Fejléc, lábléc, mega menü",
-                 desc="<p>Felső sáv (Packeta, ingyenes szállítás határa, 18+, SK / FR), logó, termékkereső, fiók, kedvencek, mini kosár, főmenü. "
-                      "A mega menü saját blokk (<code>firstvape/mega-menu</code>): alkategóriák darabszámmal, a kategória márkái, "
-                      "slukkszám-sávok, kiemelt termék. <b>Csak a termékkel rendelkező kategóriák és márkák látszanak.</b> "
-                      "Az „Akcie / Promotions” menüpont nincs kiemelve (nem piros gomb). Mobilon lenyíló menü.</p>",
-                 check="a menü az előnézet szerint működik egérrel, billentyűzettel és mobilon; üres kategória vagy márka nem jelenik meg."),
-            dict(id="theme-smoke", who="Laci", title="Mozgó füst a háttérben",
-                 desc="<p>A <code>prototype/assets/js/smoke.js</code> és a két füstkép (<code>smoke-a.png</code>, <code>smoke-b.png</code>) a child témába, "
-                      "<code>wp_enqueue_script</code>-tel a láblécben. Csak <code>transform</code> / <code>opacity</code> animáció, "
-                      "<code>prefers-reduced-motion</code> esetén áll.</p>",
-                 check="görgetésre lassan áramlik, a Lighthouse nem jelez elrendezés-ugrást miatta."),
-            dict(id="theme-age", who="Laci", title="18+ korkapu nyelvválasztóval",
-                 desc="<p>Első látogatáskor 18+ ablak (SK / FR választóval), a választás sütiben marad. A nikotin-figyelmeztetés "
-                      "(TPD szöveg) a láblécben és a termékoldalon.</p>",
-                 check="új böngészőben megjelenik, „igen” után nem jön vissza; „nem” esetén nem lehet továbblépni."),
-            dict(id="theme-templates", who="Laci", title="Sablonok a templates/ mappában",
-                 desc="<p><code>front_page_content</code>, <code>tax_product_cat_content</code>, <code>tax_product_brand_content</code>, "
-                      "<code>single_product_content</code>, <code>search</code>, <code>404</code>, <code>blog_page</code>, <code>single_post</code>, "
-                      "<code>single_page_content</code> (saját H1 miatt). Oldalanként egy H1. A blokk-markupot a szerkesztő tegye kanonikussá "
-                      "(Playwright, <code>\"invalid\":[]</code>).</p>",
-                 check="minden sablon és oldal érvényes a blokkszerkesztőben, nincs dupla H1."),
+            dict(id="theme-tokens", who="Kész – ellenőrizd", title="Színek, betűk, theme.json paletta",
+                 desc="<p>A téma az előnézet CSS-ét használja változatlanul (<code>assets/css/site.css</code>), az iu_theme alap-CSS-éből csak a <code>variables.css</code> töltődik. Betűk helyben (Barlow, Barlow Semi Condensed).</p>",
+                 check="a dev oldal úgy néz ki, mint az előnézet (1440 és 390 px)."),
+            dict(id="theme-head", who="Kész – ellenőrizd", title="Fejléc, lábléc, mega menü",
+                 desc="<p>Felső sáv, fejléc kereséssel, mega menü (alkategóriák, márkák, slukkszám-sávok, kiemelt termék), mobilmenü, kosár-fiók, lábléc hírlevéllel. A menü a kategóriafából jön, csak a termékkel rendelkező kategóriák és márkák látszanak; az Akcie csak akkor, ha van akciós termék.</p>",
+                 check="hover, billentyűzet, érintés (első koppintás a panelt nyitja); mobilon a menü és a kosár-fiók."),
+            dict(id="theme-smoke", who="Kész – ellenőrizd", title="Mozgó füst a háttérben",
+                 desc="<p>A nyitóképen és a hírlevél sávban a füstkép (az előnézet CSS-éből).</p>",
+                 check="a nyitókép az előnézet szerint."),
+            dict(id="theme-age", who="Kész – ellenőrizd", title="18+ korkapu nyelvválasztóval",
+                 desc="<p>18+ kapu nyelvváltóval, az elfogadás egy évig megmarad (<code>fv_age</code> süti); „Nie” esetén üzenet.</p>",
+                 check="első látogatáskor megjelenik, elfogadás után nem."),
+            dict(id="theme-templates", who="Kész – ellenőrizd", title="Sablonok a templates/ mappában",
+                 desc="<p>14 sablonfájl a <code>templates/</code> mappában (fejléc, lábléc, nyitóoldal, oldal, kategória, márka, bolt, keresés, termék, blog, cikk, 404), mind érvényes a blokkszerkesztőben (<code>tests/wp/editor-check.mjs</code>).</p>",
+                 check="Megjelenés → Template-ek alatt ne legyen admin sablon, ami felülírná a fájlokat."),
         ]),
         dict(id="model", title="WooCommerce adatmodell", intro="Kategória = mi a termék, márka = ki gyártja, attribútum = tulajdonság "
              "(szűrő). <b>Minden termék SIMPLE</b>, ahogy az ügyfél CSV-jében.", items=[
-            dict(id="model-shop", who="Laci", title="Bolt-alapbeállítások",
-                 desc="<p>Pénznem EUR, bolt helye Szlovákia, árak ÁFÁ-val megadva. Adókulcsok: SK 23 %, FR 20 % (OSS) – "
-                      "a végleges kulcsokat a könyvelő hagyja jóvá. A francia bruttó ár kérdése nyitott (lásd lent); "
-                      "ha az ügyfél azonos bruttót kér: <code>woocommerce_adjust_non_base_location_prices</code> → <code>false</code>.</p>",
-                 check="SK és FR számlázási címmel a kosár a megfelelő ÁFÁ-t mutatja."),
-            dict(id="model-cats", who="Laci", title="Kategóriafa telepítő lépésként",
-                 desc="<p>A fát az <code>inc/setup.php</code> hozza létre (egyszer futó, verziózott lépés), a slugok a táblázat szerint. "
-                      "Minden kategória kapja meg az angol nevét term metában (<code>_fv_en_name</code>) – az import ebből rendel. "
-                      "Forrás: <code>prototype/csv/kategoria-osszerendeles.csv</code>. A Geekvape Q Pod 0.4 / 0.6 / 0.8 Ω az "
-                      "<code>ures-podok</code> alá kerül, a gyárilag töltött cserepodok az <code>eloretoltott-podok</code> alá.</p>",
-                 check="a fa egyezik a táblázattal; a telepítő második futása nem hoz létre semmit."),
-            dict(id="model-brands", who="Laci", title="Márkák (WooCommerce Brands)",
-                 desc="<p><code>product_brand</code> logóval és leírással. A márkaoldal a márka <b>minden</b> termékét mutatja, "
-                      "terméktípustól függetlenül, típus szerinti szűrővel. iu_theme-buktatók: a márka-archívum saját sablont töltene "
-                      "(<code>template_include</code> → a téma <code>index.php</code>-ja), az <code>is_archive('product_cat')</code> "
-                      "márkaoldalon is igaz (javítás <code>shortcode_atts_products</code> szűrővel).</p>",
-                 check="pl. az Elfbar oldalán készülék, előretöltött pod és eldobható is látszik; a „Naše značky” lista csak termékes márkát mutat."),
-            dict(id="model-attrs", who="Laci", title="Attribútumok",
-                 desc="<p><code>pa_iz</code>, <code>pa_nikotin</code> (felirat: <b>„20 mg/ml (2 %)”</b>, 0 mg: „0 mg/ml (bez nikotínu)”), "
-                      "<code>pa_kiszereles</code>, <code>pa_puff</code> (szám), <code>pa_puff_sav</code> (sáv, mentéskor számolva: "
-                      "do 1 000 · 1 000–9 999 · 10 000–19 999 · 20 000 a viac), <code>pa_kompatibilitas</code> (a rendszer neve, pl. ELFA), "
-                      "<code>pa_szin</code> (term metában a minta színe), <code>pa_ellenallas</code> (Ω). A slugok nyelvfüggetlenek.</p>",
-                 check="egy termék mentésekor a <code>pa_puff_sav</code> magától beáll; a nikotin a fenti formában jelenik meg."),
-            dict(id="model-status", who="Laci", title="„Kifutott” készletállapot",
-                 desc="<p>Saját készletállapot (<code>discontinued</code>) a „Raktáron” és „Nincs készleten” mellé: a termékoldal megmarad, "
-                      "nem vásárolható, a helyettesítő termékek látszanak (a kártya gombja: „Náhrady”, a termékoldal "
-                      "<code>#rel-groups</code> részére visz). A listákban a végére kerül.</p>",
-                 check="egy kifutott terméknél nincs kosár gomb, a helyettesítők megjelennek."),
-            dict(id="model-group", who="Laci", title="Testvértermékek (_fv_group)",
-                 desc="<p>A színek / ízek / nikotin / ellenállás külön SIMPLE termékek. Az összetartozókat a <code>_fv_group</code> meta "
-                      "köti össze (az import „Termékcsoport” oszlopa); a termékoldal a különbség szerint linkeket mutat "
-                      "(pl. Farba: Čierna · Strieborná · Modrá), a nem raktáros szaggatott kerettel.</p>",
-                 check="az ELFA Pro Kit oldalán a három szín link, a jelenlegi kiemelve."),
+            dict(id="model-shop", who="Kész – ellenőrizd", title="Bolt-alapbeállítások",
+                 desc="<p>A telepítő beállítja: EUR, bruttó árak, ÁFA SK 23 % / FR 20 % a vásárló országa szerint, súly kg, klasszikus kosár / pénztár / fiók szlovák végpontokkal, vendégvásárlás, alacsony készlet: 3 db.</p>",
+                 check="WooCommerce → Beállítások: a fentiek; az ÁFA-kulcsokat a könyvelő hagyja jóvá (OSS)."),
+            dict(id="model-cats", who="Kész – ellenőrizd", title="Kategóriafa telepítő lépésként",
+                 desc="<p>A 7 főmenüpontos fa (18 kategória) szlovák névvel és slugokkal, francia névvel (<code>fv_name_fr</code>), az ügyfél angol nevével (<code>fv_en_name</code>); stabil kulcs: <code>fv_key</code>.</p>",
+                 check="Termékek → Kategóriák: a fa az előnézet szerint; átnevezéskor a téma követi."),
+            dict(id="model-brands", who="Kész – ellenőrizd", title="Márkák (WooCommerce Brands)",
+                 desc="<p>12 márka (WooCommerce Brands), leírással SK / FR, betűs logóval (szín, stílus).</p>",
+                 check="Termékek → Márkák; ha az ügyfél valódi logót küld, a márka képe lehet (kérésre)."),
+            dict(id="model-attrs", who="Kész – ellenőrizd", title="Attribútumok",
+                 desc="<p>7 globális attribútum: <code>pa_prichut</code>, <code>pa_nikotin</code>, <code>pa_objem</code>, <code>pa_pocet-potiahnuti</code>, <code>pa_system</code>, <code>pa_farba</code>, <code>pa_odpor</code> – a szűrők és a kártyák ezekből; a francia feliratok a téma szótárából.</p>",
+                 check="Termékek → Attribútumok: 7 db, dupla nincs."),
+            dict(id="model-status", who="Kész – ellenőrizd", title="„Kifutott” készletállapot",
+                 desc="<p>„Kifutott termék” pipa (termék szerkesztése → Készlet): az oldal megmarad, nem rendelhető, a helyettesítőket mutatja, a listák végére kerül.</p>",
+                 check="egy termékre próbaképp: a termékoldal és a lista az előnézet szerint."),
+            dict(id="model-group", who="Kész – ellenőrizd", title="Testvértermékek (_fv_group)",
+                 desc="<p>A testvértermékek (<code>_fv_group</code>) a termékoldalon linkként, 12 fölött választólistaként (pl. 49 ELFA Pro pod).</p>",
+                 check="ELFA TURBO (4 szín), ELFA Pro pod (választólista)."),
         ]),
         dict(id="import", title="Termékimport", intro="Az ügyfél fájlja megérkezett (2026-10-19, <code>prototype/csv/ugyfel/</code>, 395 SIMPLE termék). "
              "A tisztított importfájl és a hibalista kész: <code>prototype/csv/firstvape-woocommerce-import.csv</code>, <code>prototype/csv/import-ellenorzes.md</code> "
              "(generátor: <code>prototype/tools/client_import.py</code> – ha az ügyfél javított fájlt küld, ezt futtasd újra).", items=[
-            dict(id="imp-map", who="Laci", title="Angol kategória → szlovák kategória, dupla nélkül",
-                 desc="<p>Az ügyfél fájljában a kategóriák angolul vannak (pl. <code>DEVICES / KITS &gt; PREFILLED POD KITS</code>). A pontos párosítás: "
-                      "<code>prototype/csv/kategoria-osszerendeles.csv</code>. A tisztított importfájl már a szlovák kategóriautat tartalmazza "
-                      "(„Zariadenia / kity &gt; Predplnené pod systémy”); az eredeti angol név a <code>Meta: _fv_en_category</code> oszlopban van. "
-                      "A „PREFILLED PODS &gt; ELFBAR ELFA / VAPORESSO DOJO / ELFBAR JOINONE / DRIFTER BAR” alkategóriák helyett egy kategória + "
-                      "Systém attribútum. Ha az ügyfél angol nevekkel tölt fel később is: az importáló a <code>_fv_en_name</code> term meta alapján "
-                      "rendeljen, <b>új kategóriát ne hozzon létre</b>.</p>",
-                 check="a tisztított CSV kétszeri importja után sincs új vagy dupla kategória."),
+            dict(id="imp-map", who="Kész – ellenőrizd", title="Angol kategória → szlovák kategória, dupla nélkül",
+                 desc="<p>A telepítő az ügyfél fájljából generált adatokkal (395 termék) tölti fel a boltot, a szlovák kategóriákba; dupla kategória nem jön létre. A javított fájl jöttével: <code>client_import.py</code> → <code>build_data.mjs</code> → <code>wp firstvape setup --step=products</code> (árak / készlet: <code>--force</code>) – TELEPITES.md.</p>",
+                 check="a 3 ELFBAR 600 az Eldobható alatt, a dupla SKU-k ideiglenes utótaggal (az ügyfél javítja)."),
             dict(id="imp-columns", who="Laci", title="Import a tisztított CSV-ből, frissítés SKU alapján",
-                 desc="<p><code>prototype/csv/firstvape-woocommerce-import.csv</code>: WooCommerce-fejlécek, SK kategóriák, attribútumok SK címkével "
-                      "(Príchuť, Nikotín „20 mg/ml (2 %)”, Objem, Počet potiahnutí, Systém, Farba, Odpor), <code>Meta: _fv_group</code> (testvértermékek), "
-                      "érvényes Cross-sells. A dupla SKU-k ideiglenes végződést kaptak (pl. <code>-PINEAPPLE-LEMON</code>) – a véglegeset az ügyfél adja. "
-                      "A súly üres (az ügyfél adja meg), a leírás üres (a nagyker angol szövege nem kerülhet ki; szlovák és francia szöveg kell).</p>",
-                 check="mind a 395 termék bejön, másodszorra csak frissít (nincs dupla termék)."),
-            dict(id="imp-images", who="Laci", title="Feldolgozott termékfotók, átlátszó háttérrel",
-                 desc="<p>Az ügyfél kérése: átlátszó háttér, FIRSTVAPE logó bal felül. Kész: <code>prototype/tools/product_images.py</code> "
-                      "(háttér-eltávolítás, a gyenge képek feljavítása, 1200 × 1200 px WebP). A mesterképek zipje a CRM-feladatnál; a fájlnév a termék slugja "
-                      "(az import <code>Images</code> oszlopa erre hivatkozik). <b>Az átlátszóság maradjon meg:</b> WebP-ként töltsd fel, ne alakítsa JPEG-re semmi "
-                      "(képoptimalizáló bővítmény, tárhely), a WooCommerce bélyegképei is legyenek WebP / PNG. A 26 túl kicsi forrásképhez (főleg ELFLIQ) "
-                      "az ügyféltől jobb fotót kérünk – ha jön, a szkript újrafuttatható.</p>",
-                 check="a termékoldalon és a listában a kép mögött a webshop sötét háttere látszik, nincs fehér keret."),
+                 desc="<p>Ha az ügyfél javított fájlt küld: újragenerálás és frissítés a fenti módon (SKU alapján). A WooCommerce CSV-importere a meglévő termékekre <b>nem</b> jó (a képoszlop fájlnevet tartalmaz – tesztelve); új termékhez kép nélkül igen.</p>",
+                 check="frissítés után <code>wp firstvape check</code>, a változott termékek a boltban."),
+            dict(id="imp-images", who="Kész – ellenőrizd", title="Feldolgozott termékfotók, átlátszó háttérrel",
+                 desc="<p>392 feldolgozott kép (átlátszó WebP, FIRSTVAPE logó) a médiacsomagból, kiemelt képként; a WordPress méretei is WebP-k (az átlátszóság marad). Képoptimalizáló bővítmény ne alakítsa JPEG-re.</p>",
+                 check="a 3 kép nélküli ELFBAR 600 és a 26 gyenge kép: ha az ügyfél újat küld, <code>product_images.py</code>, majd csere a médiatárban."),
             dict(id="imp-redirect", who="Laci", title="301 a régi VirtueMart-címekről",
-                 desc="<p>A régi oldal termék- és kategóriacímeit (feltérképezés vagy a Search Console listája) az új címekre irányítsd, "
-                      "SKU vagy név alapján párosítva.</p>",
-                 check="a régi címek mintája 301-gyel a megfelelő új oldalra visz, nincs láncolt átirányítás."),
+                 desc="<p>301 a régi Joomla / VirtueMart címekről az újakra (a régi oldal termék- és kategóriacímei, Search Console listája) – a témában ehhez még nincs térkép: a régi címlista kell (élesítés 4/4).</p>",
+                 check="a régi top 50 cím 301-gyel az új oldalra visz."),
         ]),
         dict(id="list", title="Listák, szűrők, kereső", items=[
-            dict(id="list-facets", who="Laci", title="Csak a kategóriában értelmezhető szűrők",
-                 desc="<p>Az <code>iu-woocommerce/filter</code> blokk főkategóriánként más szűrőket mutat (<code>FV.catFacets</code> a <code>core.js</code>-ben): "
-                      "Készülékek: alkategória, márka, rendszer, szín, ellenállás, elérhetőség · Előretöltött podok: márka, rendszer, íz, nikotin, "
-                      "slukkszám, elérhetőség · E-liquidek: alkategória, márka, íz, nikotin, kiszerelés · Eldobható: márka, íz, slukkszám, nikotin · "
-                      "Kiegészítők: alkategória, márka, rendszer, ellenállás. Egyértékű szűrő nem látszik. Szűrt URL: canonical / noindex szabály.</p>",
-                 check="minden főkategóriában csak a felsorolt szűrők vannak, élő darabszámmal, mobilon oldalpanelben."),
-            dict(id="list-puff", who="Laci", title="Slukkszám-szűrő tartományokkal",
-                 desc="<p>A <code>pa_puff_sav</code> alapján; a szűrő alatt egy mondat: „A szűrő tartományban keres, nem pontos értékre. "
-                      "A slukkszám gyártói becslés.” (SK / FR szöveg az <code>i18n.js</code>-ben: <code>puffNote</code>). A főoldali slukkszám-kereső is sávokra visz.</p>",
-                 check="a „20 000 a viac” sáv a 20 000 feletti termékeket adja, a megjegyzés látszik."),
-            dict(id="list-card", who="Laci", title="Egységes termékkártya („Loop Product” pattern)",
-                 desc="<p>Márka, név (két sor), legfeljebb 3 jellemző-címke, alul mindig ugyanott: ár, készlet, teljes szélességű gomb. "
-                      "Gombfeliratok: „Do košíka” · „Upozorniť ma” (nincs készleten) · „Náhrady” (kifutott). „Možnosti” nincs.</p>",
-                 check="egy sorban a kártyák ára, készlete és gombja egy vonalban van (laptopon és mobilon is)."),
-            dict(id="list-search", who="Laci", title="Bővített termékkereső",
-                 desc="<p>Név, márka, íz, slukkszám, nikotin, rendszer, kategória, SKU és EAN alapján; számnormalizálás "
-                      "(<code>40000</code> = <code>40 000</code> = <code>40k</code>); élő javaslatok. A keresőszót mindig escapeld (iu_theme 0.1.0 XSS-tanulság).</p>",
-                 check="„Elfbar 40000”, „40k”, „mango”, „xros” és egy SKU is jó találatot ad; <code>/?s=\"&gt;&lt;svg onload=alert(1)&gt;</code> nem fut le."),
+            dict(id="list-facets", who="Kész – ellenőrizd", title="Csak a kategóriában értelmezhető szűrők",
+                 desc="<p>Főkategóriánként csak a ráérvényes szűrők, darabszámmal; szűrés újratöltés nélkül (URL-ben marad), JS nélkül is; mobilon lenyíló panel. A szűrt URL noindex, a canonical a szűretlen cím.</p>",
+                 check="e-liquid: íz, nikotin, kiszerelés; kiegészítő: ellenállás; készülék: szín, rendszer."),
+            dict(id="list-puff", who="Kész – ellenőrizd", title="Slukkszám-szűrő tartományokkal",
+                 desc="<p>Slukkszám tartományokra (gyártói becslés felirattal), a nyitóoldali keresővel és a mega menü sávjaival.</p>",
+                 check="a nyitóoldali csúszka a megfelelő darabszámot és listát adja."),
+            dict(id="list-card", who="Kész – ellenőrizd", title="Egységes termékkártya („Loop Product” pattern)",
+                 desc="<p>Egységes termékkártya (márka, név, fő adatok, ár, készlet, a valódi művelet gombja); kosárba AJAX-szal, kedvencek szívvel.</p>",
+                 check="egyforma kártyamagasság a rácsban."),
+            dict(id="list-search", who="Kész – ellenőrizd", title="Bővített termékkereső",
+                 desc="<p>Bővített kereső: név, márka, attribútumok, kategória, SKU; „40k” = „40 000” = „40000”; élő lenyíló javaslatokkal (márka, kategória, slukkszám, íz).</p>",
+                 check="<code>Elfbar 40000</code>, <code>40k</code>, <code>mango</code>, <code>wenax</code>."),
         ]),
         dict(id="pdp", title="Termékoldal", items=[
-            dict(id="pdp-specs", who="Laci", title="Íz, szín, kiszerelés, nikotin mindig látszik",
-                 desc="<p>A kiemelt jellemzők (íz, szín, nikotin, kiszerelés, rendszer, ellenállás, becsült slukkszám) akkor is látszanak, "
-                      "ha nincsenek a névben. Specifikációs táblázat SKU-val és EAN-nal, <b>súly nélkül</b>.</p>",
-                 check="egy liquidnél, egy podnál és egy készüléknél is minden releváns jellemző fent van."),
-            dict(id="pdp-related", who="Laci", title="Kompatibilis podok és készülékek, rendszerjelöléssel",
-                 desc="<p>A <code>pa_kompatibilitas</code> alapján: készüléknél „Kompatibilné pody a cartridge – systém X”, podnál "
-                      "„Kompatibilné zariadenia – systém X”, a kártyán „Systém X” címke; utána a testvértermékek és az alternatívák "
-                      "(csoportonként egy).</p>",
-                 check="az ELFA Pro Kit alatt az ELFA podok jönnek „Systém ELFA” címkével."),
-            dict(id="pdp-notify", who="Laci", title="Értesítés, ha újra raktáron (saját kód)",
-                 desc="<p>Nincs készleten: e-mail cím megadása, mentés saját táblába / metába; készlet-változáskor levél SK / FR nyelven, "
-                      "utána a feliratkozás törlődik. Bővítmény nélkül.</p>",
-                 check="feliratkozás után a készletet 0-ról 5-re állítva a levél megérkezik."),
-            dict(id="pdp-seo", who="Laci", title="JSON-LD Product és nikotin-figyelmeztetés",
-                 desc="<p><code>Product</code>: név, SKU, GTIN, márka, ajánlat EUR-ban, készlet. A Yoast schemájával ne legyen dupla. "
-                      "A JS-sztringben a lezáró script-taget mindig <code>&lt;\\/script&gt;</code>-ként írd.</p>",
-                 check="a Rich Results teszt hiba nélkül olvassa a terméket."),
+            dict(id="pdp-specs", who="Kész – ellenőrizd", title="Íz, szín, kiszerelés, nikotin mindig látszik",
+                 desc="<p>Íz, szín, kiszerelés, nikotin („20 mg/ml (2 %)”), rendszer, ellenállás, slukkszám mindig látszik; paramétertábla; súly sehol.</p>",
+                 check="egy pod, egy liquid, egy készülék termékoldala."),
+            dict(id="pdp-related", who="Kész – ellenőrizd", title="Kompatibilis podok és készülékek, rendszerjelöléssel",
+                 desc="<p>Az ügyfél ajánlásai (cross-sell), kompatibilis podok / patronok és készülékek (<code>pa_system</code>), további változatok, alternatívák – egy termék csak egyszer.</p>",
+                 check="ELFA TURBO: alatta az ELFA podok „Systém ELFA” jelöléssel."),
+            dict(id="pdp-notify", who="Kész – ellenőrizd", title="Értesítés, ha újra raktáron (saját kód)",
+                 desc="<p>„Upozorniť ma” elfogyott terméknél: a feliratkozás a Beküldések között, újra raktáron a téma a feliratkozó nyelvén levelet küld (tesztelve).</p>",
+                 check="egy termék készletét 0-ra, feliratkozás, vissza 5-re: megjön a levél."),
+            dict(id="pdp-seo", who="Kész – ellenőrizd", title="JSON-LD Product és nikotin-figyelmeztetés",
+                 desc="<p>JSON-LD Product (SKU, márka, EUR ár, készlet, kép), OnlineStore, BreadcrumbList; nikotin-figyelmeztetés; hreflang sk ↔ fr.</p>",
+                 check="Google Rich Results teszt egy termékoldalra (élesítés után)."),
         ]),
         dict(id="checkout", title="Kosár, pénztár, fiók", intro="Klasszikus (shortcode-os) kosár és pénztár, ahogy minden webshopunknál.", items=[
-            dict(id="co-cart", who="Laci", title="Kosár és mini kosár",
-                 desc="<p>A mennyiség mellett jól látható „Odstrániť” gomb (a mini kosárban kuka ikon), ingyenes szállítás sáv. "
-                      "<b>A csomag súlya sehol nem jelenik meg</b> a vásárlói felületen.</p>",
-                 check="tétel törölhető a kosárból és a mini kosárból is; „Hmotnosť” / „Poids” sehol."),
-            dict(id="co-layout", who="Laci", title="Pénztár: lépések, tömör mobil, ragadó összesítő",
-                 desc="<p>A 4 rendelési lépés mobilon egy sorban, 4 oszlopban, vízszintes görgetés nélkül. Mobilon tömör mezők és kártyák "
-                      "(név / vezetéknév, irányítószám / város két oszlopban). Laptopon két oszlop, a jobb oldali összesítő görgetéskor "
-                      "<b>csak akkor ragad, ha elfér</b> a képernyőn (minta: <code>FV.fitSummary</code> az <code>app.js</code>-ben).</p>",
-                 check="390 px-en nincs vízszintes görgetés; laptopon lejjebb görgetve az összesítő látszik, és nem marad üres hely."),
-            dict(id="co-errors", who="Laci", title="Hibaüzenet a mező alatt",
-                 desc="<p>Hiányzó vagy hibás adatnál a piros keret alatt rövid szöveg (pl. „Vyplň toto pole.”, „Zadaj platné PSČ (napr. 811 01).”), "
-                      "felül egy összefoglaló. PSČ: SK <code>^\\d{3}\\s?\\d{2}$</code>, FR <code>^\\d{5}$</code>; telefon legalább 9 számjegy. "
-                      "A szövegek az <code>i18n.js</code>-ben (<code>err*</code> kulcsok). A mintaadat-kitöltő blokk <b>nem kerül át</b>.</p>",
-                 check="üres beküldésnél minden hibás mező alatt ott a szöveg, kijavításkor eltűnik."),
-            dict(id="co-address", who="Laci", title="Eltérő szállítási cím, cégadatok",
-                 desc="<p>Házhoz szállításnál „Doručiť na inú adresu” (a WooCommerce saját szállítási címe); átvételi pontnál rejtve. "
-                      "Céges vásárlás: SK IČO, DIČ, IČ DPH · FR SIRET, TVA. Nézd meg, a SuperFaktúra bővítmény melyik meta kulcsból olvassa "
-                      "az adószámot, és oda is írd be (Mandala / Számlázz.hu tanulság, DONTESEK 2026-10-08).</p>",
-                 check="céges tesztrendelés számláján ott az IČO / DIČ / IČ DPH."),
-            dict(id="co-account", who="Laci", title="Fiók",
-                 desc="<p>Rendelések Packeta-követési linkkel, számla letöltése (SuperFaktúra), kedvencek (saját kód, user meta), címek.</p>",
-                 check="egy teszt-vásárló látja a rendelését, a követési linket és a számlát."),
+            dict(id="co-cart", who="Kész – ellenőrizd", title="Kosár és mini kosár",
+                 desc="<p>Kosár-fiók (mennyiség, törlés, ingyenes szállításig hiányzó összeg) és klasszikus kosár oldal kártyás tételekkel, a mennyiség változására magától frissül.</p>",
+                 check="mobilon és laptopon."),
+            dict(id="co-layout", who="Kész – ellenőrizd", title="Pénztár: lépések, tömör mobil, ragadó összesítő",
+                 desc="<p>Rendelési lépések, kétoszlopos pénztár ragadó összesítővel, mobilon egy oszlop.</p>",
+                 check="390 px: nincs vízszintes görgetés."),
+            dict(id="co-errors", who="Kész – ellenőrizd", title="Hibaüzenet a mező alatt",
+                 desc="<p>Mezőnkénti rövid hibaüzenet (a WooCommerce sajátja, rövidített szöveggel), fölül egy összefoglaló; gépelés közben eltűnik; irányítószám piaconként (SK: 945 01, FR: 75011).</p>",
+                 check="üres beküldés: minden kötelező mező alatt üzenet."),
+            dict(id="co-address", who="Kész – ellenőrizd", title="Eltérő szállítási cím, cégadatok",
+                 desc="<p>Eltérő szállítási cím (WooCommerce), „cégként vásárolok” pipa: cégnév, IČO, DIČ / IČ DPH (FR: SIRET, TVA) – a rendelés metájában (<code>_billing_fv_id</code>, <code>_billing_fv_vat</code>); 18+ megerősítés.</p>",
+                 check="a SuperFaktúra bővítmény ezekből tegye a számlára (08.3)."),
+            dict(id="co-account", who="Kész – ellenőrizd", title="Fiók",
+                 desc="<p>Fiók (rendelések, címek, adatok) a téma kinézetével, a menüben a Kedvencek (saját kód, böngészőben + bejelentkezve a fiókban).</p>",
+                 check="regisztráció, belépés, rendelés megtekintése."),
         ]),
         dict(id="integr", title="Szállítás, fizetés, számlázás", intro="A díjak, kulcsok és szerződéses adatok az ügyféltől jönnek; "
              "a prototípus díjai mintaértékek („vzor”).", items=[
             dict(id="int-packeta", who="Laci", title="Packeta: átvételi pont / Z-BOX és házhoz szállítás",
-                 desc="<p>A Packeta hivatalos WooCommerce-bővítménye. SK: „Výdajné miesto alebo Z-BOX” (a Packeta térképes választója) és "
-                      "„Doručenie na adresu”; FR: point relais és házhoz. Díjak, ingyenes szállítás határa, utánvét a szerződés szerint. "
-                      "A súly a termékeken a díjszámításhoz kell, a vásárló nem látja. Címkenyomtatás a bővítményből.</p>",
-                 check="mindkét piacon választható átvételi pont, a rendelés átmegy a Packetába, a címke kinyomtatható."),
+                 desc="<p>A témában van egy <b>minta</b> szállítási mód („First Vape – Packeta (minta)”): súlysávos díj, ingyenes küszöb, átvételi pont választó (minta lista, vagy API-kulccsal a Packeta widget) – a díjak mintaértékek. Élesítéshez a hivatalos <b>Packeta bővítmény</b> (API-kulcs a portálon), a módjai a két zónába, a minta módot kapcsold ki. A díjak a kérdőívből; utána Adatok → „A díjak véglegesek”.</p>",
+                 check="SK és FR: átvételi pont / Z-BOX és házhoz, a Packeta címke és a csomagátadás működik."),
             dict(id="int-teya", who="Laci", title="Teya: kártya, Apple Pay, Google Pay",
-                 desc="<p>A Teya által adott WooCommerce-kapcsolat, előbb tesztkulcsokkal. Utánvét (dobierka) a díjjal. "
-                      "A kulcs a wp-configba vagy a bővítmény beállításába kerül, <b>soha a repóba</b>.</p>",
-                 check="teszt kártyás fizetés sikeres és sikertelen ága is helyesen zárul; utánvétnél a díj a végösszegben."),
+                 desc="<p>Teya fizetési kapu bővítmény, előbb tesztkulcsokkal: kártya, Apple Pay, Google Pay. Az utánvét a témában kész (díj piaconként: Adatok). A kulcs a bővítmény beállításába / wp-configba, <b>soha a repóba</b>. Mindkét domain engedélyezve.</p>",
+                 check="sikeres és sikertelen fizetés is helyesen zárul; utánvétnél a díj a végösszegben."),
             dict(id="int-sf", who="Laci", title="SuperFaktúra: számla rendeléskor / fizetéskor",
-                 desc="<p>SuperFaktúra WooCommerce-bővítmény: számla a rendelés nyelvén (SK / FR), helyes ÁFÁ-val, céges adatokkal, "
-                      "e-mailben a vásárlónak. Kártyánál fizetéskor, utánvétnél a beállított állapotnál.</p>",
-                 check="a tesztrendelésekről hibátlan számla készül a SuperFaktúrában."),
+                 desc="<p>SuperFaktúra bővítmény: számla a rendelés nyelvén (<code>_fv_lang</code>), helyes ÁFÁ-val, cégadatokkal (<code>_billing_fv_id</code> / <code>_billing_fv_vat</code>), kártyánál fizetéskor, utánvétnél a beállított állapotnál.</p>",
+                 check="SK és FR tesztrendelés: a számla nyelve és ÁFÁ-ja helyes."),
             dict(id="int-mail", who="Laci", title="E-mailek és SMTP",
-                 desc="<p>WooCommerce-levelek SK és FR nyelven, létező feladócímmel (pl. <code>info@firstvape.sk</code> – az ügyféllel egyeztetve), "
-                      "WP Mail SMTP a tárhely postafiókjával.</p>",
-                 check="a rendelés visszaigazolása megérkezik a vásárlónak és az adminnak, nem spamként."),
+                 desc="<p>WooCommerce-levelek: a vásárló a rendelés nyelvén kapja (a téma a domain szerint vált, a későbbi állapotlevelek is). Feladó: <code>info@firstvape.sk</code> (az ügyféllel egyeztetve), WP Mail SMTP a tárhely postafiókjával.</p>",
+                 check="a visszaigazolás megérkezik a vásárlónak és az adminnak, nem spamként."),
         ]),
         dict(id="market", title="Nyelvek és piacok", intro="Áron döntése (2026-10-19): <b>egy webshop két domainnel</b>. "
              "<b>firstvape.sk</b> = szlovák felület + SK piac, <b>firstvape.fr</b> = francia felület + FR piac. Egy WordPress, egy "
              "termékkatalógus, egy készlet és egy rendeléslista; a nyelv és a piac a domainnel együtt vált.", items=[
-            dict(id="mk-domain", who="Laci", title="Egy WordPress, két domain (WPML: külön domain nyelvenként)",
-                 desc="<p>WPML + WooCommerce Multilingual, nyelvi URL-formátum: <b>„Different domain per language”</b> – SK alapnyelv a "
-                      "<code>firstvape.sk</code>-n, FR a <code>firstvape.fr</code>-en (nem <code>/fr/</code> almappa). Mindkét domain ugyanarra "
-                      "a WordPress-telepítésre mutat (alias / parkolt domain), mindkettőn SSL. A domain határozza meg a piacot: "
-                      "pénznem EUR mindkettőn; alapértelmezett ország, ÁFA-kulcs és szállítási zóna a domain szerint (SK / FR). "
-                      "A nyelvváltó a másik domain megfelelő oldalára visz (termék ↔ fordított termék, kategória ↔ kategória).</p>"
-                      "<p>Ellenőrizd: a kosár és a belépés sütije domainhez kötött – a domainváltásnál a kosár piaconként külön marad "
-                      "(eltérő ÁFA és szállítás miatt ez így helyes), a WPML „bejelentkezés a többi domainen” opcióját kapcsold be. "
-                      "Termékimportnál a fordítások összekötése (WPML import / <code>_fv_group</code> és SKU alapján), a készlet közös. "
-                      "<code>hreflang</code> a két domain megfelelő oldalai között, külön <code>sitemap</code> és külön Search Console-tulajdon "
-                      "domainenként; GA4 egy tulajdon, két adatfolyam vagy domainek közötti mérés.</p>",
-                 check="a firstvape.sk szlovákul, a firstvape.fr franciául jön be ugyanabból a WordPressből; a nyelvváltó a megfelelő "
-                       "oldalra visz; FR-en francia ÁFA és szállítás; egy rendelés mindkét domainről ugyanabba a rendeléslistába kerül."),
-            dict(id="mk-lang", who="Laci", title="SK alapnyelv + FR",
-                 desc="<p>Minden felületi szöveg az <code>i18n.js</code>-ből (SK tegező, FR magázó). A kategóriák, márkaleírások, "
-                      "termékszövegek fordítása WPML-lel; a menük, a fejléc / lábléc és az <code>iu_pattern</code>-ek nyelvenként. "
-                      "A levelek, a számla és a jogi oldalak a rendelés domainjének nyelvén.</p>",
-                 check="FR-re váltva nincs szlovák maradvány a felületen, az árak és a szállítás a francia piacé."),
+            dict(id="mk-domain", who="Laci", title="Egy WordPress, két domain (a téma kezeli)",
+                 desc="<p><b>A téma kezeli a két domaint</b> (WPML nem kell): Megjelenés → First Vape → Adatok → Szlovák domain: <code>firstvape.sk</code>, Francia domain: <code>firstvape.fr</code>. Mindkét domain ugyanarra a WordPressre mutasson (alias / parkolt domain), mindkettőn SSL. A <code>.fr</code>-en francia felület, ÁFA, szállítás, ország; minden link, kép és CSS a látogató domainjén (tesztelve két hosttal). Dev / staging: <code>?lang=fr</code>.</p>",
+                 check="a firstvape.fr franciául jön be ugyanabból a WordPressből; a nyelvváltó a másik domain ugyanazon oldalára visz; egy rendelés mindkét domainről ugyanabba a listába kerül; Search Console mindkét domainre."),
+            dict(id="mk-lang", who="Kész – ellenőrizd", title="SK alapnyelv + FR",
+                 desc="<p>A felület szövegei a téma szótárából (SK tegező, FR magázó), a WordPress és a WooCommerce szövegei a nyelvi csomagokból; a kategóriák, márkák, rövid leírások francia változata metában. A francia termékleírás: <code>_fv_desc_fr</code> (ha az ügyfél megírja).</p>",
+                 check="FR-en nincs szlovák maradvány (a termékneveken kívül)."),
             dict(id="mk-legal", who="Laci", title="Jogi oldalak piaconként (helyőrzővel)",
-                 desc="<p>SK: Doprava a platba, Obchodné podmienky, Ochrana osobných údajov, Odstúpenie od zmluvy, Súbory cookie, Kontakt · "
-                      "FR (a firstvape.fr-en): Livraison et paiement, CGV, Politique de confidentialité, Droit de rétractation, Mentions légales, Cookies, Contact. "
-                      "A szöveget az ügyfél jogásza adja; addig jelölt helyőrző. Süti-hozzájárulás, GA4 csak hozzájárulással.</p>",
-                 check="az oldalak telepítő lépésként jönnek létre, a pénztár az ÁSZF-re linkel."),
+                 desc="<p>A jogi oldalak piaconként létrejöttek helyőrző szöveggel (szerkeszthető blokkok, a pénztár pipája a piac ÁSZF-jére és adatvédelmére mutat). A végleges szöveget az ügyfél jogásza adja: cseréld, a „legal-ph” bekezdést töröld. Süti-hozzájárulás és GA4 csak hozzájárulással: élesítéskor (a témában még nincs süti-sáv).</p>",
+                 check="<code>wp firstvape check</code>: nincs „helyőrző szöveg” figyelmeztetés."),
             dict(id="mk-fr", who="Laci", title="Eldobható e-cigaretták Franciaországban",
-                 desc="<p>Előkészítés: a firstvape.fr-en rejthető kategória (menü, lista, kereső, közvetlen cím, francia szállítási cím). "
-                      "Hogy rejteni kell-e, a jogász mondja meg.</p>",
-                 check="egy kapcsolóval az FR piacon a kategória és termékei eltűnnek, a közvetlen cím nem rendelhető."),
+                 desc="<p>Ha a jogász szerint az eldobható e-cigaretta nem forgalmazható Franciaországban: a kategória rejtése a .fr-en (menü, lista, kereső, közvetlen cím) – a témában még nincs kapcsoló, a döntés után kell (kb. fél nap).</p>",
+                 check="a döntés a kérdőívből; ha rejteni kell, a .fr-en sehol nem érhető el."),
         ]),
         dict(id="test", title="Belső tesztelés", intro="Ez a CRM „Élesítés 1/4” feladat BELSŐ TESZTELÉS pontja előtt fut.", items=[
             dict(id="test-order", who="Laci", title="Teljes tesztrendelés mobilon és laptopon, SK és FR",
-                 desc="<p>Minden szállítási és fizetési móddal: kosár → pénztár → fizetés → köszönő oldal → visszaigazoló levél → "
-                      "SuperFaktúra-számla → Packeta. Céges és magánszemély vásárló, eltérő szállítási cím, átvételi pont.</p>",
-                 check="minden ág hibátlan, a levelek kimennek a vásárlónak és az adminnak."),
+                 desc="<p>Minden szállítási és fizetési móddal, mobilon és laptopon, SK és FR domainen: kosár → pénztár → fizetés → köszönő oldal → levél → számla → Packeta. A téma e2e tesztje (<code>tests/wp/e2e.mjs</code>, 65 ellenőrzés) a minta módokkal átment; a valódi bővítményekkel neked kell végigvinni.</p>",
+                 check="minden ág hibátlan, a levelek kimennek."),
             dict(id="test-ui", who="Laci", title="Megjelenés és szerkesztő",
-                 desc="<p>390, 768, 1024, 1280, 1360 px: nincs vízszintes görgetés (a prototípusban ugyanez a teszt átment). Oldalanként egy H1. "
-                      "Minden oldal és sablon érvényes a blokkszerkesztőben. 404, keresés, mobil menü, 18+ kapu.</p>",
-                 check="a lista minden pontja rendben, képernyőképek a CRM-feladatban."),
+                 desc="<p>390, 768, 1024, 1280, 1440 px: nincs vízszintes görgetés, oldalanként egy H1 (az e2e ezt ellenőrzi). Minden oldal érvényes a szerkesztőben (<code>tests/wp/editor-check.mjs</code>). 404, keresés, mobil menü, 18+ kapu.</p>",
+                 check="képernyőképek a CRM-feladatban."),
         ]),
         dict(id="golive1", title="Élesítés 1/4 – Előfeltételek", intro="A CRM „Élesítés 1/4” feladata. A következő fázis csak akkor indul, ha ez kész.", items=[
             dict(id="gl1", who="Laci", title="Fejlesztés kész, dev szerveren, belső teszt, jóváhagyás",
@@ -307,14 +217,14 @@ LACI = dict(
         ]),
         dict(id="golive3", title="Élesítés 3/4 – Staging", items=[
             dict(id="gl3", who="Laci", title="Staging az ügyfél valódi adataival",
-                 desc="<p>Feltöltés · Better Search Replace (a JSON-escape-elt <code>https:\\/\\/</code> alakra is, <b>mindkét domainre</b>; a staging két aldomainnel, a WPML domainbeállítása ezekre átírva) · permalinkek · e-mail címek · SMTP · "
+                 desc="<p>Feltöltés · Better Search Replace (a JSON-escape-elt <code>https:\\/\\/</code> alakra is, <b>mindkét domainre</b>; a staging két aldomainnel: Megjelenés → First Vape → Adatok → Domainek ezekre) · permalinkek · e-mail címek · SMTP · "
                       "IMPORTÁLÁS az ügyfél Excel/CSV-jéből (a 04-es fázis importálójával) · Packeta, Teya, SuperFaktúra <b>teszt</b> adatokkal · "
                       "belső teszt · az ügyfél a portálon végigvisz egy teljes tesztrendelést mobilon és laptopon, és jóváhagyja.</p>",
                  check="az ügyfél jóváhagyása a portálon megvan."),
         ]),
         dict(id="golive4", title="Élesítés 4/4 – Élesítés", items=[
             dict(id="gl4", who="Laci", title="Éles oldal, éles kulcsok, mérés, keresőrobotok utoljára",
-                 desc="<p>Másolás · Better Search Replace (mindkét domain) · a WPML domainbeállítása az éles domainekre · permalinkek · e-mail · "
+                 desc="<p>Másolás · Better Search Replace (mindkét domain) · First Vape → Adatok → Domainek az éles domainekre · permalinkek · e-mail · "
                       "Packeta, Teya, SuperFaktúra <b>éles</b> adatokkal (a Teyánál mindkét domain engedélyezve) · "
                       "301-ek a régi címekről (ha a régi oldalon volt francia változat, az a firstvape.fr-re) · GTM, GA4 (hozzájárulással), Yoast, SEO OS Connect · belső teszt (egy valódi kis rendelés, "
                       "utána sztornó) · ügyfél-jóváhagyás · végül a „Keresőmotorok ne indexeljék” jelölő kivétele.</p>",
