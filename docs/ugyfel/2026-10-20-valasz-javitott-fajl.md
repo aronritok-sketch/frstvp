@@ -2,7 +2,7 @@
 
 **Hova:** ügyfélportál → a „Képfeltöltés” kérés (CRM: Firstvape → Kérések) válaszaként, nem e-mailben.
 **Előtte:** az új előnézet (`prototype/dist/firstvape-elonezet.zip`) új portál-anyagként („Webshop-előnézet – 2. kör: leírások, pod-alkategóriák”).
-**Kiküldve:** 2026-10-20, Claude, Áron kérésére.
+**Kiküldve:** 2026-10-20, Claude, Áron kérésére (portál: előnézet-anyag 12960001, kérés 6532633 válasza).
 
 ---
 
@@ -21,7 +21,7 @@ Köszi a javított fájlt és a válaszokat! Mindent átvezettünk. A frissítet
   A Strawberry Kiwi képe és a Digi Pro színe is rendben van, a felesleges szóközöket mi szedjük ki.
 - **Termékleírások:** mind a 392 termékhez megírtuk a szlovák és a francia leírást a fájlod angol szövegéből. Tényszerűek
   (kapacitás, akku, ellenállás, nikotin, ízek), nagykereskedői utalás nélkül. Kérlek, nézz bele néhányba az előnézetben
-  (a termékoldal „Leírás” fülén). Ha valahol a műszaki adat nem stimmel, írd meg a termék nevével.
+  (a termékoldal „Popis” fülén, franciául „Description”). Ha valahol a műszaki adat nem stimmel, írd meg a termék nevével.
 - A cégadataidat beírtuk a jogi oldalak fejlécébe (IČO, DIČ, IČ DPH, székhely, cégjegyzékszám).
 - Ingyenes szállítás 39,99 €-tól, ahogy a kérdőívben írtad.
 

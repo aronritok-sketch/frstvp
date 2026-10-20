@@ -30,7 +30,7 @@ TREE = [
 ]
 
 OPEN = [
-    "Az ügyfél fájljának hibái (dupla SKU, hiányzó súly, mintaszámnak tűnő készlet, nagyker-leírások, rossz cross-sell SKU-k): prototype/csv/import-ellenorzes.md.",
+    "Az ügyfél javított fájlja (2026-10-20) átvezetve. Még kell: valódi készlet (leltár után), súly (a kategóriaátlag elég, az ügyfél pontosíthat), jobb fotó 26 termékhez – prototype/csv/import-ellenorzes.md.",
     "Packeta-szerződés (az ügyfél szerint ezen a héten): API-kulcs, díjak SK és FR; házhoz + Z-BOX kell; ingyenes szállítás 39,99 €-tól (FR-re megerősítendő); utánvét 1–2 € (pontos összeg kell).",
     "Teya: melyik WooCommerce-kapcsolatot adják (bővítmény vagy fizetési oldal), teszt- és éles kulcsok.",
     "SuperFaktúra: a fiók megvan (az ügyfél adja meg a hozzáférést / API-kulcsot); a számla FR-en franciául, SK-n szlovákul; számlasor: maradhat az alapértelmezett.",
