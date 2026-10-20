@@ -1,7 +1,7 @@
 # First Vape – a WordPress-téma telepítése (Laci)
 
 A `firstvape` child téma kész: a jóváhagyott előnézet kinézete és működése WordPress + WooCommerce alatt,
-az ügyfél 395 termékével és a feldolgozott képekkel. Ez a leírás a dev / staging / éles telepítés lépései.
+az ügyfél 392 termékével és a feldolgozott képekkel. Ez a leírás a dev / staging / éles telepítés lépései.
 A felépítés és a kód: [`DEVELOPER.md`](DEVELOPER.md). A teljes teendőlista: `docs/fejlesztes/FirstVape-WooCommerce-Laci.pdf`.
 
 ## Amire szükség van
@@ -25,7 +25,7 @@ Yoast SEO. **WPML / Polylang nem kell** (lásd lent: két domain).
 3. Megjelenés → Témák → Téma feltöltése: előbb az `iu_theme`, utána a `firstvape-tema.zip`; a **First Vape** témát kapcsold be.
 4. A termékképek: a `firstvape-media.zip`-et csomagold ki ide: `wp-content/uploads/firstvape-media/`
    (a zipben `p/<termék>.webp`; a CRM-es zipben `termekkepek/<termék>.webp` – mindkettőt felismeri).
-5. Megjelenés → First Vape → **Telepítés indítása** (kb. 5 perc, a 395 terméket 25-ös kötegekben). Vagy WP-CLI-vel:
+5. Megjelenés → First Vape → **Telepítés indítása** (kb. 5 perc, a 392 terméket 25-ös kötegekben). Vagy WP-CLI-vel:
 
    ```
    wp firstvape setup --media=firstvape-media.zip
@@ -34,8 +34,8 @@ Yoast SEO. **WPML / Polylang nem kell** (lásd lent: két domain).
 
 A telepítő beállítja: EUR, bruttó árak, ÁFA SK 23 % / FR 20 % (a vásárló országa szerint), súly kg-ban, permalinkek,
 WooCommerce-oldalak **klasszikus** (shortcode-os) kosárral, pénztárral, fiókkal, szlovák végpontokkal; 7 attribútum,
-a 7 főmenüpontos kategóriafa (szlovák név + francia név metában), 12 márka, 395 termék képpel, az ügyfél ajánlásai
-(cross-sell), SK és FR jogi oldalak (helyőrző szöveggel), Úvod, Akcie, Značky, Obľúbené, Blog, 4 cikk SK + FR,
+a 6 főmenüpontos kategóriafa (4 kategória + Márkák + Akciók) (szlovák név + francia név metában), 12 márka, 392 termék képpel, az ügyfél ajánlásai
+(cross-sell), SK és FR jogi oldalak (helyőrző szöveggel), Úvod, Akcie, Značky, Obľúbené, Blog, 3 cikk SK + FR,
 szállítási zónák (Slovensko, Francúzsko) minta díjakkal, utánvét.
 
 A második futás nem ír át semmit. Amit az adminban szerkesztettek, azt kihagyja (`⚠ kihagyva`); a `--force` / a
@@ -69,7 +69,7 @@ Egy WordPress szolgálja ki mindkettőt (Áron döntése, 2026-10-19). **A téma
 - Utánvét díja piaconként: Adatok (üresen a minta 1,50 €).
 - Jogi szövegek (ügyfél jogásza): az oldalak szerkeszthető blokkok, a `legal-ph` bekezdést töröld.
 - Súly: most kategóriánkénti becslés (`_fv_weight_estimated` = yes) – az ügyfél adataiból felülírni.
-- A 26 gyenge termékkép (`prototype/csv/termekkepek-minoseg.csv`) és a 3 kép nélküli ELFBAR 600 – ha az ügyfél küld újat.
+- A 26 gyenge termékkép (`prototype/csv/termekkepek-minoseg.csv`) – ha az ügyfél küld újat.
 - `wp firstvape check` / Megjelenés → First Vape → Élesítési ellenőrzés: mi hiányzik még.
 
 ## Termékek frissítése (az ügyfél javított fájljából)

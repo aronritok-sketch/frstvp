@@ -535,6 +535,10 @@
 
   function longDesc(p) {
     var a = p.attrs, b = FV.brand(p.brand), parts = ['<div class="prose"><p>' + esc(p.short) + '</p>'];
+    // saját leírás (SK / FR, az ügyfél angol szövegéből): a típus általános szövege helyett; liquidnél a biztonsági megjegyzés marad
+    if (p.desc && p.desc[FV.lang]) {
+      return '<div class="prose"><p>' + esc(p.desc[FV.lang]) + '</p>' + (p.art === 'liquid' ? '<p>' + t('liquidText') + '</p>' : '') + '</div>';
+    }
     if (p.art === 'disposable') {
       parts.push('<p>' + t('dispText', { b: esc(b.name) }) +
         (a.puff[0] >= 10000 ? t('dispBig', { p: FV.puffLabel(a.puff[0]) }) : t('dispSmall')) + '</p>');
@@ -578,7 +582,7 @@
     if (!el) return;
     var tt = FV.cart.totals();
     if (!tt.lines.length) {
-      el.innerHTML = '<div class="empty big">' + I('bag', 'empty-ico') + '<h1>' + t('cartEmptyH') + '</h1><p>' + t('cartEmptyP') + '</p><a class="btn btn-primary" href="#/kategoria/eldobhato">' + esc(FV.cat('eldobhato').node.short) + '</a></div>';
+      el.innerHTML = '<div class="empty big">' + I('bag', 'empty-ico') + '<h1>' + t('cartEmptyH') + '</h1><p>' + t('cartEmptyP') + '</p><a class="btn btn-primary" href="#/kategoria/eloretoltott-podok">' + esc(FV.cat('eloretoltott-podok').node.short) + '</a></div>';
       return;
     }
     var method = FV.shipMethod();
@@ -706,7 +710,7 @@
       body = '<h2>' + t('orders') + '</h2>' + ordersTable(ORDERS);
     } else if (tab === 'kedvencek') {
       var w = FV.wish.ids().map(FV.product).filter(Boolean);
-      body = '<h2>' + t('wishlist') + ' <span class="muted num">(' + w.length + ')</span></h2>' + (w.length ? grid(w) : '<div class="empty"><p>' + t('wishEmpty') + '</p><a class="btn" href="#/kategoria/eldobhato">' + t('browse') + '</a></div>');
+      body = '<h2>' + t('wishlist') + ' <span class="muted num">(' + w.length + ')</span></h2>' + (w.length ? grid(w) : '<div class="empty"><p>' + t('wishEmpty') + '</p><a class="btn" href="#/kategoria/eloretoltott-podok">' + t('browse') + '</a></div>');
     } else if (tab === 'cimek') {
       body = '<h2>' + t('addresses') + '</h2><div class="addr-grid"><div class="addr"><h3>' + t('billingAddr') + '</h3><p>' + addr + '</p><button class="linkbtn" type="button">' + t('edit') + '</button></div>' +
         '<div class="addr"><h3>' + t('shipAddr') + '</h3><p>' + addr + '</p><button class="linkbtn" type="button">' + t('edit') + '</button></div></div>';

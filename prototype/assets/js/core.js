@@ -287,7 +287,7 @@
     FV.products.forEach(function (p) { (p.attrs.puff || []).forEach(function (x) { puffs[x] = 1; }); });
     Object.keys(puffs).forEach(function (x) {
       tokens.forEach(function (t) {
-        if (/^\d{3,}$/.test(t) && x.indexOf(t) === 0) out.push({ type: FV.t('sPuff'), label: FV.puffLabel(+x), href: '#/kategoria/eldobhato?puff=' + encodeURIComponent(FV.puffBucket(+x)) });
+        if (/^\d{3,}$/.test(t) && x.indexOf(t) === 0) out.push({ type: FV.t('sPuff'), label: FV.puffLabel(+x), href: '#/kategoria/eloretoltott-podok?puff=' + encodeURIComponent(FV.puffBucket(+x)) });
       });
     });
     var flav = {};
@@ -316,9 +316,8 @@
   // Csak az adott fő kategóriában értelmezhető szűrők (az ügyfél kérése); márka / akció / keresés oldalon minden, aminek van értéke
   FV.catFacets = {
     'keszulekek': ['kat', 'marka', 'kompat', 'iz', 'puff', 'nikotin', 'szin', 'ohm', 'keszlet'],
-    'eloretoltott-podok': ['marka', 'kompat', 'iz', 'nikotin', 'puff', 'keszlet'],
+    'eloretoltott-podok': ['kat', 'marka', 'kompat', 'iz', 'nikotin', 'puff', 'keszlet'],
     'e-liquidek': ['kat', 'marka', 'iz', 'nikotin', 'ml', 'keszlet'],
-    'eldobhato': ['marka', 'iz', 'puff', 'nikotin', 'keszlet'],
     'kiegeszitok': ['kat', 'marka', 'kompat', 'ohm', 'keszlet'],
     // Všetky produkty (#/produkty): a slukkszám-kereső ide visz
     'all': ['typ', 'marka', 'kompat', 'iz', 'puff', 'nikotin', 'keszlet']

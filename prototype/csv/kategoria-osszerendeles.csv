@@ -3,16 +3,19 @@
 2,keszulekek,eloretoltott-pod-rendszerek,Predplnené pod systémy,Systèmes à pods préremplis,DEVICES / KITS > PREFILLED POD KITS,50,
 2,keszulekek,utantoltheto-pod-rendszerek,Plniteľné pod systémy,Systèmes à pods à remplir,DEVICES / KITS > REFILLABLE POD KITS,48,A fájlban a név végén szóköz van („REFILLABLE POD KITS ”)
 2,keszulekek,mod-tank-kitek,Mod / tank kity,Kits box / clearomiseur,DEVICES / KITS > MOD & TANK KITS,14,
-1,,eloretoltott-podok,Predplnené pody,Pods préremplis,PREFILLED PODS > DRIFTER BAR | PREFILLED PODS > ELFBAR ELFA | PREFILLED PODS > ELFBAR JOINONE | PREFILLED PODS > VAPORESSO DOJO,96,"A fájlban rendszerenként alkategória (ELFBAR ELFA, VAPORESSO DOJO, ELFBAR JOINONE, DRIFTER BAR): a megbeszélt fa szerint egy kategória, a rendszer a pa_kompatibilitas (szűrő: márka, rendszer)"
+1,,eloretoltott-podok,Predplnené pody,Pods préremplis,PREFILLED PODS,96,"Rendszerenként alkategória a fájl szerint (ELFBAR ELFA, VAPORESSO DOJO, ELFBAR JOINONE, DRIFTER BAR), ugyanúgy szűrhetően (márka, rendszer) – az ügyfél válasza, 2026-10-20"
+2,eloretoltott-podok,podok-elfbar-elfa,ELFBAR ELFA,ELFBAR ELFA,PREFILLED PODS > ELFBAR ELFA,49,
+2,eloretoltott-podok,podok-elfbar-joinone,ELFBAR JOIN ONE,ELFBAR JOIN ONE,PREFILLED PODS > ELFBAR JOINONE,15,
+2,eloretoltott-podok,podok-vaporesso-dojo,VAPORESSO DOJO,VAPORESSO DOJO,PREFILLED PODS > VAPORESSO DOJO,24,
+2,eloretoltott-podok,podok-drifter-bar,DRIFTER BAR,DRIFTER BAR,PREFILLED PODS > DRIFTER BAR,8,
 1,,e-liquidek,E-liquidy,E-liquides,E-LIQUIDS,135,
 2,e-liquidek,nikotin-booster,Nikotínové boostery,Boosters de nicotine,E-LIQUIDS > NICOTINE BOOSTER,7,
 2,e-liquidek,kesz-liquidek-10ml,Hotové liquidy 10 ml,E-liquides prêts 10 ml,E-LIQUIDS > 10ML LIQUIDS,30,
 2,e-liquidek,aromak,Príchute (arómy),Arômes concentrés,E-LIQUIDS > AROMA,23,
 2,e-liquidek,shortfill,Shortfill,Shortfills,E-LIQUIDS > SHORTFILL,51,
 2,e-liquidek,longfill,Longfill,Longfills,E-LIQUIDS > LONGFILL,24,
-1,,eldobhato,Jednorazové e-cigarety,Cigarettes électroniques jetables,,3,A fájlban nincs ilyen kategória (3 ELFBAR 600 kategória nélkül) – javasolt angol név: DISPOSABLE E-CIGARETTES
 1,,kiegeszitok,Príslušenstvo,Accessoires,ACCESSORIES,49,
-2,kiegeszitok,ures-podok,Prázdne pody / cartridge,Pods vides / cartouches,ACCESSORIES > REPLACEMENT PODS | ACCESSORIES > REPLACEMENT PODS / CARTRIDGES,16,A fájlban két írásmód: REPLACEMENT PODS / CARTRIDGES és REPLACEMENT PODS
+2,kiegeszitok,ures-podok,Prázdne pody / cartridge,Pods vides / cartouches,ACCESSORIES > REPLACEMENT PODS / CARTRIDGES,16,A fájlban két írásmód: REPLACEMENT PODS / CARTRIDGES és REPLACEMENT PODS
 2,kiegeszitok,porlasztok,Žhaviace hlavy / coily,Résistances,ACCESSORIES > COILS,17,A fájlban egy sorban a név végén szóköz van („COILS ”)
 2,kiegeszitok,tankok,Tanky,Clearomiseurs,ACCESSORIES > TANK,9,
 2,kiegeszitok,akkuk-toltok,Batérie / nabíjačky,Accus / chargeurs,ACCESSORIES > OTHER ACCESSORIES,3,A fájlban nincs ilyen kategória (az EFEST akku és töltők az OTHER ACCESSORIES alatt) – javasolt: ACCESSORIES > BATTERIES / CHARGERS

@@ -38,7 +38,7 @@ function firstvape_setup_steps(): array
     return [
         'settings' => ['Beállítások (WordPress, WooCommerce, EUR, ÁFA SK 23 % / FR 20 %, szállítás, fizetés)', false],
         'attributes' => ['Termékattribútumok (szűrők)', false],
-        'categories' => ['Termékkategóriák (7 főmenüpontos fa)', false],
+        'categories' => ['Termékkategóriák (a kategóriafa)', false],
         'brands' => ['Márkák', false],
         'products' => ['Termékek képekkel', true],
         'cross' => ['Ajánlások (cross-sell)', false],
@@ -94,14 +94,20 @@ function firstvape_attach(string $rel, int $parent = 0, string $alt = ''): int
     if ($rel === '') {
         return 0;
     }
-    $found = get_posts(['post_type' => 'attachment', 'post_status' => 'inherit', 'numberposts' => 1, 'fields' => 'ids', 'meta_key' => 'fv_media', 'meta_value' => $rel]);
-    if ($found) {
-        return (int) $found[0];
-    }
     $file = firstvape_media_dir() . '/' . $rel;
     if (!is_readable($file) && str_starts_with($rel, 'p/')) {
         // a CRM-be feltöltött képcsomag (firstvape-termekkepek-1200.zip) termekkepek/ mappával
         $file = firstvape_media_dir() . '/termekkepek/' . substr($rel, 2);
+    }
+    $found = get_posts(['post_type' => 'attachment', 'post_status' => 'inherit', 'numberposts' => 1, 'fields' => 'ids', 'meta_key' => 'fv_media', 'meta_value' => $rel]);
+    if ($found) {
+        $old = (int) $found[0];
+        $have = (string) get_attached_file($old);
+        // ugyanaz a fájlnév, de új kép a médiacsomagban (az ügyfél cserélte): a régi melléklet helyett új
+        if (!is_readable($file) || !is_readable($have) || md5_file($have) === md5_file($file)) {
+            return $old;
+        }
+        wp_delete_attachment($old, true);
     }
     if (!is_readable($file)) {
         return 0;
@@ -280,9 +286,23 @@ function firstvape_setup_shipping(array &$log): void
         return;
     }
     $names = ['sk' => 'Slovensko', 'fr' => 'Francúzsko'];
-    $have = array_map(fn($z) => $z['zone_name'], WC_Shipping_Zones::get_zones());
+    $have = [];
+    foreach (WC_Shipping_Zones::get_zones() as $z) {
+        $have[$z['zone_name']] = $z;
+    }
     foreach ($names as $lang => $zname) {
-        if (in_array($zname, $have, true)) {
+        if (isset($have[$zname])) {
+            // meglévő zóna: az ingyenes küszöb a kérdőívből (2026-10-20) – csak ha még a régi minta (50) van beállítva
+            $free = (string) (firstvape_market($lang)['shipping']['freeOver'] ?? '');
+            foreach ((array) $have[$zname]['shipping_methods'] as $sm) {
+                if ($sm->id === 'firstvape_ship' && in_array((string) $sm->get_option('free_over'), ['', '50'], true) && $free !== '' && $free !== '50') {
+                    $key = 'woocommerce_firstvape_ship_' . $sm->instance_id . '_settings';
+                    $opt = (array) get_option($key, []);
+                    $opt['free_over'] = $free;
+                    update_option($key, $opt);
+                    $log[] = '↻ ingyenes szállítás ' . $free . ' €-tól: ' . $zname . ' – ' . $sm->get_title();
+                }
+            }
             continue;
         }
         $m = firstvape_market($lang);
@@ -375,6 +395,15 @@ function firstvape_setup_categories(int $offset, bool $force, array &$log): arra
     };
     foreach ((array) firstvape_catalog('categories') as $i => $c) {
         $walk($c, 0);
+    }
+    // a fából kikerült kategóriák (pl. az Eldobható e-cigaretták, 2026-10-20) – csak a telepítő sajátjai (fv_key)
+    $keys = array_keys(firstvape_cats_fresh());
+    foreach ((array) get_terms(['taxonomy' => 'product_cat', 'hide_empty' => false]) as $t) {
+        $k = (string) get_term_meta($t->term_id, 'fv_key', true);
+        if ($k !== '' && !in_array($k, $keys, true)) {
+            wp_delete_term($t->term_id, 'product_cat');
+            $log[] = '− kategória törölve (már nincs a fában): ' . $t->name;
+        }
     }
     // a menü / fa sorrendje (WooCommerce: term order)
     $order = 0;
@@ -483,6 +512,9 @@ function firstvape_setup_products(int $offset, bool $force, array &$log): array
     $all = firstvape_data('products');
     $total = count($all);
     $cats = firstvape_cats_fresh();
+    if ($offset === 0) {
+        firstvape_prune_products($all, $log);
+    }
     foreach (array_slice($all, $offset, FIRSTVAPE_BATCH) as $row) {
         $sku = (string) $row['sku'];
         $id = (int) wc_get_product_id_by_sku($sku);
@@ -500,8 +532,31 @@ function firstvape_setup_products(int $offset, bool $force, array &$log): array
             $log[] = '⚠ kihagyva (az adminban szerkesztették): ' . $p->get_name();
             continue;
         }
+        $term_ids = [];
+        foreach ((array) $row['cats'] as $k) {
+            if (!empty($cats[$k])) {
+                $term_ids[] = (int) $cats[$k]->term_id;
+                $parent = (int) $cats[$k]->parent;
+                if ($parent) {
+                    $term_ids[] = $parent;
+                }
+            }
+        }
+        $term_ids = array_values(array_unique($term_ids));
         if (!$new && !$force && $stored === $hash) {
-            continue; // változatlan
+            // változatlan név / leírás – a kategória (pl. új alkategória) és a kép (az ügyfél cserélte) akkor is frissül
+            $had = $p->get_category_ids();
+            sort($had);
+            $want = $term_ids;
+            sort($want);
+            if ($had !== $want) {
+                $p->set_category_ids($term_ids);
+                $p->save();
+                $log[] = '↻ kategória: ' . $p->get_name();
+            }
+            firstvape_product_image($id, $row, $log);
+            firstvape_product_desc($id, $row, false, $log);
+            continue;
         }
         $p->set_name((string) $row['name']);
         $p->set_slug((string) $row['slug']);
@@ -525,17 +580,7 @@ function firstvape_setup_products(int $offset, bool $force, array &$log): array
             }
             $p->set_tax_status('taxable');
         }
-        $term_ids = [];
-        foreach ((array) $row['cats'] as $k) {
-            if (!empty($cats[$k])) {
-                $term_ids[] = (int) $cats[$k]->term_id;
-                $parent = (int) $cats[$k]->parent;
-                if ($parent) {
-                    $term_ids[] = $parent;
-                }
-            }
-        }
-        $p->set_category_ids(array_values(array_unique($term_ids)));
+        $p->set_category_ids($term_ids);
         $p->set_attributes(firstvape_product_attributes((array) ($row['attrs'] ?? [])));
         $id = $p->save();
         if (!$id) {
@@ -551,14 +596,8 @@ function firstvape_setup_products(int $offset, bool $force, array &$log): array
         foreach ($meta as $k => $v) {
             update_post_meta($id, $k, $v);
         }
-        if (!empty($row['img']) && !$p->get_image_id()) {
-            $att = firstvape_attach('p/' . basename((string) $row['img']), $id, (string) $row['name']);
-            if ($att) {
-                set_post_thumbnail($id, $att);
-            } else {
-                $log[] = '! nincs kép a médiacsomagban: ' . basename((string) $row['img']);
-            }
-        }
+        firstvape_product_image($id, $row, $log);
+        firstvape_product_desc($id, $row, $force, $log);
         $log[] = ($new ? '+ ' : '↻ ') . $row['name'];
     }
     $next = $offset + FIRSTVAPE_BATCH;
@@ -566,6 +605,75 @@ function firstvape_setup_products(int $offset, bool $force, array &$log): array
         firstvape_index_flush();
     }
     return ['done' => $next >= $total, 'offset' => min($next, $total), 'total' => $total];
+}
+
+/** A termék képe a médiacsomagból – ha nincs képe, vagy a telepítő képe van rajta (a kézzel feltöltöttet nem cseréli). */
+function firstvape_product_image(int $id, array $row, array &$log): void
+{
+    if (empty($row['img'])) {
+        return;
+    }
+    $cur = (int) get_post_thumbnail_id($id);
+    if ($cur && get_post_meta($cur, 'fv_media', true) === '') {
+        return;
+    }
+    $att = firstvape_attach('p/' . basename((string) $row['img']), $id, (string) $row['name']);
+    if (!$att) {
+        if (!$cur) {
+            $log[] = '! nincs kép a médiacsomagban: ' . basename((string) $row['img']);
+        }
+        return;
+    }
+    if ($att !== $cur) {
+        set_post_thumbnail($id, $att);
+        if ($cur) {
+            $log[] = '↻ új kép: ' . $row['name'];
+        }
+    }
+}
+
+/**
+ * A hosszú leírás (SK: post_content, FR: _fv_desc_fr) – ha üres, vagy még a telepítő korábbi szövege van benne
+ * (fv_desc_hash); amit az adminban átírtak, azt csak --force írja felül.
+ */
+function firstvape_product_desc(int $id, array $row, bool $force, array &$log): void
+{
+    $sk = (string) ($row['desc']['sk'] ?? '');
+    $fr = (string) ($row['desc']['fr'] ?? '');
+    if ($sk === '' && $fr === '') {
+        return;
+    }
+    $cur = (string) get_post_field('post_content', $id);
+    $cur_fr = (string) get_post_meta($id, '_fv_desc_fr', true);
+    $want = md5($sk . '|' . $fr);
+    $prev = (string) get_post_meta($id, 'fv_desc_hash', true);
+    if ($prev === $want && $cur === $sk && $cur_fr === $fr) {
+        return;
+    }
+    $ours = ($cur === '' && $cur_fr === '') || ($prev !== '' && md5($cur . '|' . $cur_fr) === $prev);
+    if (!$ours && !$force) {
+        return;
+    }
+    wp_update_post(['ID' => $id, 'post_content' => $sk]);
+    update_post_meta($id, '_fv_desc_fr', $fr);
+    update_post_meta($id, 'fv_desc_hash', $want);
+}
+
+/**
+ * A telepítő korábbi termékei (fv_hash), amelyek már nincsenek a termékfájlban (az ügyfél kivette, vagy új SKU-t kapott):
+ * kukába (visszaállítható), a rendelések megmaradnak.
+ */
+function firstvape_prune_products(array $all, array &$log): void
+{
+    $skus = array_flip(array_map(fn($r) => (string) $r['sku'], $all));
+    $ids = get_posts(['post_type' => 'product', 'post_status' => ['publish', 'draft', 'pending', 'private'], 'numberposts' => -1, 'fields' => 'ids', 'meta_key' => 'fv_hash']);
+    foreach ($ids as $id) {
+        $sku = (string) get_post_meta($id, '_sku', true);
+        if (!isset($skus[$sku])) {
+            wp_trash_post($id);
+            $log[] = '− kukába (már nincs a termékfájlban): ' . get_the_title($id) . ($sku !== '' ? ' (' . $sku . ')' : '');
+        }
+    }
 }
 
 /** Az ügyfél ajánlásai (a termékfájl Cross-sells oszlopa, SKU szerint) – a létező termékekre. */
@@ -700,7 +808,20 @@ function firstvape_setup_posts(int $offset, bool $force, array &$log): array
             update_post_meta($ids['fr'], 'fv_pair', $ids['sk']);
         }
     }
-    // a „Nezaradené” / „Uncategorized” alapkategória ne látszódjon a cikkeken
+    // a kikerült cikkek (pl. az eldobható e-cigarettás, 2026-10-20) kukába – csak a telepítő sajátjai (fv_key post-…)
+    $keep = [];
+    foreach ((array) firstvape_catalog('posts') as $b) {
+        foreach (FIRSTVAPE_LANGS as $lang) {
+            $keep['post-' . $lang . '-' . $b['slug']] = true;
+        }
+    }
+    foreach (get_posts(['post_type' => 'post', 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => 'fv_key']) as $post) {
+        $k = (string) get_post_meta($post->ID, 'fv_key', true);
+        if (str_starts_with($k, 'post-') && !isset($keep[$k])) {
+            wp_trash_post($post->ID);
+            $log[] = '− cikk kukába (már nincs az előnézetben): ' . $post->post_title;
+        }
+    }
     $log[] = '✓ cikkek';
     return ['done' => true];
 }

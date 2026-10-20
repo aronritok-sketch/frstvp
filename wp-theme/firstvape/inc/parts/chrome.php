@@ -257,7 +257,7 @@ function firstvape_minicart_html(): string
 {
     $cart = function_exists('WC') ? WC()->cart : null;
     if (!$cart || $cart->is_empty()) {
-        return '<div class="mc-body" data-minicart><div class="empty">' . firstvape_icon('bag', 'empty-ico') . '<p>' . firstvape_t('cartEmpty') . '</p><a class="btn" href="' . esc_url(firstvape_cat_url('eldobhato')) . '">' . firstvape_t('startShopping') . '</a></div></div>';
+        return '<div class="mc-body" data-minicart><div class="empty">' . firstvape_icon('bag', 'empty-ico') . '<p>' . firstvape_t('cartEmpty') . '</p><a class="btn" href="' . esc_url(firstvape_cat_url('eloretoltott-podok')) . '">' . firstvape_t('startShopping') . '</a></div></div>';
     }
     $sub = firstvape_cart_total();
     $free = (float) (firstvape_ship()['freeOver'] ?? 50);

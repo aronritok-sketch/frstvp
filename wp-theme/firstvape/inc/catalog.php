@@ -5,7 +5,7 @@
  * számnormalizálás: „40k” = „40 000” = „40000”), szűrők darabszámmal, rendezés, kapcsolódó termékek.
  *
  * Adatmodell (WooCommerce):
- *   kategória  product_cat     – a fa a catalog.json szerint; a stabil kulcs az fv_key term meta (pl. „eldobhato”),
+ *   kategória  product_cat     – a fa a catalog.json szerint; a stabil kulcs az fv_key term meta (pl. „eloretoltott-podok”),
  *                                a francia név / leírás: fv_name_fr, fv_short_fr, fv_desc_fr
  *   márka      product_brand   – fv_color, fv_style (betűs logó), fv_desc_fr
  *   attribútum pa_prichut, pa_nikotin, pa_objem, pa_pocet-potiahnuti, pa_system, pa_farba, pa_odpor (szűrők)

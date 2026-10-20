@@ -1,0 +1,848 @@
+[
+ {
+  "termek": "ELFBAR ELFA TURBO Battery Aurora Gold … ELFBAR ELFA TURBO Battery Aurora Purple",
+  "en": "The Elfa Turbo battery has a built-in 550mAh battery and works with Elfa Pro cartridges. The kit is rechargeable via the USB-C port (USB-C cable not included)",
+  "sk": "Batéria ELFA Turbo má zabudovaný akumulátor s kapacitou 550 mAh a funguje s podmi ELFA Pro. Nabíja sa cez port USB-C (kábel USB-C nie je súčasťou balenia).",
+  "fr": "La batterie ELFA Turbo intègre un accu de 550 mAh et fonctionne avec les pods ELFA Pro. Elle se recharge par le port USB-C (câble USB-C non fourni)."
+ },
+ {
+  "termek": "ELFBAR ELFA Refillable Pod 0.8ohm 2PCS",
+  "en": "Pack of 2 ELFA Turbo Pods from ElfBar with built-in coil that can hold up to 2mL of your chosen e-liquid ! A perfect alternative to pre-filled pods.",
+  "sk": "Balenie 2 plniteľných podov ELFA so zabudovanou žhaviacou hlavou 0,8 Ω. Do každého podu sa zmestí až 2 ml liquidu podľa tvojho výberu – alternatíva k predplneným podom.",
+  "fr": "Lot de 2 pods ELFA rechargeables avec résistance intégrée de 0,8 Ω. Chaque pod contient jusqu’à 2 ml de l’e-liquide de votre choix : une alternative aux pods préremplis."
+ },
+ {
+  "termek": "ELFBAR ELFA Pro Pod Pineapple Lemon 2% … ELFBAR ELFA Pro Pod Iced Dragon Fruit 2%",
+  "en": "ELFA cartridges are evolving and becoming ELFA Pro :They are equipped with new technologies and a panel of 29 flavours ! The ELFA Pro is transparent, so you can see the level of liquid. The user knows when he needs to change it = a better anticipation of purchase.",
+  "sk": "Predplnený pod ELFA Pro s nikotínovou soľou 20 mg/ml (2 %) pre batérie ELFA. Pod je priehľadný, takže vždy vidíš, koľko liquidu ešte zostáva, a vieš, kedy si pripraviť nový.",
+  "fr": "Pod ELFA Pro prérempli aux sels de nicotine 20 mg/ml (2 %) pour les batteries ELFA. Le pod est transparent : vous voyez toujours le niveau de liquide et savez quand prévoir le suivant."
+ },
+ {
+  "termek": "ELFBAR ELFA Pro Pod  Frozen Strawberry 0% … ELFBAR ELFA Pro Pod Banana 0%",
+  "en": "ELFA cartridges are evolving and becoming ELFA Pro :They are equipped with new technologies and a panel of 20 flavours ! The ELFA Pro is transparent, so you can see the level of liquid. The user knows when he needs to change it = a better anticipation of purchase.",
+  "sk": "Predplnený pod ELFA Pro bez nikotínu (0 mg) pre batérie ELFA. Pod je priehľadný, takže vždy vidíš, koľko liquidu ešte zostáva, a vieš, kedy si pripraviť nový.",
+  "fr": "Pod ELFA Pro prérempli sans nicotine (0 mg) pour les batteries ELFA. Le pod est transparent : vous voyez toujours le niveau de liquide et savez quand prévoir le suivant."
+ },
+ {
+  "termek": "ELFBAR RF350 Refillable Pod Kit Black … ELFBAR RF350 Refillable Pod Kit Yellow",
+  "en": "Elf Bar presents a pod of extreme simplicity. It has an integrated battery of 350 mAh and works with a reusable cartridge of a small capacity of 1.6 ml and with a pre-installed coil.",
+  "sk": "Jednoduchý pod systém ELFBAR RF350 so zabudovanou batériou 350 mAh. Funguje s plniteľnou cartridge s objemom 1,6 ml a s predinštalovanou žhaviacou hlavou.",
+  "fr": "Système pod ELFBAR RF350, d’une grande simplicité, avec batterie intégrée de 350 mAh. Il fonctionne avec une cartouche rechargeable de 1,6 ml à résistance préinstallée."
+ },
+ {
+  "termek": "ELFBAR RF350 Refillable PODX 4",
+  "en": "Packs of 4 replacement pods with a capacity of 1.6ml and equipped with a 1.2ohm coil for the RF350 from Elf Bar.",
+  "sk": "Balenie 4 náhradných podov pre ELFBAR RF350, každý s objemom 1,6 ml a so žhaviacou hlavou 1,2 Ω.",
+  "fr": "Lot de 4 pods de rechange pour l’ELFBAR RF350, de 1,6 ml chacun, avec résistance de 1,2 Ω."
+ },
+ {
+  "termek": "ELFBAR Kit Nio 30K Cherry Ice … ELFBAR Kit Nio 30K Peach Ice",
+  "en": "ELFBAR's new NIO 30K refillable puff features a built-in 1000mAh battery and comes with 2 transparent 10mL cartridges + 2mL pre-filled with 20mg nicotine salt. Customize your draw with 2 power modes : TURBO and BASE.",
+  "sk": "Nabíjateľný pod kit ELFBAR NIO 30K so zabudovanou batériou 1000 mAh. V balení sú 2 priehľadné cartridge (10 ml + 2 ml) predplnené liquidom s nikotínovou soľou 20 mg/ml. Ťah si prispôsobíš dvomi režimami výkonu: TURBO a BASE.",
+  "fr": "Kit pod rechargeable ELFBAR NIO 30K avec batterie intégrée de 1000 mAh. Il est livré avec 2 cartouches transparentes (10 ml + 2 ml) préremplies d’e-liquide aux sels de nicotine 20 mg/ml. Deux modes de puissance, TURBO et BASE, pour adapter le tirage."
+ },
+ {
+  "termek": "ELFBAR Kit JoinOne 40K Cherry Ice … ELFBAR Kit JoinOne 40K Peach Ice",
+  "en": "The Elfbar JoinOne 40000 kit is a refillable pod system with a total battery capacity of 1150 mAh. It comes with 2 pre-filled cartridges, each containing 2 ml in the pod and 10 ml in the tank, for a total of 24 ml of e-liquid with 20 mg of nicotine salts. The kit can deliver up to 40,000 puffs and is rechargeable via USB-C.",
+  "sk": "ELFBAR JOIN ONE 40K je nabíjateľný pod systém s celkovou kapacitou batérie 1150 mAh. V balení sú 2 predplnené cartridge, každá s 2 ml v pode a 10 ml v zásobníku – spolu 24 ml liquidu s nikotínovou soľou 20 mg/ml. Výrobca uvádza až 40 000 potiahnutí; nabíja sa cez USB-C.",
+  "fr": "L’ELFBAR JOIN ONE 40K est un système pod rechargeable d’une capacité totale de batterie de 1150 mAh. Il est livré avec 2 cartouches préremplies, chacune avec 2 ml dans le pod et 10 ml dans le réservoir, soit 24 ml d’e-liquide aux sels de nicotine 20 mg/ml au total. Jusqu’à 40 000 bouffées selon le fabricant ; recharge en USB-C."
+ },
+ {
+  "termek": "ELFBAR Pod JoinOne 40K Cherry Ice … ELFBAR Pod JoinOne 40K Peach Ice",
+  "en": "Elfbar JoinOne cartridge featuring a 10ml tank and a 2ml pod pre-filled with 20mg nicotine salt, for a total of 12ml. These cartridges are compatible with the JoinOne 40K Kit (not included).",
+  "sk": "Cartridge ELFBAR JOIN ONE s 10 ml zásobníkom a 2 ml podom, predplnená liquidom s nikotínovou soľou 20 mg/ml (spolu 12 ml). Kompatibilná so zariadením JOIN ONE 40K (nie je súčasťou balenia).",
+  "fr": "Cartouche ELFBAR JOIN ONE avec réservoir de 10 ml et pod de 2 ml, préremplie d’e-liquide aux sels de nicotine 20 mg/ml (12 ml au total). Compatible avec le kit JOIN ONE 40K (non fourni)."
+ },
+ {
+  "termek": "ELFBAR Elfliq Pineapple Ice … ELFBAR Elfliq Cherry",
+  "en": "The ELFIQ Nic Salts by ELFBAR range of liquids is now available ! Discover 24 flavors that are fruitier than ever, in 10 ml bottles with 20 mg PG/VG 50/50 !",
+  "sk": "ELFLIQ od ELFBAR – liquidy s nikotínovou soľou v ovocných príchutiach. Fľaštička 10 ml, nikotín 20 mg/ml, pomer PG/VG 50/50.",
+  "fr": "ELFLIQ par ELFBAR : des e-liquides aux sels de nicotine aux saveurs fruitées. Flacon de 10 ml, nicotine 20 mg/ml, ratio PG/VG 50/50."
+ },
+ {
+  "termek": "VAPORESSO Kit Dojo Blast 15K Cola Ice … VAPORESSO Kit Dojo Blast 15K Watermelon Ice Gobar",
+  "en": "The Dojo Blast 15K rechargeable Puff from Vaporesso features a built-in 1000mAh battery and a 2mL cartridge pre-filled with 10ml of liquid and 20mg of nicotine salt. The bonus? The cartridges feature a built-in Dual Mesh Coil COREX Blast coil that delivers an exceptional flavor experience!",
+  "sk": "Nabíjateľné zariadenie VAPORESSO DOJO BLAST 15K so zabudovanou batériou 1000 mAh a cartridge predplnenou 10 ml liquidu s nikotínovou soľou 20 mg/ml. Cartridge má zabudovanú žhaviacu hlavu COREX Blast Dual Mesh pre plnú chuť.",
+  "fr": "Appareil rechargeable VAPORESSO DOJO BLAST 15K avec batterie intégrée de 1000 mAh et cartouche préremplie de 10 ml d’e-liquide aux sels de nicotine 20 mg/ml. La cartouche intègre une résistance COREX Blast Dual Mesh pour une saveur pleine."
+ },
+ {
+  "termek": "VAPORESSO Pod Dojo Blast 15K Peach Ice … VAPORESSO Pod Dojo Blast 15K Dragon Fruit",
+  "en": "Rechargeable Puff means compatible cartridges... Dojo Blast cartridges are pre-filled with 10mL of liquid containing 20mg of nicotine salt. The bonus ? They are equipped with a built-in Dual Mesh Coil COREX Blast coil offering an exceptional flavor experience !",
+  "sk": "Náhradná cartridge pre VAPORESSO DOJO BLAST 15K, predplnená 10 ml liquidu s nikotínovou soľou 20 mg/ml. So zabudovanou žhaviacou hlavou COREX Blast Dual Mesh pre plnú chuť.",
+  "fr": "Cartouche de rechange pour le VAPORESSO DOJO BLAST 15K, préremplie de 10 ml d’e-liquide aux sels de nicotine 20 mg/ml. Avec résistance COREX Blast Dual Mesh intégrée pour une saveur pleine."
+ },
+ {
+  "termek": "VAPORESSO Kit GTX Go 40 Black … VAPORESSO Kit GTX Go 40 Red",
+  "en": "Vaporesso presents a kit in tubular format, the GTX GO40. Equipped with a built-in battery of 1500 mAh, this kit works with reusable cartridges GTX POD 22 with a capacity of 3.5ml and compatible with all the series GTX coils of Vaporesso.",
+  "sk": "VAPORESSO GTX GO 40 – kit v tvare tuby so zabudovanou batériou 1500 mAh. Funguje s plniteľnými cartridge GTX POD 22 s objemom 3,5 ml a so všetkými žhaviacimi hlavami série GTX od Vaporesso.",
+  "fr": "VAPORESSO GTX GO 40 : un kit au format tube avec batterie intégrée de 1500 mAh. Il fonctionne avec les cartouches rechargeables GTX POD 22 de 3,5 ml et toutes les résistances de la série GTX de Vaporesso."
+ },
+ {
+  "termek": "VAPORESSO Kit GTX Go 80 Black … VAPORESSO Kit GTX Go 80 Red",
+  "en": "Vaporesso presents a kit in tubular format, the GTX GO80. Equipped with an built-in battery of 3000 mAh, this kit works with reusable cartridges GTX POD 26 with a capacity of 5ml and compatible with all the series GTX coils of Vaporesso.",
+  "sk": "VAPORESSO GTX GO 80 – kit v tvare tuby so zabudovanou batériou 3000 mAh. Funguje s plniteľnými cartridge GTX POD 26 s objemom 5 ml a so všetkými žhaviacimi hlavami série GTX od Vaporesso.",
+  "fr": "VAPORESSO GTX GO 80 : un kit au format tube avec batterie intégrée de 3000 mAh. Il fonctionne avec les cartouches rechargeables GTX POD 26 de 5 ml et toutes les résistances de la série GTX de Vaporesso."
+ },
+ {
+  "termek": "VAPORESSO Kit Apex Midnight Black … VAPORESSO Kit Apex Satin Silver",
+  "en": "The APEX Kit features an integrated 2000mAh battery and can deliver up to 30W of power. The kit is sold with Vaporesso's Apex integrated coil cartridges holding up to 5mL of liquid.",
+  "sk": "Kit VAPORESSO APEX so zabudovanou batériou 2000 mAh a výkonom až 30 W. Dodáva sa s cartridge Apex so zabudovanou žhaviacou hlavou, do ktorých sa zmestí až 5 ml liquidu.",
+  "fr": "Kit VAPORESSO APEX avec batterie intégrée de 2000 mAh et jusqu’à 30 W de puissance. Il est fourni avec les cartouches Apex à résistance intégrée, d’une capacité allant jusqu’à 5 ml."
+ },
+ {
+  "termek": "VAPORESSO Apex Cartridge 0.6ohm 2PCS … VAPORESSO Apex Cartridge 0.8ohm 2PCS",
+  "en": "Pack of 2 Vaporesso Apex Mesh cartridges for up to 5mL of 0.6 or 0.8ohm liquid.",
+  "sk": "Balenie 2 cartridge VAPORESSO Apex Mesh s objemom až 5 ml, so žhaviacou hlavou 0,6 alebo 0,8 Ω.",
+  "fr": "Lot de 2 cartouches VAPORESSO Apex Mesh d’une capacité allant jusqu’à 5 ml, avec résistance de 0,6 ou 0,8 Ω."
+ },
+ {
+  "termek": "VAPORESSO Mesh GTX-2 Coils 5PCS 0.15ohm … VAPORESSO Mesh GTX-2 Coils 5PCS 1.2ohm",
+  "en": "Pack of 5 new GTX Mesh coils from Vaporesso. The values are 0.15, 0.2, 0.3, 0.4, 0.6, 0.8 or 1.2 ohm.",
+  "sk": "Balenie 5 žhaviacich hláv VAPORESSO GTX Mesh. Hodnoty: 0,15 / 0,2 / 0,3 / 0,4 / 0,6 / 0,8 alebo 1,2 Ω.",
+  "fr": "Lot de 5 résistances VAPORESSO GTX Mesh. Valeurs : 0,15 / 0,2 / 0,3 / 0,4 / 0,6 / 0,8 ou 1,2 Ω."
+ },
+ {
+  "termek": "VAPORESSO GTX Pod 22",
+  "en": "Pack of two replacement GTX Pod 22 cartridges with a capacity of 3.5ml for the GTX GO40 kit.",
+  "sk": "Balenie 2 náhradných cartridge GTX Pod 22 s objemom 3,5 ml pre kit VAPORESSO GTX GO 40.",
+  "fr": "Lot de 2 cartouches de rechange GTX Pod 22 de 3,5 ml pour le kit VAPORESSO GTX GO 40."
+ },
+ {
+  "termek": "VAPORESSO GTX Pod 26",
+  "en": "Pack of two GTX Pod 26 replacement cartridges with a capacity of 5ml for the GTX GO80 kit.",
+  "sk": "Balenie 2 náhradných cartridge GTX Pod 26 s objemom 5 ml pre kit VAPORESSO GTX GO 80.",
+  "fr": "Lot de 2 cartouches de rechange GTX Pod 26 de 5 ml pour le kit VAPORESSO GTX GO 80."
+ },
+ {
+  "termek": "VAPORESSO iTANK T Dual Mesh Version Black … VAPORESSO iTANK T Dual Mesh Version Rainbow",
+  "en": "Designed and developed to work with Vaporesso's new GTi Dual Mesh coils, the iTank T Dual Mesh Version atomizer can hold up to 6mL of e-liquid, which can be refilled from the top by removing the top cap. What's new in terms of technology ? An enlarged airflow adjustable to several levels, designed for a quieter and smoother vape, especially with the Boost Mode of the new Armour Ultra.",
+  "sk": "Tank VAPORESSO iTANK T Dual Mesh je určený pre žhaviace hlavy GTi Dual Mesh. Pojme až 6 ml liquidu a plní sa zhora po odobratí vrchnej čiapočky. Rozšírený, viacstupňovo nastaviteľný prívod vzduchu je navrhnutý na tichšie a plynulejšie vapovanie.",
+  "fr": "Le clearomiseur VAPORESSO iTANK T Dual Mesh est conçu pour les résistances GTi Dual Mesh. Il contient jusqu’à 6 ml d’e-liquide et se remplit par le haut en retirant le top cap. Son airflow élargi, réglable sur plusieurs niveaux, offre une vape plus silencieuse et plus douce."
+ },
+ {
+  "termek": "VAPORESSO Mesh GTI Coils 5PCS 0.15ohm … VAPORESSO Mesh GTI Coils 5PCS 0.5ohm",
+  "en": "Pack of 5 GTI coils with a value of 0.15, 0.2, 0.4 or 0.5 ohm for the Vaporesso Itank atomizer.",
+  "sk": "Balenie 5 žhaviacich hláv VAPORESSO GTi s hodnotou 0,15 / 0,2 / 0,4 alebo 0,5 Ω pre tanky iTank.",
+  "fr": "Lot de 5 résistances VAPORESSO GTi de 0,15 / 0,2 / 0,4 ou 0,5 Ω pour les clearomiseurs iTank."
+ },
+ {
+  "termek": "VAPORESSO Kit Armour Octa Aero White … VAPORESSO Kit Armour Octa Vintage Green",
+  "en": "The Armour Octa Kit runs on 2 18650 batteries (not included) and can deliver up to 220W of power. The kit comes with the iTantk atomizer, which holds up to 6ml of e-liquid (not included). The atomizer is compatible with GTi coils from the same brand.",
+  "sk": "Kit VAPORESSO ARMOUR OCTA funguje s dvomi batériami 18650 (nie sú súčasťou balenia) a dosahuje výkon až 220 W. V balení je tank iTank s objemom až 6 ml, kompatibilný so žhaviacimi hlavami GTi.",
+  "fr": "Le kit VAPORESSO ARMOUR OCTA fonctionne avec deux accus 18650 (non fournis) et délivre jusqu’à 220 W. Il est livré avec le clearomiseur iTank de 6 ml maximum, compatible avec les résistances GTi."
+ },
+ {
+  "termek": "GEEKVAPE Kit Aegis Boost 3 Black … GEEKVAPE Kit Aegis Boost 3 Teal Blue",
+  "en": "The Aegis Boost 3 kit features a built-in 3000mAh battery and can deliver up to 60W of power. The kit works with Aegis Boost cartridges holding up to 5ml of liquid. The cartridges are compatible with GeekVape B serie coil.",
+  "sk": "Kit GEEKVAPE AEGIS BOOST 3 so zabudovanou batériou 3000 mAh a výkonom až 60 W. Funguje s cartridge Aegis Boost s objemom až 5 ml, ktoré sú kompatibilné so žhaviacimi hlavami GeekVape série B.",
+  "fr": "Kit GEEKVAPE AEGIS BOOST 3 avec batterie intégrée de 3000 mAh et jusqu’à 60 W. Il fonctionne avec les cartouches Aegis Boost de 5 ml maximum, compatibles avec les résistances GeekVape série B."
+ },
+ {
+  "termek": "GEEKVAPE Aegis Boost 2&3 Pod 2PCS",
+  "en": "A pack of 2 x 5ml cartridges for the Geekvape Aegis Boost 2 and 3 kit.",
+  "sk": "Balenie 2 cartridge s objemom 5 ml pre kity GEEKVAPE Aegis Boost 2 a 3.",
+  "fr": "Lot de 2 cartouches de 5 ml pour les kits GEEKVAPE Aegis Boost 2 et 3."
+ },
+ {
+  "termek": "GEEKVAPE Boost B Coils 5PCS 0.2ohm … GEEKVAPE Boost B Coils 5PCS 0.6ohm",
+  "en": "Sold in packs of 5, Geekvape's new B coils (Boost version) have been designed to provide a better flavor experience and guarantee a longer lifespan. Compatible with the Aegis Boost 3, Aegis H45, Z Nano 2 Atomizer, and more.",
+  "sk": "Balenie 5 žhaviacich hláv GEEKVAPE B (verzia Boost), navrhnutých pre plnšiu chuť a dlhšiu životnosť. Kompatibilné napr. s Aegis Boost 3, Aegis H45 a tankom Z Nano 2.",
+  "fr": "Lot de 5 résistances GEEKVAPE B (version Boost), conçues pour plus de saveur et une durée de vie prolongée. Compatibles notamment avec l’Aegis Boost 3, l’Aegis H45 et le clearomiseur Z Nano 2."
+ },
+ {
+  "termek": "GEEKVAPE Digi Pro Gunmetal Gray … GEEKVAPE Digi Pro Space Black",
+  "en": "The Digi Pro kit features an integrated 2000mAh battery and can deliver up to 40W of power. The kit is compatible with all GeekVape J-series cartridges with integrated coil, which can hold up to 5mL of liquid. The kit also works with GeekVape JR cartridges compatible with J coils.",
+  "sk": "Kit GEEKVAPE DIGI PRO so zabudovanou batériou 2000 mAh a výkonom až 40 W. Je kompatibilný so všetkými cartridge GeekVape série J so zabudovanou žhaviacou hlavou (až 5 ml) a s cartridge JR pre žhaviace hlavy J.",
+  "fr": "Kit GEEKVAPE DIGI PRO avec batterie intégrée de 2000 mAh et jusqu’à 40 W. Compatible avec toutes les cartouches GeekVape série J à résistance intégrée (jusqu’à 5 ml) et avec les cartouches JR pour résistances J."
+ },
+ {
+  "termek": "GEEKVAPE J Cartridge 0.4ohm 2PCS … GEEKVAPE J Cartridge 1.2ohm 2PCS",
+  "en": "Pack of 2 J GeekVape cartridges with built-in coil of 0.4, 0.6, 0.8 or 1.2ohm, holding up to 5ml of liquid.",
+  "sk": "Balenie 2 cartridge GEEKVAPE J so zabudovanou žhaviacou hlavou 0,4 / 0,6 / 0,8 alebo 1,2 Ω, s objemom až 5 ml.",
+  "fr": "Lot de 2 cartouches GEEKVAPE J à résistance intégrée de 0,4 / 0,6 / 0,8 ou 1,2 Ω, d’une capacité allant jusqu’à 5 ml."
+ },
+ {
+  "termek": "GEEKVAPE Kit Wenax Q2 Fiber Black … GEEKVAPE Kit Wenax Q2 Vinca Blue",
+  "en": "Equipped with an integrated 1250mAh battery and up to 30W of power, the Wenax Q2 Kit becomes the reference in the Wenax series, while remaining compatible with the essential Q Pods cartridges.",
+  "sk": "Kit GEEKVAPE WENAX Q2 so zabudovanou batériou 1250 mAh a výkonom až 30 W. Funguje s osvedčenými cartridge Q Pod.",
+  "fr": "Kit GEEKVAPE WENAX Q2 avec batterie intégrée de 1250 mAh et jusqu’à 30 W, compatible avec les incontournables cartouches Q Pod."
+ },
+ {
+  "termek": "GEEKVAPE Q Cartridge Side Fill 0.4ohm 3PCS … GEEKVAPE Q Cartridge Side Fill 0.8ohm 3PCS",
+  "en": "A pack of three Q cartridges from Geekvape. These cartridges are compatible with the pods of the Q series and have several values of resistance. These cartridges offer a capacity of 2ml.",
+  "sk": "Balenie 3 cartridge GEEKVAPE Q s bočným plnením a objemom 2 ml, v rôznych hodnotách odporu. Kompatibilné so zariadeniami série Q.",
+  "fr": "Lot de 3 cartouches GEEKVAPE Q à remplissage latéral de 2 ml, en plusieurs valeurs de résistance. Compatibles avec les appareils de la série Q."
+ },
+ {
+  "termek": "GEEKVAPE Kit Wenax S3 Evo Black … GEEKVAPE Kit Wenax S3 Evo Silver",
+  "en": "The Wenax S3 Evo kit features an integrated 1100mAh battery and can deliver up to 18W of power. It is compatible with GeekVape's new-generation S cartridges with integrated coils, which can hold up to 2ml of liquid.",
+  "sk": "Kit GEEKVAPE WENAX S3 EVO so zabudovanou batériou 1100 mAh a výkonom až 18 W. Funguje s cartridge GeekVape S novej generácie so zabudovanou žhaviacou hlavou, s objemom až 2 ml.",
+  "fr": "Kit GEEKVAPE WENAX S3 EVO avec batterie intégrée de 1100 mAh et jusqu’à 18 W. Il fonctionne avec les cartouches GeekVape S de nouvelle génération à résistance intégrée, d’une capacité allant jusqu’à 2 ml."
+ },
+ {
+  "termek": "GEEKVAPE S Cartridge 0.8ohm 2PCS … GEEKVAPE S Cartridge 1.2ohm 2PCS",
+  "en": "Pack of 2 S cartridges with integrated coil for Geekvape Wenax S3, Stylus and S-C kits.",
+  "sk": "Balenie 2 cartridge GEEKVAPE S so zabudovanou žhaviacou hlavou pre kity Wenax S3, Stylus a S-C.",
+  "fr": "Lot de 2 cartouches GEEKVAPE S à résistance intégrée pour les kits Wenax S3, Stylus et S-C."
+ },
+ {
+  "termek": "GEEKVAPE Wenax Drip Tip Filter 20PCS",
+  "en": "Pack of 20 Wenax Drip Tip Filters from GeekVape.",
+  "sk": "Balenie 20 filtrov do náustku GEEKVAPE Wenax.",
+  "fr": "Lot de 20 filtres pour embout GEEKVAPE Wenax."
+ },
+ {
+  "termek": "GEEKVAPE Wenax Drip Tip Plastic 2PCS",
+  "en": "Wenax Plastic or GeekVape SoftTouch replacement drip tip.",
+  "sk": "Náhradný náustok pre GEEKVAPE Wenax – plastový alebo SoftTouch. Balenie 2 ks.",
+  "fr": "Embout de rechange pour GEEKVAPE Wenax, en plastique ou SoftTouch. Lot de 2."
+ },
+ {
+  "termek": "DRIFTER Kit Bar 6K Pineapple Peach Mango … DRIFTER Kit Bar 6K Watermelon Ice Gobar",
+  "en": "The Drifter Bar 6000 Kit features an integrated 850mAh battery and a 12ml liquid cartridge, 2ml of which is pre-filled with 20mg. The Drifter Bar Kit can deliver up to 6000 puffs !",
+  "sk": "Kit DRIFTER BAR 6K so zabudovanou batériou 850 mAh a cartridge s 12 ml liquidu (z toho 2 ml v pode) s nikotínom 20 mg/ml. Výrobca uvádza až 6 000 potiahnutí.",
+  "fr": "Kit DRIFTER BAR 6K avec batterie intégrée de 850 mAh et cartouche de 12 ml d’e-liquide (dont 2 ml dans le pod) dosé à 20 mg/ml de nicotine. Jusqu’à 6 000 bouffées selon le fabricant."
+ },
+ {
+  "termek": "DRIFTER Pod Bar 6k Pineapple Peach Mango … DRIFTER Pod Bar 6k Mango",
+  "en": "Drifter Bar 6000 Cartridges hold up to 12ml of nicotine liquid, including 2ml pre-filled with 20mg. They are compatible with the Drifter 6000 Kit (not supplied), which can deliver up to 6000 puffs!",
+  "sk": "Cartridge DRIFTER BAR 6K s 12 ml liquidu (z toho 2 ml v pode) s nikotínom 20 mg/ml. Kompatibilná s kitom DRIFTER BAR 6K (nie je súčasťou balenia); výrobca uvádza až 6 000 potiahnutí.",
+  "fr": "Cartouche DRIFTER BAR 6K de 12 ml d’e-liquide (dont 2 ml dans le pod) dosé à 20 mg/ml de nicotine. Compatible avec le kit DRIFTER BAR 6K (non fourni) ; jusqu’à 6 000 bouffées selon le fabricant."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml Coconut Pineapple",
+  "en": "Escape to paradise beaches with this summery blend featuring the flavors of coconut and juicy, sun-kissed pineapple! A refreshing recipe that’s both indulgent and fruity",
+  "sk": "Letná zmes kokosu a šťavnatého, slnkom zrelého ananásu – osviežujúca, sladká aj ovocná.",
+  "fr": "Un mélange estival de noix de coco et d’ananas juteux gorgé de soleil : rafraîchissant, gourmand et fruité."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Dragonfruit Blueberry Guava",
+  "en": "A delicious fruity creation featuring the sweet, exotic flavor of dragon fruit and intense blueberry, combined with the fragrant notes of guava, all wrapped in an icy freshness. A blend to enjoy with your feet in the water!",
+  "sk": "Ovocná kombinácia sladkej exotickej pitahaye, intenzívnej čučoriedky a voňavej guavy s ľadovým osviežením.",
+  "fr": "Une création fruitée associant le fruit du dragon sucré et exotique, la myrtille intense et les notes parfumées de goyave, avec une fraîcheur glacée."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Fuji Apple Kiwano",
+  "en": "A unique combination of crisp Fuji apple and Kiwano, featuring distinctive exotic notes that are fruity and slightly tart. A blend rich in flavor and discovery.",
+  "sk": "Netradičné spojenie chrumkavého jablka Fuji a kiwana s exotickými, ovocnými a jemne kyslými tónmi.",
+  "fr": "Une association originale de pomme Fuji croquante et de kiwano, aux notes exotiques fruitées et légèrement acidulées."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Guava Peach Pineapple",
+  "en": "An irresistible tropical cocktail featuring the flavor of fragrant guava, juicy peach, and pineapple with sunny notes. All topped with a wave of icy freshness. A true invitation to travel!",
+  "sk": "Tropický kokteil voňavej guavy, šťavnatej broskyne a slnečného ananásu, završený vlnou ľadovej sviežosti.",
+  "fr": "Un cocktail tropical de goyave parfumée, de pêche juteuse et d’ananas ensoleillé, couronné d’une vague de fraîcheur glacée."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Mango Coconut Lychee",
+  "en": "A harmonious blend where mango reveals its generous, sweet flesh, coconut adds its smoothness, and lychee brings its floral freshness—all complemented by a cool, icy wave for a heavenly experience.",
+  "sk": "Sladké mango, jemný kokos a kvetinovo svieže liči, doplnené chladivým ľadovým tónom.",
+  "fr": "La mangue généreuse et sucrée, la douceur de la noix de coco et la fraîcheur florale du litchi, avec une touche glacée."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Papaya Pineapple Peach",
+  "en": "A tropical getaway where papaya unveils its exotic notes, peach adds a touch of sweetness, and pineapple reveals its full sunny intensity, accompanied by an icy freshness for a rich, flavorful experience.",
+  "sk": "Exotická papája, sladká broskyňa a intenzívny ananás s ľadovou sviežosťou – plná tropická chuť.",
+  "fr": "Les notes exotiques de la papaye, la douceur de la pêche et l’intensité de l’ananas, avec une fraîcheur glacée."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Raspberry Guava",
+  "en": "Let yourself be captivated by the refreshing and bold combination of slightly tart raspberry and exotic guava. A fusion of red berries and tropical flavors creates a rich and intense experience.",
+  "sk": "Odvážna kombinácia jemne kyslej maliny a exotickej guavy – spojenie červeného a tropického ovocia.",
+  "fr": "L’alliance audacieuse de la framboise légèrement acidulée et de la goyave exotique : fruits rouges et saveurs tropicales."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Starfruit Mango Pineapple",
+  "en": "A sunny blend where star fruit reveals its tangy notes, mango adds generous sweetness, and pineapple brings out its fruity freshness. An icy touch enhances the whole experience, creating a flavor full of character.",
+  "sk": "Kyslastá karambola, sladké mango a svieži ananás, podčiarknuté ľadovým tónom.",
+  "fr": "La carambole acidulée, la mangue sucrée et l’ananas fruité, relevés d’une touche glacée."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Triple Melon",
+  "en": "Dive into a wave of fruity freshness! This creation combines the juicy sweetness of melon with an intense icy touch. A true invitation to escape!",
+  "sk": "Šťavnatá sladkosť melóna s intenzívnym ľadovým osviežením.",
+  "fr": "La douceur juteuse du melon avec une touche glacée intense."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Apple Peach",
+  "en": "Dive into an explosion of Apple-Peach flavours. Explore the harmonious fusion of crisp, juicy Apple with the sweet taste of Peach.",
+  "sk": "Chrumkavé, šťavnaté jablko v spojení so sladkou broskyňou.",
+  "fr": "La pomme croquante et juteuse associée à la douceur de la pêche."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Blue Razz Lemonade",
+  "en": "Dive into the vibrant taste of Blue Raspberry with the perfectly tart balance of Lemonade and a touch of chilled freshness. A delicious combination for a smooth, refreshing experience.",
+  "sk": "Modrá malina s kyslastou limonádou a ľahkým chladivým tónom.",
+  "fr": "La framboise bleue avec l’acidité d’une limonade et une touche de fraîcheur."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Cherry",
+  "en": "Enjoy this soft, sweet blend with its intense cherry flavour.",
+  "sk": "Jemná, sladká zmes s výraznou chuťou čerešne.",
+  "fr": "Un mélange doux et sucré à la saveur intense de cerise."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Cola",
+  "en": "Discover this new must-try recipe with Cola soda flavour.",
+  "sk": "Príchuť klasickej koly.",
+  "fr": "La saveur du soda cola."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Cotton Candy",
+  "en": "Discover the taste of cotton candy with a touch of iced freshness. A perfectly balanced blend of sweetness and freshness for a moment of pure pleasure.",
+  "sk": "Cukrová vata s ľadovým osviežením – vyvážená sladkosť a sviežosť.",
+  "fr": "La barbe à papa avec une touche glacée : un équilibre parfait entre douceur et fraîcheur."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Mad Blue",
+  "en": "With Mad Blue, enjoy the perfect, succulent fusion of Wild Berries. A blend bringing out the irresistible essence of ripe Blueberry, juicy Raspberry and tart Blackberry.",
+  "sk": "Zmes lesného ovocia: zrelá čučoriedka, šťavnatá malina a kyslastá černica.",
+  "fr": "Un mélange de fruits des bois : myrtille mûre, framboise juteuse et mûre acidulée."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Mango Ice",
+  "en": "Soar to sun-drenched beaches with the succulent sweetness of Ripe Mango balanced by a shot of Iced Coolness. A delicious combination for an experience that will give you a taste of paradise.",
+  "sk": "Sladké zrelé mango vyvážené ľadovým chladom.",
+  "fr": "La douceur de la mangue mûre équilibrée par une fraîcheur glacée."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Peach Ice",
+  "en": "Drifter takes us on a summer escapade with its Iced Peach-flavored blend. A sweet and delicious recipe with a touch of intense freshness.",
+  "sk": "Sladká broskyňa s výrazným ľadovým osviežením.",
+  "fr": "Une pêche douce avec une touche de fraîcheur intense."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Pineapple Ice",
+  "en": "Explore the taste of juicy Pineapple for a delicious and refreshing burst of flavor.",
+  "sk": "Šťavnatý ananás s osviežujúcim tónom.",
+  "fr": "L’ananas juteux pour une saveur gourmande et rafraîchissante."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Pink Lemonade",
+  "en": "A perfectly crafted blend of Lemonade flavor and a Mix of Red Fruits for even more flavor.",
+  "sk": "Limonáda doplnená zmesou červeného ovocia.",
+  "fr": "Une limonade associée à un mélange de fruits rouges."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Strawberry Banana Ice",
+  "en": "Drifter brings us the perfectly balanced combo of juicy Strawberry and ripe Banana. A deliciously icy blend.",
+  "sk": "Vyvážená kombinácia šťavnatej jahody a zrelého banánu s ľadovým tónom.",
+  "fr": "L’association équilibrée de la fraise juteuse et de la banane mûre, avec une touche glacée."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Sweet Blueberry Ice",
+  "en": "Let yourself be tempted by an explosion of sweetness thanks to the juicy, succulent flavours of ripe Blueberry accompanied by a sensation of icy freshness. A delicious combination for an experience that will captivate your taste buds.",
+  "sk": "Šťavnatá zrelá čučoriedka s ľadovou sviežosťou.",
+  "fr": "La myrtille mûre et juteuse avec une sensation de fraîcheur glacée."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Sweet Strawberry Ice",
+  "en": "Enjoy the juicy, fruity taste of Strawberry with a touch of Iced freshness for an explosion of sweetness. A delicious combination for a delicious experience.",
+  "sk": "Šťavnatá, ovocná jahoda s ľadovým osviežením.",
+  "fr": "La fraise juteuse et fruitée avec une touche de fraîcheur glacée."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Watermelon Ice",
+  "en": "Drifter introduces you to its mouth-watering blend of fruity flavors. Immerse yourself in a summer oasis with the juicy sweetness of ripe Watermelon perfectly balanced by a sensation of Icy freshness.",
+  "sk": "Šťavnatý zrelý vodný melón vyvážený ľadovou sviežosťou.",
+  "fr": "La douceur juteuse de la pastèque mûre équilibrée par une fraîcheur glacée."
+ },
+ {
+  "termek": "DRIFTER Longfill 16ml  Kiwi Passion Guava Ice",
+  "en": "Discover the ultimate fruity combo of Kiwi, Passion and Guava with a touch of icy freshness. An irresistible, perfectly balanced combination for a fruity, refreshing experience.",
+  "sk": "Kiwi, marakuja a guava s ľadovým tónom – ovocná a osviežujúca kombinácia.",
+  "fr": "Kiwi, fruit de la passion et goyave avec une touche glacée : un combo fruité et rafraîchissant."
+ },
+ {
+  "termek": "SWOKE Saiyen Vapors Baba 50ml",
+  "en": "Baba, a powerful blend that’s both sweet and intense, perfectly balanced. The strawberry reveals all its juicy sweetness before giving way to the exotic, delicately sweet notes of dragon fruit. The cotton candy gently envelops the entire blend, creating an irresistible experience.",
+  "sk": "Sladká a výrazná zmes: šťavnatá jahoda, exotická pitahaya a cukrová vata, ktorá celú chuť zjemňuje.",
+  "fr": "Un mélange sucré et intense : la fraise juteuse, les notes exotiques du fruit du dragon et la barbe à papa qui enveloppe le tout."
+ },
+ {
+  "termek": "SWOKE Saiyen Vapors Bereta 50ml",
+  "en": "The Saiyen series welcomes a new character from Swoke's imagination. It's Bereta and her flavors of pineapple, mango and passion fruit.",
+  "sk": "Postava zo série Saiyen Vapors od Swoke: ananás, mango a marakuja.",
+  "fr": "Un personnage de la série Saiyen Vapors de Swoke : ananas, mangue et fruit de la passion."
+ },
+ {
+  "termek": "SWOKE Saiyen Vapors Bobo 50ml",
+  "en": "The Saiyen series welcomes a new character from the imagination of Swoke. It is Bobo and its delicious flavors of watermelon, dragon fruit and bubble gum.",
+  "sk": "Postava zo série Saiyen Vapors od Swoke: vodný melón, pitahaya a žuvačka.",
+  "fr": "Un personnage de la série Saiyen Vapors de Swoke : pastèque, fruit du dragon et chewing-gum."
+ },
+ {
+  "termek": "SWOKE Saiyen Vapors Breezer 50ml",
+  "en": "Breezer offers a unique and overpowering fruity flavor consisting of dragon fruit, lychee, grape and pineapple.",
+  "sk": "Výrazná ovocná chuť: pitahaya, liči, hrozno a ananás.",
+  "fr": "Une saveur fruitée intense : fruit du dragon, litchi, raisin et ananas."
+ },
+ {
+  "termek": "SWOKE Saiyen Vapors Bübü 50ml",
+  "en": "The Bübü! With its flavor blending bubblegum, energy drink and pomegranate, the Bübü deserves the qualifier of explosion of flavors.",
+  "sk": "Explózia chutí: žuvačka, energetický nápoj a granátové jablko.",
+  "fr": "Une explosion de saveurs : chewing-gum, boisson énergisante et grenade."
+ },
+ {
+  "termek": "SWOKE Saiyen Vapors C4 50ml",
+  "en": "The exotic and delicious blend of goji berry, cherry and chewing gum.",
+  "sk": "Exotická zmes goji, čerešne a žuvačky.",
+  "fr": "Le mélange exotique de baie de goji, de cerise et de chewing-gum."
+ },
+ {
+  "termek": "SWOKE Saiyen Vapors Colonel Red T-Juice X 50ml",
+  "en": "Colonel Red doesn't do things by halves. He sees red, very red, and is taking on Saiyen Vapors ! With Cherry, Pomegranate and Red Berries, will he successfully overturn the hierarchy and take control of these super fruity warriors ?",
+  "sk": "Červená ovocná zmes: čerešňa, granátové jablko a červené ovocie.",
+  "fr": "Un mélange rouge et fruité : cerise, grenade et fruits rouges."
+ },
+ {
+  "termek": "SWOKE Saiyen Vapors Diablo 50ml",
+  "en": "Diablo are diabolically addictive dragon fruit, apple and red fruit flavours, in short... a hell of a liquid!",
+  "sk": "Pitahaya, jablko a červené ovocie.",
+  "fr": "Fruit du dragon, pomme et fruits rouges."
+ },
+ {
+  "termek": "SWOKE Saiyen Vapors Dragon 50ml",
+  "en": "A fresh and punchy blend of mango, pineapple and orange!",
+  "sk": "Svieža a výrazná zmes manga, ananásu a pomaranča.",
+  "fr": "Un mélange frais et punchy de mangue, d’ananas et d’orange."
+ },
+ {
+  "termek": "SWOKE Saiyen Vapors PaiPai 50ml",
+  "en": "The exotic fruity and fresh blend of guava, strawberry and papaya. A touch of mango is added to this combination.",
+  "sk": "Exotická a svieža zmes guavy, jahody a papáje s trochou manga.",
+  "fr": "Un mélange exotique et frais de goyave, de fraise et de papaye, avec une touche de mangue."
+ },
+ {
+  "termek": "SWOKE Saiyen Vapors XL 50ml",
+  "en": "The XL will make you think big! An intensely fruity blend featuring blackcurrant, pomegranate, and crisp apple that’s sure to impress.",
+  "sk": "Intenzívne ovocná zmes čiernych ríbezlí, granátového jablka a chrumkavého jablka.",
+  "fr": "Un mélange intensément fruité de cassis, de grenade et de pomme croquante."
+ },
+ {
+  "termek": "SWOKE Saiyen Vapors Zeus 50ml",
+  "en": "The wrath of Zeus is upon you! A blend of Fruit of the Gods (also known as Mangosteen), Pomegranate and Cherry for a unique, captivating experience.",
+  "sk": "Mangostan („ovocie bohov“), granátové jablko a čerešňa.",
+  "fr": "Le mangoustan (« fruit des dieux »), la grenade et la cerise."
+ },
+ {
+  "termek": "FIVE PAWNS Sweet Gambit 50ml",
+  "en": "Find the familiar notes of warm apple pie and savory butter crust, topped with whipped cream. A sweet recipe for a moment of pure sweetness.",
+  "sk": "Teplý jablkový koláč s maslovým cestom a šľahačkou.",
+  "fr": "Une tarte aux pommes tiède à la pâte beurrée, nappée de crème fouettée."
+ },
+ {
+  "termek": "FIVE PAWNS Black Flag Risen 50ml",
+  "en": "Black Flag Risen features the original flavours of creamy cappuccino enhanced by notes of sweet Virginia classic, truffle cream, walnut and mocha.",
+  "sk": "Krémové cappuccino s tónmi sladkého tabaku Virginia, lanýžového krému, vlašského orecha a mocca.",
+  "fr": "Un cappuccino crémeux relevé de notes de tabac Virginia doux, de crème truffée, de noix et de moka."
+ },
+ {
+  "termek": "FIVE PAWNS Bowden's Mate 50ml",
+  "en": "Bowden's Mate has slightly sweet chocolate flavours with a hint of fresh mint and vanilla.",
+  "sk": "Jemne sladká čokoláda s nádychom čerstvej mäty a vanilky.",
+  "fr": "Un chocolat légèrement sucré avec une pointe de menthe fraîche et de vanille."
+ },
+ {
+  "termek": "FIVE PAWNS Castle Long 50ml",
+  "en": "Deliciously indulgent flavours of toasted coconut and almond enhanced with vanilla and a touch of Kentucky bourbon.",
+  "sk": "Pražený kokos a mandle s vanilkou a kvapkou bourbonu Kentucky.",
+  "fr": "Noix de coco grillée et amande, relevées de vanille et d’une touche de bourbon du Kentucky."
+ },
+ {
+  "termek": "FIVE PAWNS Cowboy 50ml",
+  "en": "Cowboy combines the flavours of sweet classic with a smooth vanilla cream that also has a hint of caramel",
+  "sk": "Sladký tabak s jemným vanilkovým krémom a nádychom karamelu.",
+  "fr": "Un tabac doux avec une crème vanille onctueuse et une pointe de caramel."
+ },
+ {
+  "termek": "FIVE PAWNS Dillinger 50ml",
+  "en": "Dillinger takes on the sweet flavours of ice cream with vanilla cream and caramel!",
+  "sk": "Zmrzlina s vanilkovým krémom a karamelom.",
+  "fr": "Une glace à la crème vanille et au caramel."
+ },
+ {
+  "termek": "FIVE PAWNS Elo Classic Brazilian 50ml",
+  "en": "Elo has a classic Brazilian flavour with notes of sweetness, earthiness and richness.",
+  "sk": "Brazílsky tabak – sladký, zemitý a plný.",
+  "fr": "Un tabac brésilien aux notes douces, terreuses et riches."
+ },
+ {
+  "termek": "FIVE PAWNS Gambit 50ml",
+  "en": "Gambit reveals flavours of apple pie topped with a layer of caramel, a little vanilla ice cream and whipped cream.",
+  "sk": "Jablkový koláč s vrstvou karamelu, trochou vanilkovej zmrzliny a šľahačkou.",
+  "fr": "Une tarte aux pommes nappée de caramel, avec un peu de glace vanille et de crème fouettée."
+ },
+ {
+  "termek": "FIVE PAWNS Grandmaster 50ml",
+  "en": "A creamy taste of fresh banana drizzled with caramel and accompanied by peanut butter.",
+  "sk": "Krémový čerstvý banán s karamelom a arašidovým maslom.",
+  "fr": "Une banane fraîche et crémeuse nappée de caramel, accompagnée de beurre de cacahuète."
+ },
+ {
+  "termek": "FIVE PAWNS Kingside Classic Burley 50ml",
+  "en": "Kingside has the flavour of a light, rather dry classic Burley.",
+  "sk": "Ľahký, skôr suchý tabak Burley.",
+  "fr": "Un tabac Burley léger, plutôt sec."
+ },
+ {
+  "termek": "FIVE PAWNS Royal Classic Havana 50ml",
+  "en": "Royal Classic Havana has a classic Cuban flavour with rich, spicy notes.",
+  "sk": "Kubánsky tabak s plnými, korenistými tónmi.",
+  "fr": "Un tabac cubain aux notes riches et épicées."
+ },
+ {
+  "termek": "FIVE PAWNS Salted Caramel 50ml",
+  "en": "A balanced blend of praline flavours with cream and salted butter caramel!",
+  "sk": "Vyvážená zmes pralinky, smotany a karamelu so slaným maslom.",
+  "fr": "Un mélange équilibré de praliné, de crème et de caramel au beurre salé."
+ },
+ {
+  "termek": "FIVE PAWNS Strawberry & Cream 50ml",
+  "en": "Strawberry and creamy flavours!",
+  "sk": "Jahody so smotanou.",
+  "fr": "Fraise et crème."
+ },
+ {
+  "termek": "FIVE PAWNS Symmetry Six 50ml",
+  "en": "Symmetry Six is a complex liquid with flavours of strawberry, rhubarb, oats, graham cracker and vanilla cream.",
+  "sk": "Komplexná chuť: jahoda, rebarbora, ovsené vločky, sušienky graham a vanilkový krém.",
+  "fr": "Un liquide complexe aux saveurs de fraise, rhubarbe, flocons d’avoine, biscuit graham et crème vanille."
+ },
+ {
+  "termek": "A&L Hades Ultimate 50ml",
+  "en": "Now available in a 50ml format, A&L's HADES explodes with strawberry flavour and juicy pomegranate, all with the freshness that only A&L and its Ultimate range can deliver!",
+  "sk": "Jahoda a šťavnaté granátové jablko so sviežosťou typickou pre sériu Ultimate.",
+  "fr": "Fraise et grenade juteuse, avec la fraîcheur caractéristique de la gamme Ultimate."
+ },
+ {
+  "termek": "A&L Kronos Ultimate 50ml",
+  "en": "Legend has it that Kronos' scepter created a timeless combo... A divine fusion of Strawberry, Pomegranate, and Yellow Kiwi, frozen in a heavenly, timeless freshness. Will you dare to try it ?",
+  "sk": "Jahoda, granátové jablko a žlté kiwi v ľadovej sviežosti.",
+  "fr": "Fraise, grenade et kiwi jaune dans une fraîcheur glacée."
+ },
+ {
+  "termek": "A&L Luna Ultimate 50ml",
+  "en": "Discover this delicious blend that will plunge you into an avalanche of Fresh Cherries and a torrent of Juicy Strawberries.",
+  "sk": "Čerstvé čerešne a šťavnaté jahody.",
+  "fr": "Des cerises fraîches et des fraises juteuses."
+ },
+ {
+  "termek": "A&L Pinata Max Ultimate 50ml",
+  "en": "With Pinata, two varieties of watermelon combine to create an explosion of fresh and deliciously fruity flavors.",
+  "sk": "Dva druhy vodného melóna – svieža a ovocná chuť.",
+  "fr": "Deux variétés de pastèque pour une saveur fraîche et fruitée."
+ },
+ {
+  "termek": "A&L Ragnarök Max Ultimate 50ml",
+  "en": "Rediscover the power of Ragnarok, a surge of red berries in a torrent of freshness. More pronounced flavors and an even fresher taste than in the original recipe.",
+  "sk": "Červené ovocie vo vlne sviežosti – výraznejšia chuť a ešte viac chladu ako v pôvodnom Ragnaroku.",
+  "fr": "Les fruits rouges dans un torrent de fraîcheur : des saveurs plus marquées et encore plus de fraîcheur que la recette originale."
+ },
+ {
+  "termek": "A&L Ragnarök X Ultimate 50ml",
+  "en": "Enjoy Ragnarok X, a fresh mix of red fruits with carambola and cotton candy.",
+  "sk": "Svieža zmes červeného ovocia s karambolou a cukrovou vatou.",
+  "fr": "Un mélange frais de fruits rouges avec carambole et barbe à papa."
+ },
+ {
+  "termek": "A&L Raiden Max Ultimate 50ml",
+  "en": "With the Raiden MAX, the Philippine mango takes center stage. An exotic flavor paired with a burst of freshness to bring out the best in the experience.",
+  "sk": "Filipínske mango s výrazným osviežením.",
+  "fr": "La mangue des Philippines avec une explosion de fraîcheur."
+ },
+ {
+  "termek": "A&L Alucard Ultimate 50ml … A&L Alucard Sweet Edition Aroma 30ml",
+  "en": "The extreme greediness of a coffee, vanilla, caramel and cookie milkshake.",
+  "sk": "Milkshake s kávou, vanilkou, karamelom a sušienkou.",
+  "fr": "Un milkshake gourmand au café, à la vanille, au caramel et au cookie."
+ },
+ {
+  "termek": "A&L Jiraya Ultimate 50ml",
+  "en": "The delicacy of a floating caramel island.",
+  "sk": "Jemný plávajúci ostrov (dezert z bielkov) s karamelom.",
+  "fr": "La délicatesse d’une île flottante au caramel."
+ },
+ {
+  "termek": "A&L Kami Ultimate 50ml",
+  "en": "A&L returns with one of its classics but this time in e-liquid format to booster in 50ml. Find Kami and its mixture of strawberry, pitaya and freshness for a fresh and sweet result.",
+  "sk": "Klasika od A&L teraz ako 50 ml liquid na doplnenie boostrom: jahoda, pitahaya a sviežosť.",
+  "fr": "Un classique d’A&L, désormais en e-liquide de 50 ml à booster : fraise, fruit du dragon et fraîcheur."
+ },
+ {
+  "termek": "A&L Nagato Ultimate 50ml",
+  "en": "A creamy crème brûlée with the flavour of caramelized popcorn.",
+  "sk": "Krémový crème brûlée s príchuťou karamelizovaného popcornu.",
+  "fr": "Une crème brûlée onctueuse au goût de pop-corn caramélisé."
+ },
+ {
+  "termek": "A&L Oni Ultimate 50ml",
+  "en": "A powerful blend of lemon and lime on an icy background!",
+  "sk": "Výrazná zmes citróna a limetky na ľadovom základe.",
+  "fr": "Un mélange puissant de citron et de citron vert sur un fond glacé."
+ },
+ {
+  "termek": "A&L Phoenix Ultimate 50ml",
+  "en": "A succulent liquid with pineapple and lemon, bathed in freshness.",
+  "sk": "Šťavnatý ananás a citrón so sviežosťou.",
+  "fr": "Ananas et citron, baignés de fraîcheur."
+ },
+ {
+  "termek": "A&L Ragnarok Legend Ultimate 50ml",
+  "en": "A fruity combination of red fruit and pineapple flavors. Accompanied by a hint of freshness.",
+  "sk": "Červené ovocie a ananás s nádychom sviežosti.",
+  "fr": "Fruits rouges et ananas, avec une pointe de fraîcheur."
+ },
+ {
+  "termek": "A&L Ragnarok Primal Ultimate 50ml",
+  "en": "Ragnarok Primal returns to the source with a combo of well-known flavors with red fruit and mango.",
+  "sk": "Červené ovocie a mango – návrat ku koreňom Ragnaroku.",
+  "fr": "Fruits rouges et mangue : un retour aux sources du Ragnarok."
+ },
+ {
+  "termek": "A&L Ragnarok Ultimate 50ml",
+  "en": "A burst of red fruits in a torrent of intense freshness!",
+  "sk": "Červené ovocie v intenzívnej sviežosti.",
+  "fr": "Une explosion de fruits rouges dans une fraîcheur intense."
+ },
+ {
+  "termek": "A&L Ragnarok Zero Ultimate 50ml",
+  "en": "A wave of red fruits, between wild strawberries, raspberries, blackberries and black currants. Unlike Ragnarok Ultimate, the Zero version is devoid of freshness to seduce even the most sensitive taste buds.",
+  "sk": "Lesné jahody, maliny, černice a čierne ríbezle – na rozdiel od Ragnarok Ultimate bez chladivého efektu.",
+  "fr": "Fraises des bois, framboises, mûres et cassis : contrairement au Ragnarok Ultimate, sans effet frais."
+ },
+ {
+  "termek": "A&L Secret Mango Hidden Potion 50ml",
+  "en": "Mango, pineapple and passion fruit : a trio of exotic fruits for a fresh liquid. What a delight !",
+  "sk": "Mango, ananás a marakuja – trio exotického ovocia so sviežosťou.",
+  "fr": "Mangue, ananas et fruit de la passion : un trio exotique et frais."
+ },
+ {
+  "termek": "A&L Seven Sins Hidden Potion 50ml",
+  "en": "A fresh liquid that combines nectarine and peach.",
+  "sk": "Svieža zmes nektárinky a broskyne.",
+  "fr": "Un liquide frais associant nectarine et pêche."
+ },
+ {
+  "termek": "A&L Shinigami Ultimate 50ml",
+  "en": "A tart green apple combined with a sweet candy, all spiced up by a touch of freshness.",
+  "sk": "Kyslé zelené jablko so sladkým cukríkom a nádychom sviežosti.",
+  "fr": "Une pomme verte acidulée associée à un bonbon sucré, relevée d’une touche de fraîcheur."
+ },
+ {
+  "termek": "A&L Shiva Ultimate 50ml",
+  "en": "An icy mint.",
+  "sk": "Ľadová mäta.",
+  "fr": "Une menthe glaciale."
+ },
+ {
+  "termek": "A&L Spartacus Ultimate 50ml … A&L Spartacus Sweet Edition Aroma 30ml",
+  "en": "Enter the arena with these delicious aromas of juicy nectarines combined with refreshing lemon.",
+  "sk": "Šťavnaté nektárinky so sviežim citrónom.",
+  "fr": "Des nectarines juteuses associées à un citron rafraîchissant."
+ },
+ {
+  "termek": "A&L USA Ryan 50ml",
+  "en": "A generous blend of classic American blond, caramel and vanilla",
+  "sk": "Americký svetlý tabak s karamelom a vanilkou.",
+  "fr": "Un tabac blond américain avec caramel et vanille."
+ },
+ {
+  "termek": "A&L Valkyrie Ultimate 50ml",
+  "en": "A delicious base of red fruits on a bed of precisely dosed freshness.",
+  "sk": "Červené ovocie s presne dávkovanou sviežosťou.",
+  "fr": "Une base de fruits rouges sur un lit de fraîcheur dosée avec précision."
+ },
+ {
+  "termek": "A&L Yakuza Ultimate 50ml … A&L Yakuza Sweet Edition Aroma 30ml",
+  "en": "Extraordinary meeting of a fragrant lychee and a sweet and melting pineapple. The freshness is there.",
+  "sk": "Voňavé liči a sladký ananás so sviežosťou.",
+  "fr": "La rencontre d’un litchi parfumé et d’un ananas doux et fondant, avec de la fraîcheur."
+ },
+ {
+  "termek": "A&L Bahamut Sweet Edition Aroma 30ml",
+  "en": "Bahamut is a unique concentrate with peach with mint and kiwi tea aromas.",
+  "sk": "Koncentrát s broskyňou, mätou a čajom s kiwi.",
+  "fr": "Un concentré aux arômes de pêche, de menthe et de thé au kiwi."
+ },
+ {
+  "termek": "A&L Fury Sweet Edition Aroma 30ml",
+  "en": "A mango like you never taste and a slap of freshness!",
+  "sk": "Mango s výrazným osviežením.",
+  "fr": "Une mangue inédite avec une claque de fraîcheur."
+ },
+ {
+  "termek": "A&L Hades Sweet Edition Aroma 30ml",
+  "en": "The Sovereign of Hell takes you into the darkness with this frosty, deliciously devilish blend, with its bewitching flavor of Pomegranate and Strawberry.",
+  "sk": "Mrazivá zmes granátového jablka a jahody.",
+  "fr": "Un mélange givré à la grenade et à la fraise."
+ },
+ {
+  "termek": "A&L Jiraya Sweet Edition Aroma 30ml",
+  "en": "A gourmet concentrate with a very elaborate flavor of a caramelized floating island.",
+  "sk": "Dezertný koncentrát s chuťou karamelizovaného plávajúceho ostrova.",
+  "fr": "Un concentré gourmand au goût d’île flottante caramélisée."
+ },
+ {
+  "termek": "A&L Kami Sweet Edition Aroma 30ml",
+  "en": "Kami Sweet is a concentrate from A&L that is both sweet and mild. We find a mix of dragon fruit and strawberry with a touch of freshness.",
+  "sk": "Sladký a jemný koncentrát: pitahaya a jahoda s nádychom sviežosti.",
+  "fr": "Un concentré doux et sucré : fruit du dragon et fraise avec une touche de fraîcheur."
+ },
+ {
+  "termek": "A&L Leviathan V2 Green Edition Aroma 30ml",
+  "en": "A sweeter version with a more intense strawberry for a unique fruity and fresh mixture!",
+  "sk": "Sladšia verzia s výraznejšou jahodou – ovocná a svieža zmes.",
+  "fr": "Une version plus sucrée avec une fraise plus intense : un mélange fruité et frais."
+ },
+ {
+  "termek": "A&L Luna Sweet Edition Aroma 30ml",
+  "en": "Discover this sweet blend that will plunge you into an avalanche of Fresh Cherries and a torrent of Juicy Strawberries.",
+  "sk": "Sladká zmes čerstvých čerešní a šťavnatých jahôd.",
+  "fr": "Un mélange sucré de cerises fraîches et de fraises juteuses."
+ },
+ {
+  "termek": "A&L Nagato Sweet Edition Aroma 30ml",
+  "en": "A gourmet concentrate combining the flavour of caramelized popcorn with that of crème brûlée.",
+  "sk": "Dezertný koncentrát: karamelizovaný popcorn a crème brûlée.",
+  "fr": "Un concentré gourmand alliant pop-corn caramélisé et crème brûlée."
+ },
+ {
+  "termek": "A&L Oni Sweet Edition Aroma 30ml",
+  "en": "The Ultimate Oni Sweet Edition retains the original Ultimate Oni concentrate recipe with a citrus and lime base for an explosive and fresh creation!",
+  "sk": "Pôvodná receptúra Oni: citrusy a limetka, výrazná a svieža.",
+  "fr": "La recette originale d’Oni : agrumes et citron vert, pour une création explosive et fraîche."
+ },
+ {
+  "termek": "A&L Phoenix Sweet Edition Aroma 30ml",
+  "en": "The Ultimate Phoenix Sweet Edition retains the original recipe of the Ultimate Phoenix concentrate with a juicy pineapple sublimated by a refreshing lemon!",
+  "sk": "Pôvodná receptúra Phoenix: šťavnatý ananás s osviežujúcim citrónom.",
+  "fr": "La recette originale de Phoenix : un ananas juteux sublimé par un citron rafraîchissant."
+ },
+ {
+  "termek": "A&L Ragnarok Primal Sweet Edition Aroma 30ml",
+  "en": "Ultimate Ragnarock primal Green Edition concentrate offers the flavor of a fresh blend of red fruits and mango.",
+  "sk": "Svieža zmes červeného ovocia a manga.",
+  "fr": "Un mélange frais de fruits rouges et de mangue."
+ },
+ {
+  "termek": "A&L Ragnarok Sweet Edition Aroma 30ml",
+  "en": "The Ultimate Ragnarok Sweet Edition retains the original Ultimate Ragnarok concentrate recipe with a subtle blend of currants, strawberries, raspberries, blackberries and blueberries.",
+  "sk": "Pôvodná receptúra Ragnarok: ríbezle, jahody, maliny, černice a čučoriedky.",
+  "fr": "La recette originale de Ragnarok : groseilles, fraises, framboises, mûres et myrtilles."
+ },
+ {
+  "termek": "A&L Shinigami Sweet Edition Aroma 30ml",
+  "en": "The Ultimate Shinigami Sweet Edition concentrate offers a deliciously tangy and fresh green apple candy taste!",
+  "sk": "Kyslastý a svieži cukrík so zeleným jablkom.",
+  "fr": "Un bonbon à la pomme verte, acidulé et frais."
+ },
+ {
+  "termek": "A&L Shinobi Sweet Edition Aroma 30ml",
+  "en": "The Ultimate Shinobi Sweet Edition is a sour, fresh and sweet concentrate that is the result of a blend of blue raspberries.",
+  "sk": "Kyslastý, svieži a sladký koncentrát z modrých malín.",
+  "fr": "Un concentré acidulé, frais et sucré à la framboise bleue."
+ },
+ {
+  "termek": "A&L Shiva Sweet Edition Aroma 30ml",
+  "en": "The Ultimate Shiva Sweet Edition concentrate offers the flavor of a majestic and divinely fresh mint!",
+  "sk": "Výrazne svieža mäta.",
+  "fr": "Une menthe majestueuse et divinement fraîche."
+ },
+ {
+  "termek": "A&L Sucube V2 Sweet Edition Aroma 30ml",
+  "en": "A fruity concentrate of watermelon and lemon with a touch of freshness.",
+  "sk": "Ovocný koncentrát z vodného melóna a citróna s nádychom sviežosti.",
+  "fr": "Un concentré fruité de pastèque et de citron avec une touche de fraîcheur."
+ },
+ {
+  "termek": "A&L Valkyrie Sweet Edition Aroma 30ml",
+  "en": "The Ultimate Valkyrie Sweet Edition retains the original Ultimate Valkyrie concentrate recipe with raspberry with red fruits and a biting freshness!",
+  "sk": "Pôvodná receptúra Valkyrie: malina s červeným ovocím a výraznou sviežosťou.",
+  "fr": "La recette originale de Valkyrie : framboise et fruits rouges, avec une fraîcheur mordante."
+ },
+ {
+  "termek": "A&L Ryan Coffee Aroma 30ml",
+  "en": "A gourmet classic with its caramel, vanilla and coffee flavors.",
+  "sk": "Dezertná klasika s karamelom, vanilkou a kávou.",
+  "fr": "Un classique gourmand au caramel, à la vanille et au café."
+ },
+ {
+  "termek": "A&L Ryan USA Aroma 30ml",
+  "en": "A gourmet classic with its caramel and tobacco flavors.",
+  "sk": "Dezertná klasika s karamelom a tabakom.",
+  "fr": "Un classique gourmand au caramel et au tabac."
+ },
+ {
+  "termek": "A&L Ryan USA Limited Aroma 30ml",
+  "en": "USA Limited is the more powerful USA version of A&L. It is a gourmet classic with its more intense caramel and vanilla flavors.",
+  "sk": "Výraznejšia verzia Ryan USA s intenzívnejším karamelom a vanilkou.",
+  "fr": "La version plus puissante de Ryan USA, avec un caramel et une vanille plus intenses."
+ },
+ {
+  "termek": "EFEST IMR 18650 3000MAH Double Pack",
+  "en": "Efest IMR 18650 3000mAh battery, with a discharge rate of 35A in pulse.",
+  "sk": "Batéria EFEST IMR 18650 s kapacitou 3000 mAh a pulzným vybíjacím prúdom 35 A. Balenie 2 ks.",
+  "fr": "Accu EFEST IMR 18650 de 3000 mAh, courant de décharge de 35 A en pulsé. Lot de 2."
+ },
+ {
+  "termek": "EFEST Pro C2 Battery Charger",
+  "en": "The Efest Pro C2 is a 2-charger charger with a charging mode at 1A.",
+  "sk": "Nabíjačka EFEST Pro C2 na 2 batérie s nabíjacím prúdom 1 A.",
+  "fr": "Chargeur EFEST Pro C2 pour 2 accus, avec un mode de charge à 1 A."
+ },
+ {
+  "termek": "EFEST Slim K2 Charger",
+  "en": "The Slim K2 by Efest is an intelligent external battery charger, capable of charging two batteries simultaneously.It will allow you to charge your batteries faster, with a maximum current of 1A. Compatible with the following batteries: 18650, 20700, 26650, 10440, 14500, 16340, 17340, 18350, 18500 et 26500 de 3.6 à 3.7V Li-ion et LiMn.",
+  "sk": "Inteligentná externá nabíjačka EFEST Slim K2 nabíja dve batérie naraz, prúdom až 1 A. Kompatibilná s Li-ion a LiMn batériami 3,6–3,7 V: 18650, 20700, 26650, 10440, 14500, 16340, 17340, 18350, 18500 a 26500.",
+  "fr": "Le chargeur externe intelligent EFEST Slim K2 recharge deux accus simultanément, jusqu’à 1 A. Compatible avec les accus Li-ion et LiMn de 3,6 à 3,7 V : 18650, 20700, 26650, 10440, 14500, 16340, 17340, 18350, 18500 et 26500."
+ },
+ {
+  "termek": "OBVIOUS Nicotine Booster 10ml/20mg 30/70 … OBVIOUS Nicotine Booster 10ml/20mg 100VG",
+  "en": "Vials of 10 ml to 20 mg. of nicotine, perfect for boosting your favourite e-liquids!",
+  "sk": "Nikotínový booster 10 ml s 20 mg/ml nikotínu – na doplnenie shortfill liquidov.",
+  "fr": "Booster de nicotine de 10 ml à 20 mg/ml, pour booster vos e-liquides shortfill."
+ },
+ {
+  "termek": "LIQUIDEO Booster 50/50 Nic Salts 10ml/20mg 50/50",
+  "en": "Liquideo nic salt booster of 10 ml and 20 mg.",
+  "sk": "Nikotínový booster LIQUIDEO s nikotínovou soľou, 10 ml, 20 mg/ml, PG/VG 50/50.",
+  "fr": "Booster aux sels de nicotine LIQUIDEO, 10 ml, 20 mg/ml, PG/VG 50/50."
+ },
+ {
+  "termek": "Fiole Vide Chubby 120ml",
+  "en": "120ml graduated empty bottle with unscrewable dropper",
+  "sk": "Prázdna fľaša 120 ml so stupnicou a odskrutkovateľným kvapkadlom.",
+  "fr": "Flacon vide gradué de 120 ml avec embout compte-gouttes dévissable."
+ },
+ {
+  "termek": "Fiole Vide Chubby 180ml",
+  "en": "180ml graduated empty bottle with unscrewable dropper",
+  "sk": "Prázdna fľaša 180 ml so stupnicou a odskrutkovateľným kvapkadlom.",
+  "fr": "Flacon vide gradué de 180 ml avec embout compte-gouttes dévissable."
+ },
+ {
+  "termek": "Extrapure Base 100ml PG/VG:50/50",
+  "en": "Base 100ml 50/50 Extrapure 00mg . Neutral Base",
+  "sk": "Neutrálna báza Extrapure 100 ml, PG/VG 50/50, bez nikotínu (0 mg).",
+  "fr": "Base neutre Extrapure 100 ml, PG/VG 50/50, sans nicotine (0 mg)."
+ },
+ {
+  "termek": "GEEKVAPE Kit Aegis Legend 5 Aurora Rainbow … GEEKVAPE Kit Aegis Legend 5 Twilight Blue",
+  "en": "With the same features as the Legend 5, it's the tank that's changed! With a redesigned top-fill system (by shifting the top cap to the side), the option to increase capacity from 5.5mL to 7mL with the bulb glass (included) and compatibility with Geekvape's latest Z Boost XM coils, Geekvape has reached new heights with the Z Subohm Tank 5 !",
+  "sk": "Kit GEEKVAPE AEGIS LEGEND 5 s novým tankom Z Subohm Tank 5: prepracované plnenie zhora (vrchná čiapočka sa posúva nabok), objem 5,5 ml rozšíriteľný na 7 ml s vydutým sklom (v balení) a kompatibilita s najnovšími žhaviacimi hlavami Z Boost XM.",
+  "fr": "Kit GEEKVAPE AEGIS LEGEND 5 avec le nouveau clearomiseur Z Subohm Tank 5 : remplissage par le haut repensé (top cap décalé sur le côté), capacité de 5,5 ml extensible à 7 ml avec le verre bulle (fourni) et compatibilité avec les dernières résistances Z Boost XM."
+ },
+ {
+  "termek": "GEEKVAPE Z XM Boost Coil 5PCS 0.15ohm … GEEKVAPE Z XM Boost Coil 5PCS 0.4ohm",
+  "en": "GeekVape Z XM Boost coils use Kanthal A1 mesh for direct-lung vaping, delivering dense vapor, strong flavor, and extended lifespan. Available in 0.15Ω (70–85W), 0.2Ω (70–80W), and 0.4Ω (50–60W). Compatible with Z Sub-Ohm / Z Fli / P Sub Ohm tanks. Best with high-VG e-liquids and feature an easy push-fit installation.",
+  "sk": "Žhaviace hlavy GEEKVAPE Z XM Boost z mriežky Kanthal A1 na priame vdychovanie do pľúc (DL): hustá para, výrazná chuť a dlhšia životnosť. Hodnoty 0,15 Ω (70–85 W), 0,2 Ω (70–80 W) a 0,4 Ω (50–60 W). Kompatibilné s tankmi Z Sub-Ohm, Z Fli a P Sub Ohm, najlepšie s liquidmi s vysokým podielom VG. Jednoduchá výmena zasunutím. Balenie 5 ks.",
+  "fr": "Résistances GEEKVAPE Z XM Boost en mesh Kanthal A1 pour l’inhalation directe (DL) : vapeur dense, saveur marquée et durée de vie prolongée. Valeurs 0,15 Ω (70–85 W), 0,2 Ω (70–80 W) et 0,4 Ω (50–60 W). Compatibles avec les clearomiseurs Z Sub-Ohm, Z Fli et P Sub Ohm, idéales avec les e-liquides riches en VG. Installation simple par emboîtement. Lot de 5."
+ },
+ {
+  "termek": "GEEKVAPE Z Subohm Tank 5 5,5ml Cold Silver … GEEKVAPE Z Subohm Tank 5 5,5ml Gunmetal Grey",
+  "en": "New designs, a redesigned top-fill system (by shifting the top cap to the side), the option to increase capacity from 5.5 ml to 7 ml with the bulb glass (included), and compatibility with the latest Z Boost XM coils from Geekvape. Geekvape has reached a new milestone with the Z Subohm Tank 5 !",
+  "sk": "Tank GEEKVAPE Z SUBOHM TANK 5 v novom dizajne: prepracované plnenie zhora (vrchná čiapočka sa posúva nabok), objem 5,5 ml rozšíriteľný na 7 ml s vydutým sklom (v balení) a kompatibilita s najnovšími žhaviacimi hlavami Z Boost XM.",
+  "fr": "Clearomiseur GEEKVAPE Z SUBOHM TANK 5 au nouveau design : remplissage par le haut repensé (top cap décalé sur le côté), capacité de 5,5 ml extensible à 7 ml avec le verre bulle (fourni) et compatibilité avec les dernières résistances Z Boost XM."
+ }
+]

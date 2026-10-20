@@ -20,7 +20,7 @@ Jóváhagyás után ebből készül a WordPress / WooCommerce oldal: **Infinite 
   - SK: Doprava a platba, **Obchodné podmienky**, **Ochrana osobných údajov**, **Odstúpenie od zmluvy**, Súbory cookie, Kontakt
   - FR: Livraison et paiement, **CGV (Conditions générales de vente)**, **Politique de confidentialité**, **Droit de rétractation**, **Mentions légales**, Cookies, Contact
 - 18+ korkapu mindkét nyelven, benne nyelvválasztó (első látogatáskor itt lehet nyelvet váltani).
-- **Nyitott jogi kérdés – Franciaország:** Franciaországban 2025 februárja óta tilos az eldobható e-cigaretta („puff”) forgalmazása (loi n° 2025-173). A prototípus FR nézete még mutatja az „Eldobható” kategóriát; élesítés előtt jogásszal egyeztetni kell, és valószínűleg el kell rejteni a francia piacon. A szlovák szabályokat (ízesítés, jövedéki adó, reklám) szintén ellenőrizni kell.
+- **Eldobható e-cigaretta nincs a kínálatban** (az ügyfél döntése, 2026-10-20: az EU 2027-től tiltja; Franciaországban 2025 februárja óta tilos). Az ELFBAR 600-asok kimaradtak, az Eldobható főkategória megszűnt.
 
 ### Nyelvi réteg a prototípusban
 
@@ -57,7 +57,7 @@ navigáció, pénztár, betűk, asztali és mobil szélesség.
 Egyfájlos változat e-mailhez / offline megnyitáshoz (mindent beágyaz, a betűket is):
 `python3 prototype/tools/build_single.py` → `dist/firstvape-prototipus.html`.
 
-A prototípus egyetlen oldalas alkalmazás, hash alapú útvonalakkal (`#/kategoria/eldobhato`, `#/termek/...`).
+A prototípus egyetlen oldalas alkalmazás, hash alapú útvonalakkal (`#/kategoria/eloretoltott-podok`, `#/termek/...`).
 A WordPressben ezek valódi, nyelvenként fordított permalinkek lesznek (pl. `/sk/…`, `/fr/…`).
 
 ## Oldalak
@@ -65,8 +65,8 @@ A WordPressben ezek valódi, nyelvenként fordított permalinkek lesznek (pl. `/
 | Oldal | Útvonal | Megfelelő az iu_theme + `firstvape` child témában |
 |---|---|---|
 | Főoldal | `#/` | `templates/front_page_content.html` |
-| Kategória + szűrők | `#/kategoria/eldobhato` | `templates/tax_product_cat_content.html`: `[products class="mainquery"]` + `iu-woocommerce/filter` |
-| Szűrt lista | `#/kategoria/eldobhato?puff=20000%2B` | szűrt archív URL (slukkszám-sáv) |
+| Kategória + szűrők | `#/kategoria/eloretoltott-podok` | `templates/tax_product_cat_content.html`: `[products class="mainquery"]` + `iu-woocommerce/filter` |
+| Szűrt lista | `#/kategoria/eloretoltott-podok?kompat=ELFA` | szűrt archív URL (rendszer) |
 | Márkaoldal | `#/marka/elfbar` | `templates/tax_product_brand_content.html` (WooCommerce Brands) |
 | Márkák A–Z | `#/markak` | oldal sablon |
 | Akciók | `#/akciok` | `wc_get_product_ids_on_sale()` |
@@ -124,12 +124,11 @@ python3 prototype/tools/client_import.py                 # csv/ugyfel/*.csv → 
 ## Kategóriafa (az ügyféllel véglegesítve, 2. kör)
 
 1. **Készülékek / Kitek** (`keszulekek`): Előretöltött pod rendszerek · Utántölthető pod rendszerek · Mod / Tank kitek
-2. **Előretöltött podok** (`eloretoltott-podok`): külön vásárolható, gyárilag töltött cserepodok; szűrés márka szerint
+2. **Előretöltött podok** (`eloretoltott-podok`): külön vásárolható, gyárilag töltött cserepodok; rendszerenként alkategória (ELFBAR ELFA · ELFBAR JOIN ONE · VAPORESSO DOJO · DRIFTER BAR – az ügyfél kérése, 2026-10-20); szűrés márka, rendszer, íz, nikotin szerint
 3. **E-liquidek** (`e-liquidek`): Nikotin booster · 10 ml kész liquidek · Aromák · Shortfill · Longfill; szűrés márka, íz, nikotin, kiszerelés szerint
-4. **Eldobható e-cigaretták** (`eldobhato`): egészében eldobott termékek (az ELFBAR NIO besorolása egyeztetendő)
-5. **Kiegészítők** (`kiegeszitok`): Üres cserepodok / patronok (pl. Geekvape Q Pod 0.4 / 0.6 / 0.8 Ω) · Porlasztók / coilok · Tankok · Akkumulátorok / töltők · Egyéb
-6. **Márkák**: külön főmenüpont, a márkaoldal minden terméktípust mutat
-7. **Akciók**: főmenüpont, nem kiemelve
+4. **Kiegészítők** (`kiegeszitok`): Üres cserepodok / patronok (pl. Geekvape Q Pod 0.4 / 0.6 / 0.8 Ω) · Porlasztók / coilok · Tankok · Akkumulátorok / töltők · Egyéb
+5. **Márkák**: külön főmenüpont, a márkaoldal minden terméktípust mutat
+6. **Akciók**: főmenüpont, nem kiemelve
 
 Élesítés előtti tesztlista: Packeta-díjak, ingyenes szállítási küszöb, utánvét díja, Teya-fizetés, SuperFaktúra-számla, rendelési visszaigazoló e-mail, majd teljes tesztrendelés mobilon és laptopon.
 

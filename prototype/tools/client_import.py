@@ -2,7 +2,7 @@
 """
 First Vape – az ügyfél termékfájljának (WooCommerce-CSV.xlsx, CSV-be mentve) átalakítása.
 
-    python3 prototype/tools/client_import.py [prototype/csv/ugyfel/WooCommerce-CSV-2026-10-19.csv]
+    python3 prototype/tools/client_import.py [prototype/csv/ugyfel/WooCommerce-CSV-2026-10-20.csv]
 
 Kimenet:
   prototype/assets/js/products.js              az előnézet termékei és márkái (FV.clientProducts, FV.clientBrands)
@@ -15,7 +15,8 @@ Kimenet:
 
 Szabályok (az ügyféllel véglegesített kategóriafa szerint, DONTESEK 2026-10-15):
 - a fájl angol kategóriája a szlovák kategóriához kerül, új kategória nem jön létre;
-- a „PREFILLED PODS > <rendszer>” sorok az Előretöltött podok főkategóriába kerülnek, a rendszer a pa_kompatibilitas lesz;
+- a „PREFILLED PODS > <rendszer>” sorok az Előretöltött podok rendszer szerinti alkategóriájába kerülnek, a rendszer a
+  pa_system is (szűrő); az eldobható e-cigaretták (ELFBAR 600) kimaradnak (az ügyfél kérése, 2026-10-20);
 - minden szöveget megtisztít (szóköz a végén, dupla szóköz), a hibás sorokat javítja és listázza.
 A szkript csak a Python standard könyvtárát használja.
 """
@@ -27,7 +28,9 @@ import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, 'csv/ugyfel/WooCommerce-CSV-2026-10-19.csv')
+SRC = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, 'csv/ugyfel/WooCommerce-CSV-2026-10-20.csv')
+# angol forrásszöveg → szlovák és francia leírás (kézzel írva, tényszerűen; új angol szöveghez ide kell az új sor)
+DESC = {re.sub(r'\s+', ' ', d['en']).strip(): d for d in json.load(open(os.path.join(ROOT, 'csv/leirasok-sk-fr.json'), encoding='utf-8'))}
 
 # ---------- kategóriák ----------
 # slug → (szülő slug, SK név, FR név, angol név a fájlban vagy javaslat)
@@ -37,13 +40,17 @@ TREE = {
     'utantoltheto-pod-rendszerek': ('keszulekek', 'Plniteľné pod systémy', 'Systèmes à pods à remplir', 'DEVICES / KITS > REFILLABLE POD KITS'),
     'mod-tank-kitek': ('keszulekek', 'Mod / tank kity', 'Kits box / clearomiseur', 'DEVICES / KITS > MOD & TANK KITS'),
     'eloretoltott-podok': (None, 'Predplnené pody', 'Pods préremplis', 'PREFILLED PODS'),
+    # rendszerenként alkategória, ugyanúgy szűrhetően (az ügyfél válasza, 2026-10-20)
+    'podok-elfbar-elfa': ('eloretoltott-podok', 'ELFBAR ELFA', 'ELFBAR ELFA', 'PREFILLED PODS > ELFBAR ELFA'),
+    'podok-elfbar-joinone': ('eloretoltott-podok', 'ELFBAR JOIN ONE', 'ELFBAR JOIN ONE', 'PREFILLED PODS > ELFBAR JOINONE'),
+    'podok-vaporesso-dojo': ('eloretoltott-podok', 'VAPORESSO DOJO', 'VAPORESSO DOJO', 'PREFILLED PODS > VAPORESSO DOJO'),
+    'podok-drifter-bar': ('eloretoltott-podok', 'DRIFTER BAR', 'DRIFTER BAR', 'PREFILLED PODS > DRIFTER BAR'),
     'e-liquidek': (None, 'E-liquidy', 'E-liquides', 'E-LIQUIDS'),
     'nikotin-booster': ('e-liquidek', 'Nikotínové boostery', 'Boosters de nicotine', 'E-LIQUIDS > NICOTINE BOOSTER'),
     'kesz-liquidek-10ml': ('e-liquidek', 'Hotové liquidy 10 ml', 'E-liquides prêts 10 ml', 'E-LIQUIDS > 10ML LIQUIDS'),
     'aromak': ('e-liquidek', 'Príchute (arómy)', 'Arômes concentrés', 'E-LIQUIDS > AROMA'),
     'shortfill': ('e-liquidek', 'Shortfill', 'Shortfills', 'E-LIQUIDS > SHORTFILL'),
     'longfill': ('e-liquidek', 'Longfill', 'Longfills', 'E-LIQUIDS > LONGFILL'),
-    'eldobhato': (None, 'Jednorazové e-cigarety', 'Cigarettes électroniques jetables', 'DISPOSABLE E-CIGARETTES'),
     'kiegeszitok': (None, 'Príslušenstvo', 'Accessoires', 'ACCESSORIES'),
     'ures-podok': ('kiegeszitok', 'Prázdne pody / cartridge', 'Pods vides / cartouches', 'ACCESSORIES > REPLACEMENT PODS / CARTRIDGES'),
     'porlasztok': ('kiegeszitok', 'Žhaviace hlavy / coily', 'Résistances', 'ACCESSORIES > COILS'),
@@ -56,10 +63,10 @@ CAT_MAP = {
     'DEVICES / KITS > PREFILLED POD KITS': ('eloretoltott-pod-rendszerek', None),
     'DEVICES / KITS > REFILLABLE POD KITS': ('utantoltheto-pod-rendszerek', None),
     'DEVICES / KITS > MOD & TANK KITS': ('mod-tank-kitek', None),
-    'PREFILLED PODS > ELFBAR ELFA': ('eloretoltott-podok', 'ELFA'),
-    'PREFILLED PODS > VAPORESSO DOJO': ('eloretoltott-podok', 'DOJO BLAST'),
-    'PREFILLED PODS > ELFBAR JOINONE': ('eloretoltott-podok', 'JOIN ONE'),
-    'PREFILLED PODS > DRIFTER BAR': ('eloretoltott-podok', 'DRIFTER BAR'),
+    'PREFILLED PODS > ELFBAR ELFA': ('podok-elfbar-elfa', 'ELFA'),
+    'PREFILLED PODS > VAPORESSO DOJO': ('podok-vaporesso-dojo', 'DOJO BLAST'),
+    'PREFILLED PODS > ELFBAR JOINONE': ('podok-elfbar-joinone', 'JOIN ONE'),
+    'PREFILLED PODS > DRIFTER BAR': ('podok-drifter-bar', 'DRIFTER BAR'),
     'E-LIQUIDS > SHORTFILL': ('shortfill', None),
     'E-LIQUIDS > 10ML LIQUIDS': ('kesz-liquidek-10ml', None),
     'E-LIQUIDS > LONGFILL': ('longfill', None),
@@ -71,11 +78,11 @@ CAT_MAP = {
     'ACCESSORIES > TANK': ('tankok', None),
     'ACCESSORIES > OTHER ACCESSORIES': ('egyeb-kiegeszitok', None),
 }
-ART = {'keszulekek': 'kit', 'eloretoltott-podok': 'pod', 'e-liquidek': 'liquid', 'eldobhato': 'disposable', 'kiegeszitok': 'accessory'}
+ART = {'keszulekek': 'kit', 'eloretoltott-podok': 'pod', 'e-liquidek': 'liquid', 'kiegeszitok': 'accessory'}
 # Becsült súly grammban (csak a szállítási díj számításához az előnézetben; a valódi súlyt az ügyfél adja meg)
 WEIGHT = {'eloretoltott-pod-rendszerek': 120, 'utantoltheto-pod-rendszerek': 200, 'mod-tank-kitek': 450, 'eloretoltott-podok': 40,
-          'kesz-liquidek-10ml': 30, 'shortfill': 120, 'longfill': 60, 'aromak': 60, 'nikotin-booster': 30, 'eldobhato': 60,
-          'ures-podok': 30, 'porlasztok': 40, 'tankok': 120, 'akkuk-toltok': 150, 'egyeb-kiegeszitok': 50}
+          'kesz-liquidek-10ml': 30, 'shortfill': 120, 'longfill': 60, 'aromak': 60, 'nikotin-booster': 30,
+          'podok-elfbar-elfa': 40, 'podok-elfbar-joinone': 40, 'podok-vaporesso-dojo': 40, 'podok-drifter-bar': 40, 'ures-podok': 30, 'porlasztok': 40, 'tankok': 120, 'akkuk-toltok': 150, 'egyeb-kiegeszitok': 50}
 
 # A rendszer (pa_kompatibilitas) a termék nevéből – a fájl cross-sell kapcsolatai erősítik meg (pl. Digi Pro ↔ J Cartridge).
 SYSTEMS = [
@@ -111,12 +118,13 @@ LEAF_TEXT = {  # a rövid leírás első része (SK, FR)
     'utantoltheto-pod-rendszerek': ('Plniteľný pod kit', 'Kit pod à remplir'),
     'mod-tank-kitek': ('Mod + tank kit', 'Kit box + clearomiseur'),
     'eloretoltott-podok': ('Predplnený pod', 'Pod prérempli'),
+    'podok-elfbar-elfa': ('Predplnený pod', 'Pod prérempli'), 'podok-elfbar-joinone': ('Predplnený pod', 'Pod prérempli'),
+    'podok-vaporesso-dojo': ('Predplnený pod', 'Pod prérempli'), 'podok-drifter-bar': ('Predplnený pod', 'Pod prérempli'),
     'kesz-liquidek-10ml': ('Hotový liquid', 'E-liquide prêt à vaper'),
     'shortfill': ('Shortfill liquid', 'E-liquide shortfill'),
     'longfill': ('Longfill príchuť', 'Arôme longfill'),
     'aromak': ('Koncentrovaná príchuť', 'Arôme concentré'),
     'nikotin-booster': ('Nikotínový booster / báza', 'Booster de nicotine / base'),
-    'eldobhato': ('Jednorazová e-cigareta', 'Cigarette électronique jetable'),
     'ures-podok': ('Náhradný pod / cartridge', 'Pod / cartouche de rechange'),
     'porlasztok': ('Žhaviace hlavy (coily)', 'Résistances'),
     'tankok': ('Tank (clearomizér)', 'Clearomiseur'),
@@ -174,7 +182,7 @@ def main():
     rows = list(csv.DictReader(open(SRC, encoding='utf-8')))
     issues = collections.OrderedDict((k, []) for k in (
         'sku_dup', 'type', 'no_category', 'category_ws', 'efest', 'cross_missing', 'attr_ws', 'name_ws', 'same_name',
-        'no_image', 'dup_image', 'no_weight', 'stock', 'desc_wholesaler', 'french_name'))
+        'no_image', 'dup_image', 'no_weight', 'stock', 'desc_wholesaler', 'desc_missing', 'french_name'))
     all_skus = collections.Counter(clean(r['SKU']) for r in rows)
     seen_slug = collections.Counter()
     products = []
@@ -192,12 +200,12 @@ def main():
         if cat_raw != cat_raw.strip() or (cat and cat not in CAT_MAP and cat.rstrip() in CAT_MAP):
             issues['category_ws'].append((sku0, cat_raw))
         system = None
+        if 'disposable' in r['Tags'].lower() or re.search(r'ELFBAR 600\b', name, re.I):
+            # az eldobható e-cigaretták kimaradnak (az ügyfél kérése, 2026-10-20: az EU 2027-től tiltja)
+            issues['no_category'].append((sku0, name, 'kimarad (eldobható – az ügyfél kérése)'))
+            continue
         if not cat:
-            if 'disposable' in r['Tags'].lower() or re.search(r'ELFBAR 600', name, re.I):
-                leaf = 'eldobhato'
-                issues['no_category'].append((sku0, name, 'Jednorazové e-cigarety (DISPOSABLE E-CIGARETTES)'))
-            else:
-                raise SystemExit('Ismeretlen, kategória nélküli sor: ' + sku0)
+            raise SystemExit('Ismeretlen, kategória nélküli sor: ' + sku0)
         elif cat in CAT_MAP:
             leaf, system = CAT_MAP[cat]
         else:
@@ -272,6 +280,10 @@ def main():
         desc = clean(r['Description'])
         if re.search(r'ADNS|French standards|catalog', desc, re.I):
             issues['desc_wholesaler'].append(sku)
+        # a szlovák és francia leírás (mi írtuk az angol nagykereskedői szövegből, csv/leirasok-sk-fr.json)
+        own = DESC.get(re.sub(r'\s+', ' ', desc).strip()) if desc else None
+        if desc and not own:
+            issues['desc_missing'].append((sku, name))
         if re.match(r'(?i)fiole|vide\b', name):
             issues['french_name'].append((sku, name))
         cross = [clean(x) for x in (r['Cross-sells'] or '').split(',') if clean(x)]
@@ -296,7 +308,7 @@ def main():
             price=price, sale=float(sale) if sale else None, qty=qty, weight=WEIGHT[leaf], img_url=img, cross=cross,
             group=group, color=tint, swatch=pick(SWATCH, color) if color else None, art=ART[root], extra=extra,
             short={'sk': short_sk + ' · ' + brand + (' · ' + extra if extra else ''), 'fr': short_fr + ' · ' + brand + (' · ' + extra if extra else '')},
-            en_category=clean(cat_raw).upper()))
+            en_category=clean(cat_raw).upper(), desc={'sk': own['sk'], 'fr': own['fr']} if own else None))
     # azonos név ugyanazon csoportban (pl. 0 / 20 mg ugyanazzal a névvel, booster PG/VG-arány a névben nincs)
     by_name = collections.defaultdict(list)
     for p in products:
@@ -350,9 +362,9 @@ def write_js(products):
     for p in products:
         brands.setdefault(p['brand'], set()).add(p['root'])
     root_names = {'keszulekek': ('zariadenia', 'appareils'), 'eloretoltott-podok': ('predplnené pody', 'pods préremplis'),
-                  'e-liquidek': ('e-liquidy', 'e-liquides'), 'eldobhato': ('jednorazové e-cigarety', 'jetables'),
+                  'e-liquidek': ('e-liquidy', 'e-liquides'),
                   'kiegeszitok': ('príslušenstvo', 'accessoires')}
-    order = ['keszulekek', 'eloretoltott-podok', 'eldobhato', 'e-liquidek', 'kiegeszitok']
+    order = ['keszulekek', 'eloretoltott-podok', 'e-liquidek', 'kiegeszitok']
     out_b = []
     for b, roots in brands.items():
         rs = [r for r in order if r in roots]
@@ -375,6 +387,8 @@ def write_js(products):
             o['cross'] = p['cross']
         if p.get('featured'):
             o['featured'] = True
+        if p['desc']:
+            o['desc'] = p['desc']
         out_p.append(o)
     js = ('/* GENERÁLT FÁJL – ne szerkeszd kézzel. Forrás: az ügyfél termékfájlja (csv/ugyfel/), '
           'generátor: tools/client_import.py */\n'
@@ -405,7 +419,7 @@ def write_import(products):
     w.writerow(head)
     for p in products:
         catpath = ' > '.join(TREE[c][1] for c in p['cats'])
-        row = ['simple', p['sku'], p['name'], 1, 'visible', p['short']['sk'], '', '%g' % p['price'], '%g' % p['sale'] if p['sale'] else '',
+        row = ['simple', p['sku'], p['name'], 1, 'visible', p['short']['sk'], (p['desc'] or {}).get('sk', ''), '%g' % p['price'], '%g' % p['sale'] if p['sale'] else '',
                catpath, p['brand'], 1, p['qty'], '', img_name(p) if p['img_url'] else '', ', '.join(p['cross']), p['group'],
                p['en_category'], p['img_url']]
         attrs = [(lab, ', '.join(nic_label(v) if k == 'nikotin' else str(v) for v in p['attrs'][k])) for k, lab in ATTR_LABELS if p['attrs'].get(k)]
@@ -427,9 +441,8 @@ def write_mapping(products):
     w.writerow(['Szint', 'Szülő (slug)', 'Slug', 'Szlovák név (webshop)', 'Francia név', 'Angol név az ügyfél fájljában',
                 'Termékek', 'Megjegyzés'])
     notes = {
-        'eloretoltott-podok': 'A fájlban rendszerenként alkategória (ELFBAR ELFA, VAPORESSO DOJO, ELFBAR JOINONE, DRIFTER BAR): '
-                              'a megbeszélt fa szerint egy kategória, a rendszer a pa_kompatibilitas (szűrő: márka, rendszer)',
-        'eldobhato': 'A fájlban nincs ilyen kategória (3 ELFBAR 600 kategória nélkül) – javasolt angol név: DISPOSABLE E-CIGARETTES',
+        'eloretoltott-podok': 'Rendszerenként alkategória a fájl szerint (ELFBAR ELFA, VAPORESSO DOJO, ELFBAR JOINONE, DRIFTER BAR), '
+                              'ugyanúgy szűrhetően (márka, rendszer) – az ügyfél válasza, 2026-10-20',
         'akkuk-toltok': 'A fájlban nincs ilyen kategória (az EFEST akku és töltők az OTHER ACCESSORIES alatt) – javasolt: ACCESSORIES > BATTERIES / CHARGERS',
         'ures-podok': 'A fájlban két írásmód: REPLACEMENT PODS / CARTRIDGES és REPLACEMENT PODS',
         'utantoltheto-pod-rendszerek': 'A fájlban a név végén szóköz van („REFILLABLE POD KITS ”)',
@@ -437,7 +450,7 @@ def write_mapping(products):
     }
     for slug, (parent, sk, fr, en) in TREE.items():
         names = en_by_slug.get(slug)
-        en_txt = ' | '.join(sorted(names)) if names else (en if parent is None and slug != 'eldobhato' else '')
+        en_txt = ' | '.join(sorted(names)) if names else (en if parent is None else '')
         w.writerow([2 if parent else 1, parent or '', slug, sk, fr, en_txt, count[slug], notes.get(slug, '')])
 
 
@@ -449,8 +462,7 @@ def write_fixlist(products, iss):
         out.append((s, n, 'Ugyanez az SKU több terméknél is szerepel – az import egymásra írná őket.', 'Adj egyedi SKU-t (ideiglenesen: %s).' % new))
     for s, t in iss['type']:
         out.append((s, by_sku.get(s, {}).get('name', ''), 'A Type oszlopban „%s” áll.' % t, 'Legyen: simple.'))
-    for s, n, c in iss['no_category']:
-        out.append((s, n, 'Nincs kategóriája.', 'Kategória: DISPOSABLE E-CIGARETTES (Jednorazové e-cigarety) – ha jó így, írd be.'))
+    # az eldobhatók (ELFBAR 600) az ügyfél kérésére kimaradnak: nincs vele teendő
     for s, bad in iss['cross_missing']:
         out.append((s, by_sku.get(s, {}).get('name', ''), 'A Cross-sells oszlopban nem létező SKU: ' + ', '.join(bad),
                     'Valószínűleg Excel-lehúzás számolta tovább. Javítsd a valódi SKU-ra, vagy töröld.'))
@@ -480,7 +492,7 @@ def write_fixlist(products, iss):
 def write_report(products, iss, rows):
     L = []
     a = L.append
-    a('# Termékimport – ellenőrzés (az ügyfél fájlja: WooCommerce-CSV.xlsx, 2026-10-19)')
+    a('# Termékimport – ellenőrzés (az ügyfél javított fájlja, 2026-10-20)')
     a('')
     a('Generálta: `prototype/tools/client_import.py`. A tisztított importfájl: `prototype/csv/firstvape-woocommerce-import.csv`.')
     a('')
@@ -503,7 +515,7 @@ def write_report(products, iss, rows):
         a('**2. Hibás típus:** ' + ', '.join('`%s` (Type = „%s”)' % x for x in iss['type']) + ' – javítva: simple.')
         a('')
     if iss['no_category']:
-        a('**3. Kategória nélküli termékek** – az Eldobható e-cigaretták közé tettük (a fájlban nincs ilyen kategória, javasolt angol név: DISPOSABLE E-CIGARETTES):')
+        a('**3. Eldobható e-cigaretták – kimaradnak, nincs vele teendő** (az ügyfél kérése, 2026-10-20: az EU 2027-től tiltja; az Eldobható főkategória sincs):')
         a('')
         for s, n, c in iss['no_category']:
             a('- `%s` – %s' % (s, n))
@@ -527,8 +539,9 @@ def write_report(products, iss, rows):
     a('**7. Készlet:** %s darab-értékek (%s) – mintaszámnak tűnnek; élesítés előtt a valódi készlet kell.' % (
         len(products), ', '.join('%d db: %d termék' % (k, v) for k, v in iss['stock'][0])))
     a('')
-    a('**8. Leírások:** a „Description” oszlop a nagykereskedő angol szövege (%d terméknél szerepel benne „ADNS catalog”, '
-      '„French standards” vagy hasonló). Ez a webshopba így nem kerülhet: szlovák és francia leírás kell (megírhatjuk mi is).' % len(iss['desc_wholesaler']))
+    a('**8. Leírások:** a „Description” oszlop a nagykereskedő angol szövege%s. Ez a webshopba így nem kerül: a szlovák és francia leírást mi írtuk meg (az ügyfél kérése, 2026-10-20) – `csv/leirasok-sk-fr.json`%s.' % (
+          ' (%d terméknél szerepel benne „ADNS catalog”, „French standards” vagy hasonló)' % len(iss['desc_wholesaler']) if iss['desc_wholesaler'] else '',
+          '; fordítás nélkül maradt: ' + ', '.join('`%s`' % s for s, _ in iss['desc_missing']) if iss['desc_missing'] else ''))
     a('')
     if iss['french_name']:
         a('**9. Francia terméknév:** ' + ', '.join('`%s` (%s)' % x for x in iss['french_name']) + ' – szlovák / semleges név kell (pl. „Prázdna fľaša Chubby 120 ml”).')
@@ -536,8 +549,8 @@ def write_report(products, iss, rows):
     a('## Amit mi rendeztünk az importnál (az ügyfélnek nincs teendője)')
     a('')
     a('- Kategória: a fájl angol kategóriái a szlovák kategóriákhoz kerültek (`kategoria-osszerendeles.csv`), dupla kategória nem jön létre.')
-    a('- A „PREFILLED PODS > ELFBAR ELFA / VAPORESSO DOJO / ELFBAR JOINONE / DRIFTER BAR” alkategóriák helyett egy Előretöltött podok '
-      'kategória, a rendszer a „Systém” attribútum (szűrhető) – ahogy a javításkérésben kérted. Ha mégis alkategóriát szeretnél, egy lépés átállítani.')
+    a('- A „PREFILLED PODS > ELFBAR ELFA / VAPORESSO DOJO / ELFBAR JOINONE / DRIFTER BAR” sorok a Predplnené pody rendszer szerinti '
+      'alkategóriáiba kerültek, a rendszer a „Systém” attribútum is (szűrhető) – ahogy kérted.')
     if iss['efest']:
         a('- Az EFEST akku és töltők az „Akkumulátorok / töltők” kategóriába kerültek (a fájlban „OTHER ACCESSORIES”): ' +
           ', '.join('`%s`' % s for s, _ in iss['efest']) + '.')

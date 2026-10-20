@@ -13,7 +13,7 @@ const ok = (cond, msg) => { if (cond) { oks++; console.log('✔ ' + msg); } else
 
 const PAGES = [
   ['/', 200], ['/kategoria/zariadenia-kity/', 200], ['/kategoria/zariadenia-kity/predplnene-pod-systemy/', 200], ['/kategoria/e-liquidy/', 200],
-  ['/kategoria/jednorazove-e-cigarety/', 200], ['/kategoria/prislusenstvo/', 200], ['/kategoria/predplnene-pody/?kompat=ELFA', 200],
+  ['/kategoria/predplnene-pody/elfbar-elfa/', 200], ['/kategoria/prislusenstvo/', 200], ['/kategoria/predplnene-pody/?kompat=ELFA', 200],
   ['/znacka/elfbar/', 200], ['/znacky/', 200], ['/produkty/?puff=20000%2B', 200], ['/akcie/', 200], ['/oblubene/', 200],
   ['/produkt/elfbar-elfa-turbo-black/', 200], ['/produkt/elfbar-elfa-pro-pod-pi-20/', 200], ['/?s=elfbar+40000&post_type=product', 200],
   ['/doprava-a-platba/', 200], ['/obchodne-podmienky/', 200], ['/kontakt/', 200], ['/blog/', 200], ['/elfbar-nova-generacia/', 200],
@@ -50,10 +50,20 @@ for (const w of [1440, 390]) {
   await p.goto(BASE + '/produkt/elfbar-elfa-turbo-black/?lang=fr', { waitUntil: 'networkidle' });
   const fr = await p.evaluate(() => ({ lang: document.documentElement.lang, price: document.querySelector('.pi-price').textContent, vat: document.querySelector('.pi-vat').textContent, btn: document.querySelector('.buy-btn').textContent }));
   ok(fr.lang === 'fr' && /8,78/.test(fr.price) && /TVA 20/.test(fr.vat) && /Ajouter au panier/.test(fr.btn), `francia piac: lang=${fr.lang}, ár ${fr.price.trim()} (9,00 € / 1,23 × 1,20), „${fr.vat.trim()}”`);
+  const frDesc = await p.evaluate(() => document.querySelector('[data-pane="leiras"]')?.textContent || '');
+  ok(/batterie ELFA Turbo/i.test(frDesc), 'francia termékleírás a Leírás fülön: ' + frDesc.trim().slice(0, 60));
   await p.goto(BASE + '/obchodne-podmienky/', { waitUntil: 'networkidle' });
   ok(/\/cgv\/?/.test(p.url()), 'a szlovák ÁSZF a francia piacon a CGV-re irányít: ' + p.url());
   await p.goto(BASE + '/?lang=sk', { waitUntil: 'networkidle' });
   ok((await p.evaluate(() => document.documentElement.lang)) === 'sk', 'vissza szlovákra');
+  await p.goto(BASE + '/produkt/elfbar-elfa-turbo-black/', { waitUntil: 'networkidle' });
+  const skDesc = await p.evaluate(() => document.querySelector('[data-pane="leiras"]')?.textContent || '');
+  ok(/Batéria ELFA Turbo/.test(skDesc), 'szlovák termékleírás a Leírás fülön: ' + skDesc.trim().slice(0, 60));
+  await p.goto(BASE + '/kategoria/predplnene-pody/', { waitUntil: 'networkidle' });
+  const subs = await p.evaluate(() => [...document.querySelectorAll('[data-facet="kat"] li label span')].map((x) => x.textContent.trim()));
+  ok(subs.length === 4 && subs.some((t) => /ELFBAR ELFA/.test(t)), 'Predplnené pody: 4 alkategória a szűrőben: ' + subs.join(', '));
+  const menu = await p.evaluate(() => document.querySelector('header')?.textContent || '');
+  ok(!/Jednorazov/i.test(menu), 'a menüben nincs Jednorazové e-cigarety');
   await ctx.close();
 }
 

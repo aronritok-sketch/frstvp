@@ -37,7 +37,7 @@ add_action('woocommerce_shipping_init', function () {
                 'eta' => ['title' => 'Szállítási idő (szöveg)', 'type' => 'text', 'default' => ''],
                 'pickup' => ['title' => 'Átvételi pont kell', 'type' => 'checkbox', 'label' => 'Výdajné miesto / Z-BOX / point relais választó a pénztárban', 'default' => 'no'],
                 'tiers' => ['title' => 'Díjsávok (súly g : díj €)', 'type' => 'text', 'default' => '5000:2.9,10000:3.9,15000:4.9', 'description' => 'Pl. 5000:2.9,10000:3.9 – a csomag súlya grammban, a díj bruttó euróban. A legnagyobb sáv fölött a mód nem választható.'],
-                'free_over' => ['title' => 'Ingyenes ettől (€, bruttó részösszeg)', 'type' => 'text', 'default' => '50'],
+                'free_over' => ['title' => 'Ingyenes ettől (€, bruttó részösszeg)', 'type' => 'text', 'default' => '39.99'],
             ];
             $this->init_instance_settings();
             $this->title = (string) $this->get_option('title');

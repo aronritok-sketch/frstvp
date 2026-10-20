@@ -194,7 +194,7 @@
     FV.$$('[data-wish-count]').forEach(function (e) { var n = FV.wish.ids().length; e.textContent = n; e.hidden = !n; });
     if (!el) return;
     if (!tt.lines.length) {
-      el.innerHTML = '<div class="empty">' + I('bag', 'empty-ico') + '<p>' + t('cartEmpty') + '</p><a class="btn" href="#/kategoria/eldobhato" data-act="drawer-close">' + t('startShopping') + '</a></div>';
+      el.innerHTML = '<div class="empty">' + I('bag', 'empty-ico') + '<p>' + t('cartEmpty') + '</p><a class="btn" href="#/kategoria/eloretoltott-podok" data-act="drawer-close">' + t('startShopping') + '</a></div>';
       return;
     }
     var left = FV.ship().freeOver - tt.sub;

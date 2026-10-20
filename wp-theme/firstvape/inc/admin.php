@@ -110,7 +110,7 @@ function firstvape_admin_page(): void
         }
         echo '</tbody></table>';
     } else {
-        echo '<p>A jóváhagyott előnézet tartalma (kategóriák, márkák, 395 termék, oldalak, cikkek) és a webshop beállításai. A második futás nem ír át semmit; amit az adminban szerkesztettek, azt kihagyja (kivéve a „Felülírás” pipával).</p>' .
+        echo '<p>A jóváhagyott előnézet tartalma (kategóriák, márkák, termékek, oldalak, cikkek) és a webshop beállításai. A második futás nem ír át semmit; amit az adminban szerkesztettek, azt kihagyja (kivéve a „Felülírás” pipával).</p>' .
             '<p>Médiacsomag: <code>' . esc_html(firstvape_media_dir()) . '/p/</code> – ' . firstvape_media_count() . ' kép. (Kicsomagolva ide: <code>dist/firstvape-media.zip</code>, vagy <code>wp firstvape setup --media=…</code>.)</p>' .
             '<p><label><input type="checkbox" id="fv-force"> Felülírás (a szerkesztett tartalmat, az árat és a készletet is)</label></p>' .
             '<p><button class="button button-primary" id="fv-run">Telepítés indítása</button></p><pre id="fv-log" style="background:#fff;border:1px solid #ccd;padding:12px;max-height:420px;overflow:auto"></pre>';

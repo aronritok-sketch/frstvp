@@ -558,7 +558,8 @@ function firstvape_long_desc(array $p): string
 {
     $own = firstvape_lang() === 'fr' ? (string) get_post_meta($p['id'], '_fv_desc_fr', true) : (string) get_post_field('post_content', $p['id']);
     if (trim(wp_strip_all_tags($own)) !== '') {
-        return '<div class="prose">' . wp_kses_post(wpautop($own)) . '</div>';
+        // liquidnél a biztonsági megjegyzés (TPD, tárolás) a saját leírás alatt is
+        return '<div class="prose">' . wp_kses_post(wpautop($own)) . ($p['art'] === 'liquid' ? '<p>' . firstvape_t('liquidText') . '</p>' : '') . '</div>';
     }
     $a = $p['attrs'];
     $b = firstvape_brand($p['brand']);
@@ -608,5 +609,5 @@ function firstvape_render_wishlist(): string
     $w = array_values(array_filter(array_map('firstvape_product', firstvape_wish_ids())));
     return '<div class="wrap">' . firstvape_crumbs([['label' => firstvape_t('wishlist')]]) .
         '<div class="shop-title"><h1>' . firstvape_t('wishlist') . ' <span class="muted num">(' . count($w) . ')</span></h1></div>' .
-        ($w ? firstvape_grid($w) : '<div class="empty"><p>' . firstvape_t('wishEmpty') . '</p><a class="btn" href="' . esc_url(firstvape_cat_url('eldobhato')) . '">' . firstvape_t('browse') . '</a></div>') . '</div>';
+        ($w ? firstvape_grid($w) : '<div class="empty"><p>' . firstvape_t('wishEmpty') . '</p><a class="btn" href="' . esc_url(firstvape_cat_url('eloretoltott-podok')) . '">' . firstvape_t('browse') . '</a></div>') . '</div>';
 }

@@ -42,7 +42,7 @@ wp-theme/firstvape/
 
 | Mi | WooCommerce | Megjegyzés |
 |---|---|---|
-| kategória | `product_cat` | a fa a `catalog.json`-ból; stabil kulcs: `fv_key` term meta (pl. `eldobhato`); a slug szlovák (`jednorazove-e-cigarety`); FR név / rövid név / leírás: `fv_name_fr`, `fv_short_fr`, `fv_desc_fr`; az ügyfél angol neve: `fv_en_name` |
+| kategória | `product_cat` | a fa a `catalog.json`-ból; stabil kulcs: `fv_key` term meta (pl. `eloretoltott-podok`); a slug szlovák (`predplnene-pody`); FR név / rövid név / leírás: `fv_name_fr`, `fv_short_fr`, `fv_desc_fr`; az ügyfél angol neve: `fv_en_name` |
 | márka | `product_brand` (WooCommerce 9.6+) | `fv_color`, `fv_style` (betűs logó), `fv_desc_fr` |
 | attribútum | `pa_prichut`, `pa_nikotin`, `pa_objem`, `pa_pocet-potiahnuti`, `pa_system`, `pa_farba`, `pa_odpor` | globális, a szűrők ezekből; a slug a szlovák felirat (az import CSV ugyanígy nevezi) |
 | termék | SIMPLE | `_fv_group` testvérek, `_fv_art` típus (ha nincs: a fő kategóriából), `_fv_color` ízszín, `_fv_pop` népszerűség, `_fv_short_fr`, `_fv_desc_fr`, `_fv_swatch`, `_fv_discontinued`, `_fv_weight_estimated`; cross-sell = az ügyfél ajánlásai |
@@ -50,7 +50,7 @@ wp-theme/firstvape/
 | rendelés | | `_fv_lang`, `_fv_pickup_point`, `_billing_fv_id`, `_billing_fv_vat`, `_fv_age_confirmed` |
 
 A termékindex (`firstvape_index` opció, autoload nélkül) minden termék, kategória és márka mentésekor újraépül;
-kézzel: `wp firstvape reindex`. A listák, a szűrők, a kereső és a mega menü ebből dolgoznak (395 terméknél gyors).
+kézzel: `wp firstvape reindex`. A listák, a szűrők, a kereső és a mega menü ebből dolgoznak (400 terméknél gyors).
 
 ## Nyelv és piac
 

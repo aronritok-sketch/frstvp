@@ -58,7 +58,7 @@
       relPods: 'Kompatibilné pody a žhaviace hlavy', relDevice: 'Kompatibilné zariadenie', relInstead: 'Namiesto neho odporúčame', relAlt: 'Alternatívy',
       addToCartAria: 'Do košíka: {x}', toCart: 'Do košíka', notifyShort: 'Upozorniť ma', substitute: 'Náhrady',
       wishAria: 'Do obľúbených: {x}',
-      heroEyebrow: 'Jednorazové · Pody · Liquidy · Zariadenia', heroH1: 'Ponor sa do <span class="hl">oblaku príchutí!</span>',
+      heroEyebrow: 'Pody · Liquidy · Zariadenia · Príslušenstvo', heroH1: 'Ponor sa do <span class="hl">oblaku príchutí!</span>',
       heroCta1: 'Prezrieť ponuku', heroCta2: 'Všetky značky',
       pfLabel: 'Vyhľadávač podľa potiahnutí', pfQ: 'Koľko potiahnutí chceš z jedného zariadenia?', pfGo: 'Zobraziť produkty ({n})',
       weeklyDeals: 'Akcie', allDeals: 'Všetky akcie', dealsEyebrow: 'Akciová cena do vypredania zásob',
@@ -76,7 +76,7 @@
         ['drop', 'Voľba bez nikotínu', 'Mnohé príchute sú dostupné aj vo variante 0 mg, bez nikotínu.'],
         ['star', 'Desiatky príchutí', 'Ovocné, mentolové, dezertné aj klasické príchute ku každému zariadeniu.'],
         ['box', 'Kompaktné zariadenia', 'Zmestia sa do vrecka aj kabelky, vezmeš ich kamkoľvek.'],
-        ['bolt', 'Jednoduché použitie', 'Predplnené pody a jednorazové e-cigarety netreba plniť: rozbalíš a môžeš začať.']],
+        ['bolt', 'Jednoduché použitie', 'Predplnené pody netreba plniť: vložíš pod a môžeš začať.']],
       bestTitle: 'First Vape je najlepší vape!', bestText: 'Prémiová kvalita, bohaté príchute a vybrané bezdymové produkty. To od nás dostane každý zákazník.',
       bestItems: ['Prémiové produkty', 'Široký a pestrý výber príchutí', 'Kompaktné zariadenia', '100 % záruka originality', 'Doručenie Packeta za 1–2 pracovné dni', 'Bezpečná platba kartou'],
       blog: 'Blog', blogTitle: 'Všetko o vape, pre teba!', blogIntro: 'Tipy, novinky a predstavenie produktov.', moreArticles: 'Ďalšie články', readMore: 'Čítať ďalej',
@@ -195,7 +195,7 @@
       relPods: 'Pods et résistances compatibles', relDevice: 'Appareil compatible', relInstead: 'Nous vous recommandons plutôt', relAlt: 'Alternatives',
       addToCartAria: 'Ajouter au panier : {x}', toCart: 'Ajouter', notifyShort: 'M’alerter', substitute: 'Alternatives',
       wishAria: 'Ajouter aux favoris : {x}',
-      heroEyebrow: 'Jetables · Pods · E-liquides · Kits', heroH1: 'Plongez dans un <span class="hl">nuage de saveurs !</span>',
+      heroEyebrow: 'Pods · E-liquides · Kits · Accessoires', heroH1: 'Plongez dans un <span class="hl">nuage de saveurs !</span>',
       heroCta1: 'Voir l’offre', heroCta2: 'Toutes les marques',
       pfLabel: 'Trouver par bouffées', pfQ: 'Combien de bouffées souhaitez-vous par appareil ?', pfGo: 'Voir les produits ({n})',
       weeklyDeals: 'Promotions', allDeals: 'Toutes les promos', dealsEyebrow: 'Prix promo dans la limite des stocks disponibles',
@@ -213,7 +213,7 @@
         ['drop', 'Option sans nicotine', 'De nombreuses saveurs existent aussi en 0 mg, sans nicotine.'],
         ['star', 'Des dizaines de saveurs', 'Fruitées, mentholées, gourmandes ou classiques, pour chaque appareil.'],
         ['box', 'Appareils compacts', 'Ils tiennent dans une poche ou un sac : emportez-les partout.'],
-        ['bolt', 'Utilisation simple', 'Pods préremplis et jetables : rien à remplir, il suffit de les déballer.']],
+        ['bolt', 'Utilisation simple', 'Pods préremplis : rien à remplir, il suffit d’insérer le pod.']],
       bestTitle: 'First Vape, le meilleur de la vape !', bestText: 'Qualité premium, saveurs riches et produits sans fumée sélectionnés : voilà ce que nous offrons à chaque client.',
       bestItems: ['Produits premium', 'Large choix de saveurs', 'Appareils compacts', 'Authenticité garantie à 100 %', 'Expédition rapide depuis la Slovaquie', 'Paiement par carte sécurisé'],
       blog: 'Blog', blogTitle: 'Tout sur la vape, pour vous !', blogIntro: 'Conseils, nouveautés et présentations de produits.', moreArticles: 'Plus d’articles', readMore: 'Lire la suite',
@@ -312,20 +312,20 @@
       },
       terms: function () {
         return ph('sk') + '<p>Tieto obchodné podmienky upravujú nákup v internetovom obchode First Vape, ktorý prevádzkuje spoločnosť John&amp;Jen s.r.o.</p>' +
-          '<h2>1. Prevádzkovateľ</h2><p>John&amp;Jen s.r.o., sídlo: [adresa], IČO: [·], DIČ: [·], IČ DPH: [·], zapísaná v Obchodnom registri Okresného súdu [·], oddiel Sro, vložka č. [·]. Kontakt: info@firstvape.sk.</p>' +
+          '<h2>1. Prevádzkovateľ</h2><p>John&amp;Jen s.r.o., sídlo: Banícka 703/16, 990 01 Veľký Krtíš, IČO: 50707191, DIČ: 2120427342, IČ DPH: SK2120427342, zapísaná v Obchodnom registri Okresného súdu [·], oddiel Sro, vložka č. 31298/S. Kontakt: info@firstvape.sk.</p>' +
           '<h2>2. Objednávka a uzavretie zmluvy</h2><p>[doplní klient]</p><h2>3. Ceny a platobné podmienky</h2><p>[doplní klient]</p><h2>4. Dodacie podmienky</h2><p>[doplní klient]</p>' +
           '<h2>5. Odstúpenie od zmluvy</h2><p>Pozri stránku <a href="#/oldal/withdrawal">Odstúpenie od zmluvy</a>.</p><h2>6. Reklamácie</h2><p>[doplní klient]</p>' +
           '<h2>7. Predaj len plnoletým osobám</h2><p>V internetovom obchode môžu nakupovať výlučne osoby staršie ako 18 rokov.</p>' +
           '<h2>8. Orgán dozoru a alternatívne riešenie sporov</h2><p>Slovenská obchodná inšpekcia, [inšpektorát a adresa]. [doplní klient]</p>';
       },
       privacy: function () {
-        return ph('sk') + '<p>Informácie o tom, ako spracúvame osobné údaje zákazníkov (GDPR).</p><h2>Prevádzkovateľ</h2><p>John&amp;Jen s.r.o., [adresa], IČO: [·]</p>' +
+        return ph('sk') + '<p>Informácie o tom, ako spracúvame osobné údaje zákazníkov (GDPR).</p><h2>Prevádzkovateľ</h2><p>John&amp;Jen s.r.o., Banícka 703/16, 990 01 Veľký Krtíš, IČO: 50707191</p>' +
           '<h2>Aké údaje spracúvame?</h2><ul><li>Meno, e-mail, telefón, fakturačná a dodacia adresa</li><li>Údaje o objednávkach</li><li>Prihlásenie na odber noviniek</li></ul>' +
           '<h2>Sprostredkovatelia</h2><ul><li>Packeta – doručenie zásielok</li><li>Teya – online platby</li><li>SuperFaktúra – fakturácia</li></ul><h2>Tvoje práva</h2><p>[doplní klient]</p>';
       },
       withdrawal: function () {
         return ph('sk') + '<p>Od zmluvy môžeš bez udania dôvodu odstúpiť do 14 dní od prevzatia tovaru.</p>' +
-          '<h2>Výnimky</h2><p>Z hygienických dôvodov nie je možné vrátiť otvorené e-liquidy, predplnené pody a jednorazové zariadenia.</p>' +
+          '<h2>Výnimky</h2><p>Z hygienických dôvodov nie je možné vrátiť otvorené e-liquidy a predplnené pody.</p>' +
           '<h2>Postup</h2><ol><li>Oznám nám odstúpenie cez kontaktný formulár alebo e-mailom.</li><li>Pošli tovar späť v neotvorenom balení.</li><li>Kúpnu cenu ti vrátime do 14 dní od doručenia oznámenia o odstúpení.</li></ol>' +
           '<h2>Formulár na odstúpenie od zmluvy</h2><p>[vzorový formulár doplní klient]</p>';
       },
@@ -343,25 +343,25 @@
       },
       terms: function () {
         return ph('fr') + '<p>Les présentes conditions générales de vente (CGV) régissent les achats effectués sur la boutique en ligne First Vape, exploitée par la société John&amp;Jen s.r.o.</p>' +
-          '<h2>1. Identification du vendeur</h2><p>John&amp;Jen s.r.o., société de droit slovaque, siège : [adresse], n° d’identification (IČO) : [·], n° de TVA intracommunautaire : [·]. Contact : info@firstvape.sk.</p>' +
+          '<h2>1. Identification du vendeur</h2><p>John&amp;Jen s.r.o., société de droit slovaque, siège : Banícka 703/16, 990 01 Veľký Krtíš, Slovaquie, n° d’identification (IČO) : 50707191, n° de TVA intracommunautaire : SK2120427342. Contact : info@firstvape.sk.</p>' +
           '<h2>2. Commandes</h2><p>[à compléter par le client]</p><h2>3. Prix et paiement</h2><p>Les prix sont indiqués en euros, toutes taxes comprises (TTC). [à compléter]</p><h2>4. Livraison</h2><p>[à compléter]</p>' +
           '<h2>5. Droit de rétractation</h2><p>Voir la page <a href="#/oldal/withdrawal">Droit de rétractation</a>.</p><h2>6. Garanties légales</h2><p>Garantie légale de conformité et garantie des vices cachés. [à compléter]</p>' +
           '<h2>7. Vente réservée aux personnes majeures</h2><p>La vente des produits est strictement réservée aux personnes âgées de 18 ans ou plus.</p>' +
           '<h2>8. Médiation de la consommation</h2><p>[médiateur à désigner par le client]</p><h2>9. Droit applicable</h2><p>[à compléter]</p>';
       },
       privacy: function () {
-        return ph('fr') + '<p>Informations sur le traitement des données personnelles de nos clients (RGPD).</p><h2>Responsable du traitement</h2><p>John&amp;Jen s.r.o., [adresse]</p>' +
+        return ph('fr') + '<p>Informations sur le traitement des données personnelles de nos clients (RGPD).</p><h2>Responsable du traitement</h2><p>John&amp;Jen s.r.o., Banícka 703/16, 990 01 Veľký Krtíš, Slovaquie</p>' +
           '<h2>Données traitées</h2><ul><li>Nom, e-mail, téléphone, adresses de facturation et de livraison</li><li>Données de commande</li><li>Inscription à la newsletter</li></ul>' +
           '<h2>Sous-traitants</h2><ul><li>Transporteur – livraison des colis [à confirmer]</li><li>Teya – paiement en ligne</li><li>SuperFaktúra – facturation</li></ul><h2>Vos droits</h2><p>[à compléter par le client]</p>';
       },
       withdrawal: function () {
         return ph('fr') + '<p>Vous disposez d’un délai de 14 jours à compter de la réception de votre commande pour exercer votre droit de rétractation, sans avoir à justifier de motif.</p>' +
-          '<h2>Exceptions</h2><p>Pour des raisons d’hygiène, les e-liquides, pods préremplis et appareils jetables ouverts ne peuvent être retournés.</p>' +
+          '<h2>Exceptions</h2><p>Pour des raisons d’hygiène, les e-liquides et pods préremplis ouverts ne peuvent être retournés.</p>' +
           '<h2>Procédure</h2><ol><li>Informez-nous de votre décision via le formulaire de contact ou par e-mail.</li><li>Retournez le produit dans son emballage d’origine non ouvert.</li><li>Nous vous remboursons dans un délai de 14 jours à compter de la réception de votre demande.</li></ol>' +
           '<h2>Formulaire de rétractation</h2><p>[modèle à fournir par le client]</p>';
       },
       legal: function () {
-        return ph('fr') + '<h2>Éditeur du site</h2><p>John&amp;Jen s.r.o., société à responsabilité limitée de droit slovaque, capital social : [·], siège : [adresse], n° d’identification (IČO) : [·], n° de TVA intracommunautaire : [·]. E-mail : info@firstvape.sk.</p>' +
+        return ph('fr') + '<h2>Éditeur du site</h2><p>John&amp;Jen s.r.o., société à responsabilité limitée de droit slovaque, capital social : [·], siège : Banícka 703/16, 990 01 Veľký Krtíš, Slovaquie, n° d’identification (IČO) : 50707191, n° de TVA intracommunautaire : SK2120427342. E-mail : info@firstvape.sk.</p>' +
           '<h2>Directeur de la publication</h2><p>[nom et fonction]</p><h2>Hébergeur</h2><p>[nom, adresse et téléphone de l’hébergeur]</p>';
       },
       cookies: function () {

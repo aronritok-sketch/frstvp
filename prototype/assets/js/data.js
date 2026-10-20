@@ -39,7 +39,12 @@ FV.categories = [
     name: { sk: 'Predplnené pody', fr: 'Pods préremplis' },
     short: { sk: 'Predplnené pody', fr: 'Pods préremplis' },
     desc: { sk: 'Samostatne predávané, továrensky naplnené náhradné pody s príchuťou – napr. ELFA Pro Pod, JOIN ONE Pod, Vaporesso a Drifter pody. Kompletné zariadenia nájdeš v kategórii Zariadenia / kity.', fr: 'Pods de rechange préremplis vendus séparément – ELFA Pro Pod, JOIN ONE Pod, pods Vaporesso et Drifter. Les appareils complets sont dans Appareils / kits.' },
-    children: [] },
+    children: [
+      { slug: 'podok-elfbar-elfa', en: 'ELFBAR ELFA', name: { sk: 'ELFBAR ELFA', fr: 'ELFBAR ELFA' } },
+      { slug: 'podok-elfbar-joinone', en: 'ELFBAR JOINONE', name: { sk: 'ELFBAR JOIN ONE', fr: 'ELFBAR JOIN ONE' } },
+      { slug: 'podok-vaporesso-dojo', en: 'VAPORESSO DOJO', name: { sk: 'VAPORESSO DOJO', fr: 'VAPORESSO DOJO' } },
+      { slug: 'podok-drifter-bar', en: 'DRIFTER BAR', name: { sk: 'DRIFTER BAR', fr: 'DRIFTER BAR' } }
+    ] },
   { slug: 'e-liquidek', art: 'liquid', color: '#7B3FA0', en: 'E-LIQUIDS',
     name: { sk: 'E-liquidy', fr: 'E-liquides' },
     short: { sk: 'E-liquidy', fr: 'E-liquides' },
@@ -51,11 +56,6 @@ FV.categories = [
       { slug: 'shortfill', en: 'SHORTFILL', name: { sk: 'Shortfill', fr: 'Shortfills' } },
       { slug: 'longfill', en: 'LONGFILL', name: { sk: 'Longfill', fr: 'Longfills' } }
     ] },
-  { slug: 'eldobhato', art: 'disposable', color: '#FF8A1F', en: 'DISPOSABLE E-CIGARETTES',
-    name: { sk: 'Jednorazové e-cigarety', fr: 'Cigarettes électroniques jetables' },
-    short: { sk: 'Jednorazové', fr: 'Jetables' },
-    desc: { sk: 'Zariadenia, ktoré po spotrebovaní vyhodíš celé (napr. ELFBAR 600). Niektoré väčšie modely majú batériu nabíjateľnú cez USB-C.', fr: 'Appareils que l’on jette entièrement après usage (ex. ELFBAR 600). Certains grands modèles ont une batterie rechargeable en USB-C.' },
-    children: [] },
   { slug: 'kiegeszitok', art: 'accessory', color: '#19A58A', en: 'ACCESSORIES',
     name: { sk: 'Príslušenstvo', fr: 'Accessoires' },
     short: { sk: 'Príslušenstvo', fr: 'Accessoires' },
@@ -131,7 +131,6 @@ FV.menu = [
   { cat: 'keszulekek', puffLinks: true },
   { cat: 'eloretoltott-podok', puffLinks: true },
   { cat: 'e-liquidek' },
-  { cat: 'eldobhato', puffLinks: true },
   { cat: 'kiegeszitok' },
   { lk: 'brands', brands: true },
   { lk: 'sale', href: '#/akciok', sale: true }
@@ -155,7 +154,7 @@ FV.markets = {
     pickupPoints: ['Z-BOX Komárno – Tesco, Bratislavská cesta (vzor)', 'Výdajné miesto Packeta – Komárno, Palatínova 12 (vzor)', 'Z-BOX Bratislava – Obchodná 12 (vzor)', 'Výdajné miesto Packeta – Košice, Hlavná 55 (vzor)', 'Z-BOX Nitra – Štefánikova 3 (vzor)'],
     carrier: 'Packeta',
     shipping: {
-      freeOver: 50,
+      freeOver: 39.99, // az ügyfél kérdőíve, 2026-10-20
       sample: true,
       methods: [
         { id: 'packeta-point', name: 'Packeta – výdajné miesto alebo Z-BOX', short: 'Packeta výdajné miesto', eta: '1–2 pracovné dni', pickup: true,
@@ -175,7 +174,7 @@ FV.markets = {
     pickupPoints: ['Point relais – Paris 11e, 45 rue de la Roquette (exemple)', 'Consigne – Lyon 3e, 12 cours Gambetta (exemple)', 'Point relais – Lille, 8 rue Nationale (exemple)'],
     carrier: 'Packeta', // Packeta Franciaországban partnerhálózattal; a pontos szolgáltatás és díj egyeztetendő
     shipping: {
-      freeOver: 50, // MINTA
+      freeOver: 39.99, // a kérdőív szerint (az ügyfél nem bontotta piacra – Franciaországra megerősítendő)
       sample: true,
       methods: [
         { id: 'fr-point', name: 'Packeta – point relais ou consigne', short: 'Point relais', eta: 'délai à confirmer', pickup: true,
@@ -197,26 +196,20 @@ FV.posts = [
     tag: { sk: 'Produkty', fr: 'Produits' },
     title: { sk: 'Elfbar – nová generácia elektronických cigariet', fr: 'Elfbar : la nouvelle génération de cigarettes électroniques' },
     excerpt: { sk: 'Prečo je Elfbar jednou z najžiadanejších značiek a ktorý model je pre koho?', fr: 'Pourquoi Elfbar est-elle l’une des marques les plus demandées, et quel modèle choisir ?' },
-    body: { sk: ['Jednorazové aj znovu nabíjateľné zariadenia Elfbar sa stali populárnymi za krátky čas. Tajomstvo je v jednoduchosti: rozbalíš a môžeš začať.', 'Od jednorazového ELFBAR 600 až po pod kit JOIN ONE s predplnenými podmi na 40 000 potiahnutí (odhad výrobcu) – vyberie si každý. Ak hľadáš zariadenie na dlhšie, skús pod systém ELFA: jedna batéria a vymeniteľné pody v desiatkach príchutí.'],
-      fr: ['Les appareils jetables et rechargeables Elfbar sont devenus populaires en peu de temps. Le secret : la simplicité. Vous déballez, et c’est prêt.', 'Du jetable ELFBAR 600 au kit pod JOIN ONE avec pods préremplis de 40 000 bouffées (estimation du fabricant), il y en a pour tous. Pour un usage durable, essayez le système pod ELFA : une batterie, des pods interchangeables dans des dizaines de saveurs.'] } },
+    body: { sk: ['Nabíjateľné pod systémy Elfbar sa stali populárnymi za krátky čas. Tajomstvo je v jednoduchosti: vložíš predplnený pod a môžeš začať.', 'Pod kit JOIN ONE s predplnenými podmi na 40 000 potiahnutí (odhad výrobcu) je pre tých, ktorí chcú čo najmenej starostí. Ak hľadáš zariadenie na dlhšie, skús pod systém ELFA: jedna batéria a vymeniteľné pody v desiatkach príchutí.'],
+      fr: ['Les systèmes pod rechargeables Elfbar sont devenus populaires en peu de temps. Le secret : la simplicité. Vous insérez un pod prérempli, et c’est prêt.', 'Le kit pod JOIN ONE avec pods préremplis de 40 000 bouffées (estimation du fabricant) s’adresse à ceux qui veulent le moins de contraintes possible. Pour un usage durable, essayez le système pod ELFA : une batterie, des pods interchangeables dans des dizaines de saveurs.'] } },
   { slug: 'popularita-e-cigariet', date: '2026-08-28', color: '#3C82E6',
     tag: { sk: 'Poradňa', fr: 'Guide' },
     title: { sk: 'Popularita elektronických cigariet', fr: 'La popularité des cigarettes électroniques' },
     excerpt: { sk: 'Čoraz viac ľudí si vyberá alternatívu bez dymu. Pozreli sme sa, čo je za tým.', fr: 'De plus en plus de personnes choisissent une alternative sans fumée. Voici pourquoi.' },
-    body: { sk: ['E-cigareta namiesto dymu vytvára paru, ktorá zvyčajne zanecháva výrazne menej zápachu ako cigaretový dym. Ponuka sa neustále rozširuje: jednorazové, pod systémy aj box mody.', 'Začiatočníkom odporúčame jednorazové zariadenia alebo jednoduchý pod kit, pokročilým box mody a vlastné miešanie liquidov.'],
-      fr: ['La cigarette électronique produit de la vapeur au lieu de la fumée, qui laisse généralement beaucoup moins d’odeur. L’offre ne cesse de s’élargir : jetables, systèmes pod et box mods.', 'Aux débutants, nous conseillons les jetables ou un kit pod simple ; aux vapoteurs confirmés, les box mods et les mélanges maison.'] } },
+    body: { sk: ['E-cigareta namiesto dymu vytvára paru, ktorá zvyčajne zanecháva výrazne menej zápachu ako cigaretový dym. Ponuka sa neustále rozširuje: pod systémy s predplnenými aj plniteľnými podmi, box mody aj tanky.', 'Začiatočníkom odporúčame jednoduchý pod kit s predplnenými podmi, pokročilým box mody a vlastné miešanie liquidov.'],
+      fr: ['La cigarette électronique produit de la vapeur au lieu de la fumée, qui laisse généralement beaucoup moins d’odeur. L’offre ne cesse de s’élargir : systèmes à pods préremplis ou à remplir, box mods et clearomiseurs.', 'Aux débutants, nous conseillons un kit pod simple à pods préremplis ; aux vapoteurs confirmés, les box mods et les mélanges maison.'] } },
   { slug: 'zazitok-z-e-liquidu', date: '2026-08-10', color: '#7B3FA0',
     tag: { sk: 'Liquidy', fr: 'E-liquides' },
     title: { sk: 'Zážitok z e-liquidu: nikotínová soľ, shortfill alebo príchuť?', fr: 'L’expérience e-liquide : sels de nicotine, shortfill ou arôme ?' },
     excerpt: { sk: 'Vysvetľujeme rozdiely a pre koho je ktorý typ vhodný.', fr: 'Nous expliquons les différences et à qui s’adresse chaque type.' },
     body: { sk: ['Liquidy s nikotínovou soľou uvoľňujú nikotín rýchlejšie a jemnejšie, preto sú ideálne do pod systémov. Shortfill liquidy prichádzajú vo väčšom balení bez nikotínu: silu nastavíš pridaním boostera.', 'Z príchutí si s bázou namiešaš vlastnú zmes – presne takú, akú chceš.'],
-      fr: ['Les e-liquides aux sels de nicotine délivrent la nicotine plus vite et plus en douceur : parfaits pour les systèmes pod. Les shortfills arrivent en grand format sans nicotine ; vous réglez le taux en ajoutant un booster.', 'Avec un arôme et une base, vous créez votre propre mélange, exactement à votre goût.'] } },
-  { slug: 'ako-vybrat-jednorazovu', date: '2026-07-22', color: '#FF8A1F',
-    tag: { sk: 'Návod', fr: 'Conseils' },
-    title: { sk: 'Ako vybrať jednorazovú e-cigaretu: potiahnutia, nikotín, príchuť', fr: 'Bien choisir sa cigarette électronique jetable : bouffées, nicotine, saveur' },
-    excerpt: { sk: 'Podľa počtu potiahnutí, sily nikotínu a príchute rýchlo nájdeš to pravé.', fr: 'Nombre de bouffées, taux de nicotine et saveur : trouvez vite l’appareil qu’il vous faut.' },
-    body: { sk: ['Počet potiahnutí ukazuje, na koľko vdýchnutí približne zariadenie vystačí. Na príležitostné použitie stačia modely so 600 potiahnutiami, na každodenné odporúčame zariadenia nad 10 000 potiahnutí s nabíjateľnou batériou.', 'Silu nikotínu uvádzame v mg: 0 mg je bez nikotínu, 10 mg je stredná sila, 20 mg je najvyššia povolená v EÚ.'],
-      fr: ['Le nombre de bouffées indique combien d’inhalations l’appareil permet environ. Pour un usage occasionnel, 600 bouffées suffisent ; au quotidien, préférez les appareils de plus de 10 000 bouffées avec batterie rechargeable.', 'Le taux de nicotine est indiqué en mg : 0 mg sans nicotine, 10 mg intermédiaire, 20 mg maximum autorisé dans l’UE.'] } }
+      fr: ['Les e-liquides aux sels de nicotine délivrent la nicotine plus vite et plus en douceur : parfaits pour les systèmes pod. Les shortfills arrivent en grand format sans nicotine ; vous réglez le taux en ajoutant un booster.', 'Avec un arôme et une base, vous créez votre propre mélange, exactement à votre goût.'] } }
 ];
 
 FV.pageKeys = {

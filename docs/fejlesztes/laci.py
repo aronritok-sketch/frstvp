@@ -24,21 +24,18 @@ SOURCES = [
 # Kategóriafa (az ügyfél véglegesítette, 2026-10-15)
 TREE = [
     ("keszulekek", "Zariadenia / kity", "Devices / Kits", "eloretoltott-pod-rendszerek · utantoltheto-pod-rendszerek · mod-tank-kitek"),
-    ("eloretoltott-podok", "Predplnené pody", "Prefilled Pods", "– (szűrés márka szerint)"),
+    ("eloretoltott-podok", "Predplnené pody", "Prefilled Pods", "podok-elfbar-elfa · podok-elfbar-joinone · podok-vaporesso-dojo · podok-drifter-bar"),
     ("e-liquidek", "E-liquidy", "E-liquids", "nikotin-booster · kesz-liquidek-10ml · aromak · shortfill · longfill"),
-    ("eldobhato", "Jednorazové e-cigarety", "Disposable E-cigarettes", "–"),
     ("kiegeszitok", "Príslušenstvo", "Accessories", "ures-podok · porlasztok · tankok · akkuk-toltok · egyeb-kiegeszitok"),
 ]
 
 OPEN = [
     "Az ügyfél fájljának hibái (dupla SKU, hiányzó súly, mintaszámnak tűnő készlet, nagyker-leírások, rossz cross-sell SKU-k): prototype/csv/import-ellenorzes.md.",
-    "ELFBAR NIO: Eldobható vagy Készülékek / Előretöltött pod rendszerek – az ügyfél dönt.",
-    "Packeta-szerződés: API-kulcs, díjak SK és FR, ingyenes szállítás határa, utánvét díja, FR szolgáltatások.",
+    "Packeta-szerződés (az ügyfél szerint ezen a héten): API-kulcs, díjak SK és FR; házhoz + Z-BOX kell; ingyenes szállítás 39,99 €-tól (FR-re megerősítendő); utánvét 1–2 € (pontos összeg kell).",
     "Teya: melyik WooCommerce-kapcsolatot adják (bővítmény vagy fizetési oldal), teszt- és éles kulcsok.",
-    "SuperFaktúra: fiók, API-kulcs, számlasor, nyelv (SK / FR).",
+    "SuperFaktúra: a fiók megvan (az ügyfél adja meg a hozzáférést / API-kulcsot); a számla FR-en franciául, SK-n szlovákul; számlasor: maradhat az alapértelmezett.",
     "Francia domain: firstvape.fr – megvan-e már, kinél van regisztrálva, ki fér hozzá (a DNS-hez kell).",
     "Bruttó ár piaconként: ugyanaz a bruttó vagy az ÁFA-kulccsal változó (SK 23 %, FR 20 %) – ügyfél + könyvelő.",
-    "Franciaország: eldobható e-cigaretta forgalmazási tilalma – jogász; valószínűleg rejteni kell a kategóriát.",
     "Régi vásárlók és rendelések átvétele a VirtueMartból – csak ha az ügyfél kéri (GDPR).",
 ]
 
@@ -46,8 +43,8 @@ LACI = dict(
     key="laci",
     title="First Vape – WooCommerce webshop",
     lead="Az ügyfél 2026-10-15-én jóváhagyta a webshop előnézetét. <b>A <code>firstvape</code> child téma kész</b> (2026-10-20): "
-         "az előnézet kinézete és működése WordPress + WooCommerce alatt, az ügyfél 395 termékével és képeivel, két domainnel, "
-         "telepítővel – <code>dist/firstvape-tema.zip</code>, leírás: <code>docs/wp/TELEPITES.md</code>, kód: <code>docs/wp/DEVELOPER.md</code>. "
+         "az előnézet kinézete és működése WordPress + WooCommerce alatt, az ügyfél 392 termékével és képeivel, két domainnel, "
+         "telepítővel – <code>dist/firstvape-tema.zip</code>, leírás: <code>docs/wp/TELEPITES.md</code>, kód: <code>docs/wp/DEVELOPER.md</code>. 2026-10-20: az ügyfél javított fájlja és döntései (eldobhatók nélkül, pod-alkategóriák, SK / FR leírások) – új zip, frissítés: <code>prep-update</code>. "
          "A „Kész – ellenőrizd” pontoknál csak nézd meg a dev oldalon, és pipáld ki; a „Laci” pontok a te munkád: telepítés, "
          "bővítmények (Packeta, Teya, SuperFaktúra, SMTP, Yoast), kulcsok, jogi szövegek, 301-ek, tesztrendelés, élesítés. "
          "A 11–14. fázis a CRM négy élesítési feladata. A megjegyzésbe írd, ha valami eltért.",
@@ -58,10 +55,14 @@ LACI = dict(
                  check="tudod, melyik oldal melyik sablon / blokk (DEVELOPER.md táblázata)."),
             dict(id="prep-env", who="Laci", title="Dev WordPress: WooCommerce + iu_theme 0.2.2 + firstvape child",
                  desc="<p><b>A téma kész</b> (<code>dist/firstvape-tema.zip</code>, a CRM-feladat melléklete). Dev WordPress szlovákul + francia nyelvi csomag, WooCommerce, <code>iu_theme</code> 0.2.2 (hlprv <code>themes/iu_theme</code>, <code>HPV_GITHUB_TOKEN</code> a wp-config.php-ba), a <code>firstvape</code> téma zipből, a képcsomag a <code>wp-content/uploads/firstvape-media/</code> mappába, végül Megjelenés → First Vape → Telepítés (vagy <code>wp firstvape setup --media=…</code>). Lépésenként: <code>docs/wp/TELEPITES.md</code>.</p>",
-                 check="a dev oldalon 395 termék képekkel, a <code>wp firstvape check</code> csak a várt figyelmeztetéseket adja (domain, díjak, kulcsok, jogi szövegek)."),
+                 check="a dev oldalon 392 termék képekkel, a <code>wp firstvape check</code> csak a várt figyelmeztetéseket adja (domain, díjak, kulcsok, jogi szövegek)."),
             dict(id="prep-plugins", who="Laci", title="Csak a megengedett bővítmények",
                  desc="<p>Csak: WooCommerce, Packeta, a Teya fizetési kapcsolata, SuperFaktúra, WP Mail SMTP, Yoast SEO. <b>WPML / Polylang nem kell</b>: a két domaint a téma kezeli (09-es fázis). <b>Nincs</b> page builder, űrlap-, slider- és wishlist-bővítmény (a kedvencek, űrlapok, 18+ kapu, szűrők a témában vannak).</p>",
                  check="a Bővítmények listáján csak ezek vannak."),
+            dict(id="prep-update", who="Laci", title="Frissítés a 2026-10-20-i témára (az ügyfél 2. köre)",
+                 desc="<p>Új <code>firstvape-tema.zip</code> és <code>firstvape-media.zip</code> (CRM-melléklet). Téma felülírása zipből (Megjelenés → Témák → Feltöltés → „Csere”), a médiacsomag kicsomagolása a <code>wp-content/uploads/firstvape-media/</code> mappába (felülírással), majd <code>wp firstvape setup</code> (<b>--force nélkül</b>). A telepítő: a 3 ELFBAR 600-at és a régi SKU-s termékeket kukába teszi, az Eldobható kategóriát és cikket törli, a podokat a 4 rendszer-alkategóriába teszi, a 4 cserélt képet lecseréli, az SK / FR leírásokat beírja, az ingyenes szállítást 39,99 €-ra állítja (ha még a minta 50 € volt).</p>",
+                 code=["wp theme install firstvape-tema.zip --force\nunzip -o firstvape-media.zip -d wp-content/uploads/firstvape-media/\nwp firstvape setup\nwp firstvape check"],
+                 check="392 termék, nincs Eldobható menüpont, a Predplnené pody alatt 4 alkategória, a termékoldalon szlovák / francia leírás."),
         ]),
         dict(id="theme", title="Child téma és arculat", intro="A jóváhagyott sötét arculat: az eredeti firstvape.sk modernizálva. "
              "A tokenek a <code>prototype/assets/css/style.css</code> <code>:root</code> részéből jönnek.", items=[
@@ -102,18 +103,18 @@ LACI = dict(
                  desc="<p>A testvértermékek (<code>_fv_group</code>) a termékoldalon linkként, 12 fölött választólistaként (pl. 49 ELFA Pro pod).</p>",
                  check="ELFA TURBO (4 szín), ELFA Pro pod (választólista)."),
         ]),
-        dict(id="import", title="Termékimport", intro="Az ügyfél fájlja megérkezett (2026-10-19, <code>prototype/csv/ugyfel/</code>, 395 SIMPLE termék). "
+        dict(id="import", title="Termékimport", intro="Az ügyfél fájlja megérkezett (javítva: 2026-10-20, <code>prototype/csv/ugyfel/</code>, 392 SIMPLE termék az ELFBAR 600-asok nélkül). "
              "A tisztított importfájl és a hibalista kész: <code>prototype/csv/firstvape-woocommerce-import.csv</code>, <code>prototype/csv/import-ellenorzes.md</code> "
              "(generátor: <code>prototype/tools/client_import.py</code> – ha az ügyfél javított fájlt küld, ezt futtasd újra).", items=[
             dict(id="imp-map", who="Kész – ellenőrizd", title="Angol kategória → szlovák kategória, dupla nélkül",
-                 desc="<p>A telepítő az ügyfél fájljából generált adatokkal (395 termék) tölti fel a boltot, a szlovák kategóriákba; dupla kategória nem jön létre. A javított fájl jöttével: <code>client_import.py</code> → <code>build_data.mjs</code> → <code>wp firstvape setup --step=products</code> (árak / készlet: <code>--force</code>) – TELEPITES.md.</p>",
-                 check="a 3 ELFBAR 600 az Eldobható alatt, a dupla SKU-k ideiglenes utótaggal (az ügyfél javítja)."),
+                 desc="<p>A telepítő az ügyfél fájljából generált adatokkal (392 termék) tölti fel a boltot, a szlovák kategóriákba; dupla kategória nem jön létre. A javított fájl jöttével: <code>client_import.py</code> → <code>build_data.mjs</code> → <code>wp firstvape setup --step=products</code> (árak / készlet: <code>--force</code>) – TELEPITES.md.</p>",
+                 check="az ELFBAR 600-asok kimaradtak (az ügyfél kérése: az EU 2027-től tiltja), az előretöltött podok rendszerenként alkategóriában, dupla SKU nincs."),
             dict(id="imp-columns", who="Laci", title="Import a tisztított CSV-ből, frissítés SKU alapján",
                  desc="<p>Ha az ügyfél javított fájlt küld: újragenerálás és frissítés a fenti módon (SKU alapján). A WooCommerce CSV-importere a meglévő termékekre <b>nem</b> jó (a képoszlop fájlnevet tartalmaz – tesztelve); új termékhez kép nélkül igen.</p>",
                  check="frissítés után <code>wp firstvape check</code>, a változott termékek a boltban."),
             dict(id="imp-images", who="Kész – ellenőrizd", title="Feldolgozott termékfotók, átlátszó háttérrel",
                  desc="<p>392 feldolgozott kép (átlátszó WebP, FIRSTVAPE logó) a médiacsomagból, kiemelt képként; a WordPress méretei is WebP-k (az átlátszóság marad). Képoptimalizáló bővítmény ne alakítsa JPEG-re.</p>",
-                 check="a 3 kép nélküli ELFBAR 600 és a 26 gyenge kép: ha az ügyfél újat küld, <code>product_images.py</code>, majd csere a médiatárban."),
+                 check="a 26 gyenge kép: ha az ügyfél újat küld, <code>product_images.py</code>, majd csere a médiatárban."),
             dict(id="imp-redirect", who="Laci", title="301 a régi VirtueMart-címekről",
                  desc="<p>301 a régi Joomla / VirtueMart címekről az újakra (a régi oldal termék- és kategóriacímei, Search Console listája) – a témában ehhez még nincs térkép: a régi címlista kell (élesítés 4/4).</p>",
                  check="a régi top 50 cím 301-gyel az új oldalra visz."),
@@ -185,14 +186,14 @@ LACI = dict(
                  desc="<p><b>A téma kezeli a két domaint</b> (WPML nem kell): Megjelenés → First Vape → Adatok → Szlovák domain: <code>firstvape.sk</code>, Francia domain: <code>firstvape.fr</code>. Mindkét domain ugyanarra a WordPressre mutasson (alias / parkolt domain), mindkettőn SSL. A <code>.fr</code>-en francia felület, ÁFA, szállítás, ország; minden link, kép és CSS a látogató domainjén (tesztelve két hosttal). Dev / staging: <code>?lang=fr</code>.</p>",
                  check="a firstvape.fr franciául jön be ugyanabból a WordPressből; a nyelvváltó a másik domain ugyanazon oldalára visz; egy rendelés mindkét domainről ugyanabba a listába kerül; Search Console mindkét domainre."),
             dict(id="mk-lang", who="Kész – ellenőrizd", title="SK alapnyelv + FR",
-                 desc="<p>A felület szövegei a téma szótárából (SK tegező, FR magázó), a WordPress és a WooCommerce szövegei a nyelvi csomagokból; a kategóriák, márkák, rövid leírások francia változata metában. A francia termékleírás: <code>_fv_desc_fr</code> (ha az ügyfél megírja).</p>",
+                 desc="<p>A felület szövegei a téma szótárából (SK tegező, FR magázó), a WordPress és a WooCommerce szövegei a nyelvi csomagokból; a kategóriák, márkák, rövid leírások francia változata metában. A hosszú termékleírás SK-ul a tartalomban, franciául a <code>_fv_desc_fr</code> metában – a telepítő tölti (a mi szövegünk az ügyfél angol szövegéből, <code>prototype/csv/leirasok-sk-fr.json</code>).</p>",
                  check="FR-en nincs szlovák maradvány (a termékneveken kívül)."),
             dict(id="mk-legal", who="Laci", title="Jogi oldalak piaconként (helyőrzővel)",
                  desc="<p>A jogi oldalak piaconként létrejöttek helyőrző szöveggel (szerkeszthető blokkok, a pénztár pipája a piac ÁSZF-jére és adatvédelmére mutat). A végleges szöveget az ügyfél jogásza adja: cseréld, a „legal-ph” bekezdést töröld. Süti-hozzájárulás és GA4 csak hozzájárulással: élesítéskor (a témában még nincs süti-sáv).</p>",
                  check="<code>wp firstvape check</code>: nincs „helyőrző szöveg” figyelmeztetés."),
-            dict(id="mk-fr", who="Laci", title="Eldobható e-cigaretták Franciaországban",
-                 desc="<p>Ha a jogász szerint az eldobható e-cigaretta nem forgalmazható Franciaországban: a kategória rejtése a .fr-en (menü, lista, kereső, közvetlen cím) – a témában még nincs kapcsoló, a döntés után kell (kb. fél nap).</p>",
-                 check="a döntés a kérdőívből; ha rejteni kell, a .fr-en sehol nem érhető el."),
+            dict(id="mk-fr", who="Kész – ellenőrizd", title="Eldobható e-cigaretta nincs a kínálatban",
+                 desc="<p>Az ügyfél döntése (2026-10-20): az eldobható e-cigarettákat (ELFBAR 600) nem árulja – az EU 2027-től tiltja, Franciaországban már tilos. Az Eldobható főkategória és a hozzá tartozó cikk megszűnt; a francia piacon nincs mit rejteni.</p>",
+                 check="sem a .sk-n, sem a .fr-en nincs Eldobható kategória, ELFBAR 600 vagy jednorazové / jetable szöveg."),
         ]),
         dict(id="test", title="Belső tesztelés", intro="Ez a CRM „Élesítés 1/4” feladat BELSŐ TESZTELÉS pontja előtt fut.", items=[
             dict(id="test-order", who="Laci", title="Teljes tesztrendelés mobilon és laptopon, SK és FR",

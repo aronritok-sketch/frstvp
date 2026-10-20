@@ -73,7 +73,40 @@
     "sk": "Samostatne predávané, továrensky naplnené náhradné pody s príchuťou – napr. ELFA Pro Pod, JOIN ONE Pod, Vaporesso a Drifter pody. Kompletné zariadenia nájdeš v kategórii Zariadenia / kity.",
     "fr": "Pods de rechange préremplis vendus séparément – ELFA Pro Pod, JOIN ONE Pod, pods Vaporesso et Drifter. Les appareils complets sont dans Appareils / kits."
    },
-   "children": []
+   "children": [
+    {
+     "slug": "podok-elfbar-elfa",
+     "en": "ELFBAR ELFA",
+     "name": {
+      "sk": "ELFBAR ELFA",
+      "fr": "ELFBAR ELFA"
+     }
+    },
+    {
+     "slug": "podok-elfbar-joinone",
+     "en": "ELFBAR JOINONE",
+     "name": {
+      "sk": "ELFBAR JOIN ONE",
+      "fr": "ELFBAR JOIN ONE"
+     }
+    },
+    {
+     "slug": "podok-vaporesso-dojo",
+     "en": "VAPORESSO DOJO",
+     "name": {
+      "sk": "VAPORESSO DOJO",
+      "fr": "VAPORESSO DOJO"
+     }
+    },
+    {
+     "slug": "podok-drifter-bar",
+     "en": "DRIFTER BAR",
+     "name": {
+      "sk": "DRIFTER BAR",
+      "fr": "DRIFTER BAR"
+     }
+    }
+   ]
   },
   {
    "slug": "e-liquidek",
@@ -134,25 +167,6 @@
      }
     }
    ]
-  },
-  {
-   "slug": "eldobhato",
-   "art": "disposable",
-   "color": "#FF8A1F",
-   "en": "DISPOSABLE E-CIGARETTES",
-   "name": {
-    "sk": "Jednorazové e-cigarety",
-    "fr": "Cigarettes électroniques jetables"
-   },
-   "short": {
-    "sk": "Jednorazové",
-    "fr": "Jetables"
-   },
-   "desc": {
-    "sk": "Zariadenia, ktoré po spotrebovaní vyhodíš celé (napr. ELFBAR 600). Niektoré väčšie modely majú batériu nabíjateľnú cez USB-C.",
-    "fr": "Appareils que l’on jette entièrement après usage (ex. ELFBAR 600). Certains grands modèles ont une batterie rechargeable en USB-C."
-   },
-   "children": []
   },
   {
    "slug": "kiegeszitok",
@@ -222,8 +236,8 @@
    "color": "#111111",
    "style": "heavy",
    "desc": {
-    "sk": "V ponuke First Vape: zariadenia, predplnené pody, jednorazové e-cigarety, e-liquidy, príslušenstvo.",
-    "fr": "Chez First Vape : appareils, pods préremplis, jetables, e-liquides, accessoires."
+    "sk": "V ponuke First Vape: zariadenia, predplnené pody, e-liquidy, príslušenstvo.",
+    "fr": "Chez First Vape : appareils, pods préremplis, e-liquides, accessoires."
    }
   },
   {
@@ -356,12 +370,12 @@
    },
    "body": {
     "sk": [
-     "Jednorazové aj znovu nabíjateľné zariadenia Elfbar sa stali populárnymi za krátky čas. Tajomstvo je v jednoduchosti: rozbalíš a môžeš začať.",
-     "Od jednorazového ELFBAR 600 až po pod kit JOIN ONE s predplnenými podmi na 40 000 potiahnutí (odhad výrobcu) – vyberie si každý. Ak hľadáš zariadenie na dlhšie, skús pod systém ELFA: jedna batéria a vymeniteľné pody v desiatkach príchutí."
+     "Nabíjateľné pod systémy Elfbar sa stali populárnymi za krátky čas. Tajomstvo je v jednoduchosti: vložíš predplnený pod a môžeš začať.",
+     "Pod kit JOIN ONE s predplnenými podmi na 40 000 potiahnutí (odhad výrobcu) je pre tých, ktorí chcú čo najmenej starostí. Ak hľadáš zariadenie na dlhšie, skús pod systém ELFA: jedna batéria a vymeniteľné pody v desiatkach príchutí."
     ],
     "fr": [
-     "Les appareils jetables et rechargeables Elfbar sont devenus populaires en peu de temps. Le secret : la simplicité. Vous déballez, et c’est prêt.",
-     "Du jetable ELFBAR 600 au kit pod JOIN ONE avec pods préremplis de 40 000 bouffées (estimation du fabricant), il y en a pour tous. Pour un usage durable, essayez le système pod ELFA : une batterie, des pods interchangeables dans des dizaines de saveurs."
+     "Les systèmes pod rechargeables Elfbar sont devenus populaires en peu de temps. Le secret : la simplicité. Vous insérez un pod prérempli, et c’est prêt.",
+     "Le kit pod JOIN ONE avec pods préremplis de 40 000 bouffées (estimation du fabricant) s’adresse à ceux qui veulent le moins de contraintes possible. Pour un usage durable, essayez le système pod ELFA : une batterie, des pods interchangeables dans des dizaines de saveurs."
     ]
    }
   },
@@ -383,12 +397,12 @@
    },
    "body": {
     "sk": [
-     "E-cigareta namiesto dymu vytvára paru, ktorá zvyčajne zanecháva výrazne menej zápachu ako cigaretový dym. Ponuka sa neustále rozširuje: jednorazové, pod systémy aj box mody.",
-     "Začiatočníkom odporúčame jednorazové zariadenia alebo jednoduchý pod kit, pokročilým box mody a vlastné miešanie liquidov."
+     "E-cigareta namiesto dymu vytvára paru, ktorá zvyčajne zanecháva výrazne menej zápachu ako cigaretový dym. Ponuka sa neustále rozširuje: pod systémy s predplnenými aj plniteľnými podmi, box mody aj tanky.",
+     "Začiatočníkom odporúčame jednoduchý pod kit s predplnenými podmi, pokročilým box mody a vlastné miešanie liquidov."
     ],
     "fr": [
-     "La cigarette électronique produit de la vapeur au lieu de la fumée, qui laisse généralement beaucoup moins d’odeur. L’offre ne cesse de s’élargir : jetables, systèmes pod et box mods.",
-     "Aux débutants, nous conseillons les jetables ou un kit pod simple ; aux vapoteurs confirmés, les box mods et les mélanges maison."
+     "La cigarette électronique produit de la vapeur au lieu de la fumée, qui laisse généralement beaucoup moins d’odeur. L’offre ne cesse de s’élargir : systèmes à pods préremplis ou à remplir, box mods et clearomiseurs.",
+     "Aux débutants, nous conseillons un kit pod simple à pods préremplis ; aux vapoteurs confirmés, les box mods et les mélanges maison."
     ]
    }
   },
@@ -416,33 +430,6 @@
     "fr": [
      "Les e-liquides aux sels de nicotine délivrent la nicotine plus vite et plus en douceur : parfaits pour les systèmes pod. Les shortfills arrivent en grand format sans nicotine ; vous réglez le taux en ajoutant un booster.",
      "Avec un arôme et une base, vous créez votre propre mélange, exactement à votre goût."
-    ]
-   }
-  },
-  {
-   "slug": "ako-vybrat-jednorazovu",
-   "date": "2026-07-22",
-   "color": "#FF8A1F",
-   "tag": {
-    "sk": "Návod",
-    "fr": "Conseils"
-   },
-   "title": {
-    "sk": "Ako vybrať jednorazovú e-cigaretu: potiahnutia, nikotín, príchuť",
-    "fr": "Bien choisir sa cigarette électronique jetable : bouffées, nicotine, saveur"
-   },
-   "excerpt": {
-    "sk": "Podľa počtu potiahnutí, sily nikotínu a príchute rýchlo nájdeš to pravé.",
-    "fr": "Nombre de bouffées, taux de nicotine et saveur : trouvez vite l’appareil qu’il vous faut."
-   },
-   "body": {
-    "sk": [
-     "Počet potiahnutí ukazuje, na koľko vdýchnutí približne zariadenie vystačí. Na príležitostné použitie stačia modely so 600 potiahnutiami, na každodenné odporúčame zariadenia nad 10 000 potiahnutí s nabíjateľnou batériou.",
-     "Silu nikotínu uvádzame v mg: 0 mg je bez nikotínu, 10 mg je stredná sila, 20 mg je najvyššia povolená v EÚ."
-    ],
-    "fr": [
-     "Le nombre de bouffées indique combien d’inhalations l’appareil permet environ. Pour un usage occasionnel, 600 bouffées suffisent ; au quotidien, préférez les appareils de plus de 10 000 bouffées avec batterie rechargeable.",
-     "Le taux de nicotine est indiqué en mg : 0 mg sans nicotine, 10 mg intermédiaire, 20 mg maximum autorisé dans l’UE."
     ]
    }
   }
@@ -607,7 +594,7 @@
    ],
    "carrier": "Packeta",
    "shipping": {
-    "freeOver": 50,
+    "freeOver": 39.99,
     "sample": true,
     "methods": [
      {
@@ -685,7 +672,7 @@
    ],
    "carrier": "Packeta",
    "shipping": {
-    "freeOver": 50,
+    "freeOver": 39.99,
     "sample": true,
     "methods": [
      {
@@ -754,10 +741,6 @@
   },
   {
    "cat": "e-liquidek"
-  },
-  {
-   "cat": "eldobhato",
-   "puffLinks": true
   },
   {
    "cat": "kiegeszitok"
@@ -830,6 +813,7 @@
    "keszlet"
   ],
   "eloretoltott-podok": [
+   "kat",
    "marka",
    "kompat",
    "iz",
@@ -843,13 +827,6 @@
    "iz",
    "nikotin",
    "ml",
-   "keszlet"
-  ],
-  "eldobhato": [
-   "marka",
-   "iz",
-   "puff",
-   "nikotin",
    "keszlet"
   ],
   "kiegeszitok": [

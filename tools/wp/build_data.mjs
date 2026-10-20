@@ -6,7 +6,7 @@
  * Kimenet: wp-theme/firstvape/setup/data/
  *   i18n.json      felületi szövegek SK / FR (FV.I18N), színnevek, jogi oldalak helyőrző szövege
  *   catalog.json   kategóriafa, márkák, attribútumok, ízszínek, piacok (ÁFA, szállítás), menü, cikkek
- *   products.json  az ügyfél 395 terméke (products.js – a client_import.py generálja az ügyfél fájljából)
+ *   products.json  az ügyfél termékei (products.js – a client_import.py generálja az ügyfél fájljából)
  */
 import fs from 'node:fs';
 import path from 'node:path';

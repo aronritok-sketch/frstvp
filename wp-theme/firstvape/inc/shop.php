@@ -280,7 +280,7 @@ add_action('woocommerce_before_cart', fn() => print(firstvape_steps(1)), 1);
 add_action('woocommerce_before_checkout_form', fn() => print(firstvape_steps(2)), 1);
 add_action('woocommerce_before_thankyou', fn() => print(firstvape_steps(4)), 1);
 add_action('woocommerce_cart_is_empty', function () {
-    echo '<div class="empty big">' . firstvape_icon('bag', 'empty-ico') . '<h1>' . firstvape_t('cartEmptyH') . '</h1><p>' . firstvape_t('cartEmptyP') . '</p><a class="btn btn-primary" href="' . esc_url(firstvape_cat_url('eldobhato')) . '">' . esc_html((string) (firstvape_cat('eldobhato')['short'] ?? '')) . '</a></div>';
+    echo '<div class="empty big">' . firstvape_icon('bag', 'empty-ico') . '<h1>' . firstvape_t('cartEmptyH') . '</h1><p>' . firstvape_t('cartEmptyP') . '</p><a class="btn btn-primary" href="' . esc_url(firstvape_cat_url('eloretoltott-podok')) . '">' . esc_html((string) (firstvape_cat('eloretoltott-podok')['short'] ?? '')) . '</a></div>';
 }, 5);
 remove_action('woocommerce_cart_is_empty', 'wc_empty_cart_message', 10);
 add_filter('woocommerce_return_to_shop_redirect', fn() => home_url('/'));
