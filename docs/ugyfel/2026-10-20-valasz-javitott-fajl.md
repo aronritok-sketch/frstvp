@@ -66,3 +66,8 @@ ha nem kérsz külön sort, a SuperFaktúra alapértelmezett sorozatába mennek.
 Köszi, és jó munkát!
 
 Áron – HelloProVision
+
+---
+
+**Utána (2026-10-20, Áron kérésére):** a dev link is kiment ugyanebbe a kérésbe: https://dev.otletoldal.hu/firstvape/
+(tesztrendelés utánvéttel, `?lang=fr`; a 2. kör változásait Laci most tölti fel – CRM 58817919, 01.4).
