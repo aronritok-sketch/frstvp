@@ -60,7 +60,7 @@ LACI = dict(
                  desc="<p>Csak: WooCommerce, Packeta, a Teya fizetési kapcsolata, SuperFaktúra, WP Mail SMTP, Yoast SEO. <b>WPML / Polylang nem kell</b>: a két domaint a téma kezeli (09-es fázis). <b>Nincs</b> page builder, űrlap-, slider- és wishlist-bővítmény (a kedvencek, űrlapok, 18+ kapu, szűrők a témában vannak).</p>",
                  check="a Bővítmények listáján csak ezek vannak."),
             dict(id="prep-update", who="Laci", title="Frissítés a 2026-10-20-i témára (az ügyfél 2. köre)",
-                 desc="<p>Új <code>firstvape-tema.zip</code> és <code>firstvape-media.zip</code> (CRM-melléklet). Téma felülírása zipből (Megjelenés → Témák → Feltöltés → „Csere”), a médiacsomag kicsomagolása a <code>wp-content/uploads/firstvape-media/</code> mappába (felülírással), majd <code>wp firstvape setup</code> (<b>--force nélkül</b>). A telepítő: a 3 ELFBAR 600-at és a régi SKU-s termékeket kukába teszi, az Eldobható kategóriát és cikket törli, a podokat a 4 rendszer-alkategóriába teszi, a 4 cserélt képet lecseréli, az SK / FR leírásokat beírja, az ingyenes szállítást 39,99 €-ra állítja (ha még a minta 50 € volt).</p>",
+                 desc="<p>Új <code>firstvape-tema.zip</code> és <code>firstvape-media.zip</code> (CRM-melléklet). Téma felülírása zipből (Megjelenés → Témák → Feltöltés → „Csere”), a médiacsomag kicsomagolása a <code>wp-content/uploads/firstvape-media/</code> mappába (felülírással), majd <code>wp firstvape setup</code> (<b>--force nélkül</b>). A telepítő: a 3 ELFBAR 600-at és a régi SKU-s termékeket kukába teszi, az Eldobható kategóriát és cikket törli, a podokat a 4 rendszer-alkategóriába teszi, a javított ajánlásokat (cross-sell) és testvércsoportokat átírja, a 4 cserélt képet lecseréli, az SK / FR leírásokat beírja, az ingyenes szállítást 39,99 €-ra állítja (ha még a minta 50 € volt).</p>",
                  code=["wp theme install firstvape-tema.zip --force\nunzip -o firstvape-media.zip -d wp-content/uploads/firstvape-media/\nwp firstvape setup\nwp firstvape check"],
                  check="392 termék, nincs Eldobható menüpont, a Predplnené pody alatt 4 alkategória, a termékoldalon szlovák / francia leírás."),
         ]),
@@ -197,7 +197,7 @@ LACI = dict(
         ]),
         dict(id="test", title="Belső tesztelés", intro="Ez a CRM „Élesítés 1/4” feladat BELSŐ TESZTELÉS pontja előtt fut.", items=[
             dict(id="test-order", who="Laci", title="Teljes tesztrendelés mobilon és laptopon, SK és FR",
-                 desc="<p>Minden szállítási és fizetési móddal, mobilon és laptopon, SK és FR domainen: kosár → pénztár → fizetés → köszönő oldal → levél → számla → Packeta. A téma e2e tesztje (<code>tests/wp/e2e.mjs</code>, 65 ellenőrzés) a minta módokkal átment; a valódi bővítményekkel neked kell végigvinni.</p>",
+                 desc="<p>Minden szállítási és fizetési móddal, mobilon és laptopon, SK és FR domainen: kosár → pénztár → fizetés → köszönő oldal → levél → számla → Packeta. A téma e2e tesztje (<code>tests/wp/e2e.mjs</code>, 69 ellenőrzés) a minta módokkal átment; a valódi bővítményekkel neked kell végigvinni.</p>",
                  check="minden ág hibátlan, a levelek kimennek."),
             dict(id="test-ui", who="Laci", title="Megjelenés és szerkesztő",
                  desc="<p>390, 768, 1024, 1280, 1440 px: nincs vízszintes görgetés, oldalanként egy H1 (az e2e ezt ellenőrzi). Minden oldal érvényes a szerkesztőben (<code>tests/wp/editor-check.mjs</code>). 404, keresés, mobil menü, 18+ kapu.</p>",

@@ -294,7 +294,7 @@ def main():
         if tint.startswith('linear'):
             tint = '#8E7CC3'
         # csoport: a név az íz / szín / ellenállás nélkül
-        base = name
+        base = re.sub(r'\s*\d+(?:[.,]\d+)?\s*%\s*$', '', name)  # a név végén a nikotin („… Peach Ice 2%”, javított fájl)
         for v in (taste, color):
             if v:
                 base = re.sub(r'\s*-?\s*' + re.escape(v) + r'\s*$', '', base, flags=re.I)

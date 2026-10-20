@@ -41,6 +41,10 @@ szállítási zónák (Slovensko, Francúzsko) minta díjakkal, utánvét.
 A második futás nem ír át semmit. Amit az adminban szerkesztettek, azt kihagyja (`⚠ kihagyva`); a `--force` / a
 „Felülírás” pipa mindent felülír (az árat és a készletet is).
 
+Új témaverziónál (pl. 2026-10-20, az ügyfél 2. köre) a `wp firstvape setup` frissít is: a termékfájlból kikerült termékeit
+kukába teszi, a fából kikerült kategóriáit és cikkeit törli; a változatlan termékeknél is frissíti a kategóriát, a
+testvércsoportot, a saját ajánlásait, a cserélt képet és a leírást (ha nem írták át az adminban).
+
 ## Két domain: firstvape.sk és firstvape.fr
 
 Egy WordPress szolgálja ki mindkettőt (Áron döntése, 2026-10-19). **A téma maga kezeli**, nem kell hozzá WPML:
@@ -92,6 +96,6 @@ attribútumaira kerülnek.
 ```
 tools/wp/dev-wp.sh /tmp/wp ../hlprv dist/firstvape-media.zip      # teszt-WordPress (MariaDB, WP-CLI)
 (cd /tmp/wp && PHP_CLI_SERVER_WORKERS=6 php -S localhost:8891 -t /tmp/wp /tmp/fv-router.php)
-BASE=http://localhost:8891 node tests/wp/e2e.mjs                    # 65 ellenőrzés
+BASE=http://localhost:8891 node tests/wp/e2e.mjs                    # 69 ellenőrzés
 BASE=http://localhost:8891 WP="wp --allow-root --path=/tmp/wp" WPUSER=admin WPPASS=admin node tests/wp/editor-check.mjs
 ```

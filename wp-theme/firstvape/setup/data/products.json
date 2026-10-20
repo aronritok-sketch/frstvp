@@ -263,6 +263,7 @@
   },
   "pop": 98,
   "img": "img/p/elfbar-elfa-pro-pod-pil-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -314,6 +315,7 @@
   },
   "pop": 98,
   "img": "img/p/elfbar-elfa-pro-pod-cw-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -364,6 +366,7 @@
   },
   "pop": 98,
   "img": "img/p/elfbar-elfa-pro-pod-lm-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -414,6 +417,7 @@
   },
   "pop": 98,
   "img": "img/p/elfbar-elfa-pro-pod-fs-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -464,6 +468,7 @@
   },
   "pop": 97,
   "img": "img/p/elfbar-elfa-pro-pod-rw-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -514,6 +519,7 @@
   },
   "pop": 97,
   "img": "img/p/elfbar-elfa-pro-pod-mb-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -564,6 +570,7 @@
   },
   "pop": 97,
   "img": "img/p/elfbar-elfa-pro-pod-rb-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -614,6 +621,7 @@
   },
   "pop": 97,
   "img": "img/p/elfbar-elfa-pro-pod-tf-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -664,6 +672,7 @@
   },
   "pop": 96,
   "img": "img/p/elfbar-elfa-pro-pod-pi-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -714,6 +723,7 @@
   },
   "pop": 96,
   "img": "img/p/elfbar-elfa-pro-pod-ban-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -764,6 +774,7 @@
   },
   "pop": 96,
   "img": "img/p/elfbar-elfa-pro-pod-c-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -814,6 +825,7 @@
   },
   "pop": 96,
   "img": "img/p/elfbar-elfa-pro-pod-cg-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -864,6 +876,7 @@
   },
   "pop": 95,
   "img": "img/p/elfbar-elfa-pro-pod-e-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -914,6 +927,7 @@
   },
   "pop": 95,
   "img": "img/p/elfbar-elfa-pro-pod-sr-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -964,6 +978,7 @@
   },
   "pop": 95,
   "img": "img/p/elfbar-elfa-pro-pod-sk-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -1014,6 +1029,7 @@
   },
   "pop": 95,
   "img": "img/p/elfbar-elfa-pro-pod-brl-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -1064,6 +1080,7 @@
   },
   "pop": 94,
   "img": "img/p/elfbar-elfa-pro-pod-pl-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -1114,6 +1131,7 @@
   },
   "pop": 94,
   "img": "img/p/elfbar-elfa-pro-pod-blu-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -1164,6 +1182,7 @@
   },
   "pop": 94,
   "img": "img/p/elfbar-elfa-pro-pod-bsr-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -1214,6 +1233,7 @@
   },
   "pop": 94,
   "img": "img/p/elfbar-elfa-pro-pod-pfkg-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -1264,6 +1284,7 @@
   },
   "pop": 93,
   "img": "img/p/elfbar-elfa-pro-pod-w-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -1314,6 +1335,7 @@
   },
   "pop": 93,
   "img": "img/p/elfbar-elfa-pro-pod-ap-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -1364,6 +1386,7 @@
   },
   "pop": 93,
   "img": "img/p/elfbar-elfa-pro-pod-cc-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -1414,6 +1437,7 @@
   },
   "pop": 93,
   "img": "img/p/elfbar-elfa-pro-pod-gm-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -1464,6 +1488,7 @@
   },
   "pop": 92,
   "img": "img/p/elfbar-elfa-pro-pod-um-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -1514,6 +1539,7 @@
   },
   "pop": 92,
   "img": "img/p/elfbar-elfa-pro-pod-tm-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -1564,6 +1590,7 @@
   },
   "pop": 92,
   "img": "img/p/elfbar-elfa-pro-pod-mgd-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -1614,6 +1641,7 @@
   },
   "pop": 92,
   "img": "img/p/elfbar-elfa-pro-pod-im-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -1664,6 +1692,7 @@
   },
   "pop": 91,
   "img": "img/p/elfbar-elfa-pro-pod-id-20.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -1714,6 +1743,7 @@
   },
   "pop": 91,
   "img": "img/p/elfbar-elfa-pro-pod-fs-0.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -1764,6 +1794,7 @@
   },
   "pop": 91,
   "img": "img/p/elfbar-elfa-pro-pod-bsr-0.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -1814,6 +1845,7 @@
   },
   "pop": 91,
   "img": "img/p/elfbar-elfa-pro-pod-brl-0.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -1864,6 +1896,7 @@
   },
   "pop": 90,
   "img": "img/p/elfbar-elfa-pro-pod-pfkg-0.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -1914,6 +1947,7 @@
   },
   "pop": 90,
   "img": "img/p/elfbar-elfa-pro-pod-w-0.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -1964,6 +1998,7 @@
   },
   "pop": 90,
   "img": "img/p/elfbar-elfa-pro-pod-ap-0.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -2014,6 +2049,7 @@
   },
   "pop": 90,
   "img": "img/p/elfbar-elfa-pro-pod-c-0.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -2064,6 +2100,7 @@
   },
   "pop": 89,
   "img": "img/p/elfbar-elfa-pro-pod-blu-0.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -2114,6 +2151,7 @@
   },
   "pop": 89,
   "img": "img/p/elfbar-elfa-pro-pod-cc-0.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -2164,6 +2202,7 @@
   },
   "pop": 89,
   "img": "img/p/elfbar-elfa-pro-pod-gm-0.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -2214,6 +2253,7 @@
   },
   "pop": 89,
   "img": "img/p/elfbar-elfa-pro-pod-um-0.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -2264,6 +2304,7 @@
   },
   "pop": 88,
   "img": "img/p/elfbar-elfa-pro-pod-pi-0.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -2314,6 +2355,7 @@
   },
   "pop": 88,
   "img": "img/p/elfbar-elfa-pro-pod-pl-0.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -2364,6 +2406,7 @@
   },
   "pop": 88,
   "img": "img/p/elfbar-elfa-pro-pod-tf-0.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -2414,6 +2457,7 @@
   },
   "pop": 87,
   "img": "img/p/elfbar-elfa-pro-pod-tm-0.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -2464,6 +2508,7 @@
   },
   "pop": 87,
   "img": "img/p/elfbar-elfa-pro-pod-rb-0.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -2514,6 +2559,7 @@
   },
   "pop": 87,
   "img": "img/p/elfbar-elfa-pro-pod-mb-0.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -2564,6 +2610,7 @@
   },
   "pop": 87,
   "img": "img/p/elfbar-elfa-pro-pod-sk-0.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -2614,6 +2661,7 @@
   },
   "pop": 86,
   "img": "img/p/elfbar-elfa-pro-pod-sr-0.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",
@@ -2664,6 +2712,7 @@
   },
   "pop": 86,
   "img": "img/p/elfbar-elfa-pro-pod-ban-0.webp",
+  "group": "elfbar-elfa-pro-pod",
   "cross": [
    "ELFBAR-ELFA-TURBO-GOLD",
    "ELFBAR-ELFA-TURBO-CYAN",

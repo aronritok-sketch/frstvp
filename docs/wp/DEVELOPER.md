@@ -99,10 +99,13 @@ BASE=… WP="wp --allow-root --path=…" WPUSER=admin WPPASS=admin node tests/wp
 
 ## Ellenőrizve (2026-10-20, WordPress 7.1.2, WooCommerce 11.1.2, iu_theme 0.2.2, PHP 8.4, MariaDB 10.11)
 
-- e2e: 65 ellenőrzés hibátlan, a fejlesztői és egy üres WordPressre zipből telepített példányon is – 23 oldal 1440 és
+- e2e: 69 ellenőrzés hibátlan, a fejlesztői és egy üres WordPressre zipből telepített példányon is – 23 oldal 1440 és
   390 px-en (státusz, egy H1, nincs vízszintes görgetés, nincs JS-hiba), 18+ kapu, francia piac (ár 20 % TVA-val,
   francia felület, a szlovák ÁSZF a CGV-re irányít), mega menü, élő kereső, szűrés újratöltés nélkül, kedvencek,
   kosár-fiók, rendelés mezőnkénti hibaüzenettel, Packeta-ponttal és utánvéttel, kapcsolati űrlap.
 - Két domain valódi módban (két host): francia felület, minden link / kép / CSS / JS a második hoston, hreflang, átirányítás.
-- Szerkesztő: 30 oldal és cikk + 14 sablonfájl érvényes a valódi blokkszerkesztőben (`editor-check.mjs`: 44 / 44).
+- Szerkesztő: 28 oldal és cikk + 14 sablonfájl érvényes a valódi blokkszerkesztőben (`editor-check.mjs`: 42 / 42).
 - Telepítő: üres WordPressre zipből (téma + médiacsomag), a második futás semmit nem ír át.
+- Frissítés (az ügyfél 2. köre): a 2026-10-20 délelőtti témával telepített WordPress az új zippel és `wp firstvape setup`-pal
+  (`--force` nélkül): a kikerült termékek kukába, az Eldobható kategória és cikk törölve, pod-alkategóriák, leírások,
+  testvércsoportok, ajánlások (227), cserélt képek, ingyenes szállítás 39,99 € – utána az e2e 69 / 69.

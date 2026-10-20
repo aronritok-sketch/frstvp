@@ -554,6 +554,7 @@ function firstvape_setup_products(int $offset, bool $force, array &$log): array
                 $p->save();
                 $log[] = '↻ kategória: ' . $p->get_name();
             }
+            firstvape_product_meta($id, $row);
             firstvape_product_image($id, $row, $log);
             firstvape_product_desc($id, $row, false, $log);
             continue;
@@ -590,12 +591,8 @@ function firstvape_setup_products(int $offset, bool $force, array &$log): array
         if (!empty($row['brand'])) {
             wp_set_object_terms($id, (string) $row['brand'], 'product_brand');
         }
-        $meta = ['_fv_art' => (string) ($row['art'] ?? ''), '_fv_color' => (string) ($row['color'] ?? ''), '_fv_pop' => (int) ($row['pop'] ?? 0),
-            '_fv_group' => (string) ($row['group'] ?? ''), '_fv_swatch' => (string) ($row['swatch'] ?? ''), '_fv_short_fr' => (string) ($row['short']['fr'] ?? ''),
-            '_fv_weight_estimated' => empty($row['weight']) ? '' : 'yes', 'fv_hash' => $hash];
-        foreach ($meta as $k => $v) {
-            update_post_meta($id, $k, $v);
-        }
+        firstvape_product_meta($id, $row);
+        update_post_meta($id, 'fv_hash', $hash);
         firstvape_product_image($id, $row, $log);
         firstvape_product_desc($id, $row, $force, $log);
         $log[] = ($new ? '+ ' : '↻ ') . $row['name'];
@@ -605,6 +602,19 @@ function firstvape_setup_products(int $offset, bool $force, array &$log): array
         firstvape_index_flush();
     }
     return ['done' => $next >= $total, 'offset' => min($next, $total), 'total' => $total];
+}
+
+/** A téma saját termékmetái (testvércsoport, típus, ízszín …) – a változatlan termékeknél is a termékfájl szerint. */
+function firstvape_product_meta(int $id, array $row): void
+{
+    $meta = ['_fv_art' => (string) ($row['art'] ?? ''), '_fv_color' => (string) ($row['color'] ?? ''), '_fv_pop' => (int) ($row['pop'] ?? 0),
+        '_fv_group' => (string) ($row['group'] ?? ''), '_fv_swatch' => (string) ($row['swatch'] ?? ''), '_fv_short_fr' => (string) ($row['short']['fr'] ?? ''),
+        '_fv_weight_estimated' => empty($row['weight']) ? '' : 'yes'];
+    foreach ($meta as $k => $v) {
+        if ((string) get_post_meta($id, $k, true) !== (string) $v) {
+            update_post_meta($id, $k, $v);
+        }
+    }
 }
 
 /** A termék képe a médiacsomagból – ha nincs képe, vagy a telepítő képe van rajta (a kézzel feltöltöttet nem cseréli). */
@@ -671,7 +681,7 @@ function firstvape_prune_products(array $all, array &$log): void
         $sku = (string) get_post_meta($id, '_sku', true);
         if (!isset($skus[$sku])) {
             wp_trash_post($id);
-            $log[] = '− kukába (már nincs a termékfájlban): ' . get_the_title($id) . ($sku !== '' ? ' (' . $sku . ')' : '');
+            $log[] = '− kukába (már nincs a termékfájlban): ' . get_post_field('post_title', $id) . ($sku !== '' ? ' (' . $sku . ')' : '');
         }
     }
 }
@@ -686,14 +696,24 @@ function firstvape_setup_cross(int $offset, bool $force, array &$log): array
         }
         $id = (int) wc_get_product_id_by_sku((string) $row['sku']);
         $p = $id ? wc_get_product($id) : null;
-        if (!$p || ($p->get_cross_sell_ids() && !$force)) {
+        if (!$p) {
+            continue;
+        }
+        $have = array_map('intval', $p->get_cross_sell_ids());
+        // a telepítő saját ajánlásai frissülnek (az ügyfél javított fájlja); amit az adminban átírtak, azt csak --force
+        $prev = get_post_meta($id, 'fv_cross', true);
+        $ours = !$have || ($prev === '' ? get_post_meta($id, 'fv_hash', true) !== '' : $prev === implode(',', $have));
+        if (!$ours && !$force) {
             continue;
         }
         $ids = array_values(array_filter(array_map(fn($s) => (int) wc_get_product_id_by_sku((string) $s), (array) $row['cross'])));
-        if ($ids) {
+        if ($ids && $ids !== $have) {
             $p->set_cross_sell_ids($ids);
             $p->save();
             $n++;
+        }
+        if ($ids) {
+            update_post_meta($id, 'fv_cross', implode(',', $ids));
         }
     }
     firstvape_index_flush();
