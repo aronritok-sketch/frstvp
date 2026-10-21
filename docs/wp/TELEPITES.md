@@ -73,7 +73,10 @@ Egy WordPress szolgálja ki mindkettőt (Áron döntése, 2026-10-19). **A téma
 - Utánvét díja piaconként: Adatok (üresen a minta 1,50 €).
 - Jogi szövegek (ügyfél jogásza): az oldalak szerkeszthető blokkok, a `legal-ph` bekezdést töröld.
 - Súly: most kategóriánkénti becslés (`_fv_weight_estimated` = yes) – az ügyfél adataiból felülírni.
-- A 26 gyenge termékkép (`prototype/csv/termekkepek-minoseg.csv`) – ha az ügyfél küld újat.
+- Termékképek (2026-10-21 újra): a termékből semmi nem vész el, Real-ESRGAN élesítés, 16 Elfliq íz a gyártó képéből
+  (`prototype/csv/termekkepek-forras-csere.csv`). Még 13 kicsi forráskép (9 Elfliq, 4 GeekVape J Cartridge,
+  `prototype/csv/termekkepek-minoseg.csv`): ha az ügyfél újat küld, a cserelistába, `product_images.py`, új médiacsomag,
+  `wp firstvape setup` (a megváltozott képet magától cseréli).
 - `wp firstvape check` / Megjelenés → First Vape → Élesítési ellenőrzés: mi hiányzik még.
 
 ## Termékek frissítése (az ügyfél javított fájljából)

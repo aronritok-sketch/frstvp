@@ -114,7 +114,7 @@ LACI = dict(
                  check="frissítés után <code>wp firstvape check</code>, a változott termékek a boltban."),
             dict(id="imp-images", who="Kész – ellenőrizd", title="Feldolgozott termékfotók, átlátszó háttérrel",
                  desc="<p>392 feldolgozott kép (átlátszó WebP, FIRSTVAPE logó) a médiacsomagból, kiemelt képként; a WordPress méretei is WebP-k (az átlátszóság marad). Képoptimalizáló bővítmény ne alakítsa JPEG-re.</p>",
-                 check="a 26 gyenge kép: ha az ügyfél újat küld, <code>product_images.py</code>, majd csere a médiatárban."),
+                 check="a 13 kicsi forráskép (9 Elfliq, 4 J Cartridge): ha az ügyfél újat küld (csere: <code>prototype/csv/termekkepek-forras-csere.csv</code>), <code>product_images.py</code>, majd csere a médiatárban."),
             dict(id="imp-redirect", who="Laci", title="301 a régi VirtueMart-címekről",
                  desc="<p>301 a régi Joomla / VirtueMart címekről az újakra (a régi oldal termék- és kategóriacímei, Search Console listája) – a témában ehhez még nincs térkép: a régi címlista kell (élesítés 4/4).</p>",
                  check="a régi top 50 cím 301-gyel az új oldalra visz."),

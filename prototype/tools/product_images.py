@@ -219,17 +219,21 @@ def main():
             master_img, info = done[key]
         else:
             raw = Image.open(src)
-            if raw.mode in ('RGBA', 'LA', 'P') and raw.convert('RGBA').getextrema()[3][0] < 250:
-                # átlátszó forrás (gyártói PNG): fehérre téve, a saját alfája a maszk
-                rgba = raw.convert('RGBA')
-                white = Image.new('RGBA', rgba.size, (255, 255, 255, 255))
-                white.alpha_composite(rgba)
-                cut = rgba
-                src_rgb = np.asarray(white.convert('RGB'))
+            # a PNG forrás saját átlátszósága: fehérre téve (alatta fekete is lehet), és a maszkból kizárva; a háttér
+            # eltávolítása mindig fut (a nagyker PNG-jein az átlátszó szegély közepén átlátszatlan fehér négyzet is lehet)
+            rgba = raw.convert('RGBA')
+            white = Image.new('RGBA', rgba.size, (255, 255, 255, 255))
+            white.alpha_composite(rgba)
+            src_rgb = np.asarray(white.convert('RGB'))
+            own = np.asarray(rgba)[:, :, 3]
+            ys, xs = np.nonzero(own > 10)
+            card = len(xs) and (own > 10).sum() / ((xs.max() - xs.min() + 1) * (ys.max() - ys.min() + 1)) > 0.95
+            if own.min() < 10 and not card:
+                cut = own  # valóban átlátszó, kivágott forrás (pl. a gyártó PNG-je): a saját alfája pontos
             else:
-                cut = cutout(src, os.path.join(args.work, 'cut', key + '.png'), session)
-                src_rgb = np.asarray(raw.convert('RGB'))
-            mask = object_mask(src_rgb, np.asarray(cut)[:, :, 3])
+                cut = np.minimum(np.asarray(cutout(src, os.path.join(args.work, 'cut', key + '.png'), session))[:, :, 3], own)
+            mask = object_mask(src_rgb, cut)
+            mask &= own > 10
             ys, xs = np.nonzero(mask)
             size = int(max(xs.max() - xs.min(), ys.max() - ys.min())) + 1 if len(xs) else 0
             src_w = src_rgb.shape[1]
