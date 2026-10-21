@@ -2,7 +2,7 @@
 
 **Hova:** ügyfélportál → a „Képfeltöltés” kérés (CRM 6532633) válaszaként.
 **Előtte:** az új képekkel frissített előnézet a portálon, és Laci feltölti a dev oldalra az új képcsomagot.
-**Állapot:** PISZKOZAT – Áron jóváhagyására vár.
+**Kiküldve:** 2026-10-21, Claude, Áron kérésére (előnézet-anyag 12990001; Laci feladata 75628266).
 
 ---
 
