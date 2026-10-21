@@ -5,14 +5,21 @@ Az ügyfél kérése (portál, 2026-10-19): „átlátszó háttérrel, a bal fe
 sötét hátterén fehér keret nélkül jelenjen meg … pár kép minőségben silányabb, azokat javítsátok fel”.
 
     python3 -m venv .venv && .venv/bin/pip install pillow numpy opencv-contrib-python-headless "rembg[cpu]"
-    .venv/bin/python prototype/tools/product_images.py --work <munkamappa>
+    .venv/bin/pip install --index-url https://download.pytorch.org/whl/cpu torch
+    curl -LO https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.5.0/realesr-general-x4v3.pth
+    .venv/bin/python prototype/tools/product_images.py --work <munkamappa> --sr realesr-general-x4v3.pth
 
-Bemenet: prototype/csv/termekkepek.csv (a client_import.py írja: termék ↔ forráskép URL ↔ fájlnév).
+Bemenet: prototype/csv/termekkepek.csv (a client_import.py írja: termék ↔ forráskép URL ↔ fájlnév), és ha van,
+prototype/csv/termekkepek-forras-csere.csv (slug → jobb forráskép, pl. a gyártó átlátszó PNG-je; ilyenkor a kép saját
+átlátszósága a maszk, a rembg nem fut rá).
 Lépések termékenként:
   1. letöltés (a forrás a nagykereskedő képe, 800 × 800, fehér háttér) → <work>/src/
-  2. háttér eltávolítása (rembg, isnet-general-use modell; az átlátszó podok, üvegek széle is megmarad) → <work>/cut/
-  3. a termék körbevágása; ha a termék kicsi a képen (a hosszabbik oldala < 420 px) vagy életlen: felbontásnövelés
-     (Lanczos, két lépésben, élesítéssel); ha a termék nagyon kicsi (< 250 px), a jelentés új forrásképet kér
+  2. háttér eltávolítása (rembg, isnet-general-use modell) → <work>/cut/; a végleges maszk a rembg maszkja ∪ a fehér
+     háttértől eltérő képpontok, lyukak kitöltve: így a termékből semmi nem vész el (doboz, ezüst coil – az ügyfél
+     jelezte, 2026-10-20), és az átlátszó kupak / üveg átlátszatlan marad (a sötét háttéren nem lesz piszkos)
+  3. felbontásnövelés Real-ESRGAN-nal (realesr-general-x4v3, a szerző kiadása; --sr <modell.pth>, PyTorch CPU) a teljes
+     forrásképen ×4 → <work>/sr/, majd a termék körbevágva LEkicsinyítve kerül a vászonra (éles, nem elmosott);
+     ha a termék nagyon kicsi (< 250 px) a forrásképen, a jelentés új forrásképet kér
   4. 1200 × 1200-as átlátszó vászon, a termék középen a logó alatti területen, a FIRSTVAPE logó bal felül
   5. kimenet: <work>/master/<slug>.webp (1200 px, a webshopba) és prototype/assets/img/p/<slug>.webp (640 px, előnézet)
 Jelentés: prototype/csv/termekkepek-minoseg.csv (méret, élesség, feljavítva-e).
@@ -26,6 +33,7 @@ import urllib.request
 import cv2
 import numpy as np
 from PIL import Image, ImageFilter
+from scipy import ndimage
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CANVAS = 1200
@@ -62,6 +70,94 @@ def sharpness(rgba):
     return float(lap[m].var()) if m.sum() > 500 else 0.0
 
 
+def object_mask(src_rgb, cut_alpha):
+    """Termékmaszk a forrás felbontásán: a fehér háttértől erősen eltérő képpontok ∪ a rembg maszkja, lyukak kitöltve,
+    apró foltok nélkül. A halvány árnyék (eltérés ≤ 40) kimarad."""
+    src = src_rgb.astype(int)
+    bg = np.median(np.concatenate([src[0], src[-1], src[:, 0], src[:, -1]]), axis=0)
+    strong = np.abs(src - bg).max(axis=2) > 40
+    m = ndimage.binary_fill_holes(ndimage.binary_opening(strong | (cut_alpha > 110), iterations=1))
+    lab, n = ndimage.label(m)
+    if not n:
+        return m
+    rb = cut_alpha > 110
+    sizes = ndimage.sum(m, lab, range(1, n + 1))
+    cov = ndimage.mean(rb, lab, range(1, n + 1))
+    sl = ndimage.find_objects(lab)
+    sure = [i for i in range(n) if cov[i] >= 0.5]
+    top = min(sl[i][0].start for i in sure) if sure else 0
+    bottom = max(sl[i][0].stop for i in sure) if sure else m.shape[0]
+    h, w = m.shape
+    keep = np.zeros(n + 1, bool)
+    for i in range(n):
+        if sizes[i] < max(400, sizes.max() * 0.01):
+            continue
+        if cov[i] < 0.2:
+            ys, xs = sl[i]
+            cy = (ys.start + ys.stop) / 2
+            # amit a rembg nem ismert fel: csak a termék magasságában marad (pl. a kivágott coilok); a tükröződés
+            # alatta és a nagyker sarokcímkéje („EXCLUSIVITÉ”) jobbra fent kimarad
+            if not top <= cy <= bottom or (xs.start > w * 0.68 and ys.stop < h * 0.32):
+                continue
+        keep[i + 1] = True
+    return keep[lab]
+
+
+class SuperRes:
+    """Real-ESRGAN „realesr-general-x4v3” (SRVGGNetCompact, ×4) – a hálózat a szerző kódja szerint, a súlyok a kiadásából."""
+
+    def __init__(self, weights):
+        import torch
+        import torch.nn as nn
+        import torch.nn.functional as F
+        self.torch = torch
+
+        class Net(nn.Module):
+            def __init__(self, feat=64, conv=32, up=4):
+                super().__init__()
+                self.up = up
+                self.body = nn.ModuleList([nn.Conv2d(3, feat, 3, 1, 1), nn.PReLU(num_parameters=feat)])
+                for _ in range(conv):
+                    self.body.extend([nn.Conv2d(feat, feat, 3, 1, 1), nn.PReLU(num_parameters=feat)])
+                self.body.append(nn.Conv2d(feat, 3 * up * up, 3, 1, 1))
+                self.shuffle = nn.PixelShuffle(up)
+
+            def forward(self, x):
+                out = x
+                for layer in self.body:
+                    out = layer(out)
+                return self.shuffle(out) + F.interpolate(x, scale_factor=self.up, mode='nearest')
+
+        sd = torch.load(weights, map_location='cpu', weights_only=True)
+        self.net = Net()
+        self.net.load_state_dict(sd.get('params', sd.get('params_ema', sd)))
+        self.net.eval()
+
+    def __call__(self, rgb, cache):
+        if os.path.exists(cache):
+            return np.asarray(Image.open(cache).convert('RGB'))
+        x = self.torch.from_numpy(rgb.astype(np.float32) / 255).permute(2, 0, 1)[None]
+        with self.torch.inference_mode():
+            y = self.net(x)[0].clamp(0, 1).permute(1, 2, 0).numpy()
+        out = (y * 255).round().astype(np.uint8)
+        Image.fromarray(out).save(cache)
+        return out
+
+
+def product_rgba(src_rgb, mask, sr_rgb):
+    """A termék RGBA-ban, körbevágva: a felnagyított (vagy eredeti) kép + a maszk 1 forrás-px-lel befelé húzva (a fehér
+    szegély ne látsszon), lágy éllel."""
+    k = sr_rgb.shape[0] // src_rgb.shape[0] if sr_rgb is not None else 1
+    rgb = sr_rgb if sr_rgb is not None else src_rgb
+    m = ndimage.binary_erosion(mask, iterations=1)
+    a = Image.fromarray((m * 255).astype(np.uint8)).resize((rgb.shape[1], rgb.shape[0]), Image.LANCZOS)
+    a = a.filter(ImageFilter.GaussianBlur(0.6 * k))
+    obj = Image.fromarray(rgb).convert('RGBA')
+    obj.putalpha(a)
+    bbox = obj.getchannel('A').point(lambda v: 255 if v > 8 else 0).getbbox()
+    return obj.crop(bbox) if bbox else obj
+
+
 def upscale(rgba):
     """Felbontásnövelés Lanczos-szal, két lépésben, élesítéssel. (Mesterséges intelligenciás felnagyítást – EDSR – is
     kipróbáltunk: a kis képeken a címkék szövegét olvashatatlanná „találta ki”, ezért nem használjuk.)"""
@@ -93,8 +189,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--work', required=True, help='munkamappa (src/, cut/, master/)')
     ap.add_argument('--only', help='csak ezek a slugok (vesszővel)')
+    ap.add_argument('--sr', help='Real-ESRGAN súlyfájl (realesr-general-x4v3.pth); nélküle a régi Lanczos-felnagyítás')
     args = ap.parse_args()
-    for d in ('src', 'cut', 'master'):
+    sr = SuperRes(args.sr) if args.sr else None
+    for d in ('src', 'cut', 'master', 'sr'):
         os.makedirs(os.path.join(args.work, d), exist_ok=True)
     prev_dir = os.path.join(ROOT, 'assets/img/p')
     os.makedirs(prev_dir, exist_ok=True)
@@ -103,6 +201,11 @@ def main():
     from rembg import new_session
     session = new_session('isnet-general-use')
     rows = list(csv.DictReader(open(os.path.join(ROOT, 'csv/termekkepek.csv'), encoding='utf-8')))
+    alt = os.path.join(ROOT, 'csv/termekkepek-forras-csere.csv')
+    if os.path.exists(alt):
+        swap = {r['slug']: r['source_url'] for r in csv.DictReader(open(alt, encoding='utf-8'))}
+        for r in rows:
+            r['source_url'] = swap.get(r['slug'], r['source_url'])
     only = set(args.only.split(',')) if args.only else None
     report = []
     done = {}
@@ -115,20 +218,33 @@ def main():
         if key in done:  # ugyanaz a forráskép több terméknél: egyszer dolgozzuk fel
             master_img, info = done[key]
         else:
-            cut = cutout(src, os.path.join(args.work, 'cut', key + '.png'), session)
-            a = np.array(cut)
-            a[:, :, 3] = np.where(a[:, :, 3] < 12, 0, a[:, :, 3])
-            cut = Image.fromarray(a, 'RGBA')
-            bbox = cut.getbbox()
-            obj = cut.crop(bbox) if bbox else cut
-            src_w = Image.open(src).width
-            size = max(obj.size)
-            sh = sharpness(obj)
+            raw = Image.open(src)
+            if raw.mode in ('RGBA', 'LA', 'P') and raw.convert('RGBA').getextrema()[3][0] < 250:
+                # átlátszó forrás (gyártói PNG): fehérre téve, a saját alfája a maszk
+                rgba = raw.convert('RGBA')
+                white = Image.new('RGBA', rgba.size, (255, 255, 255, 255))
+                white.alpha_composite(rgba)
+                cut = rgba
+                src_rgb = np.asarray(white.convert('RGB'))
+            else:
+                cut = cutout(src, os.path.join(args.work, 'cut', key + '.png'), session)
+                src_rgb = np.asarray(raw.convert('RGB'))
+            mask = object_mask(src_rgb, np.asarray(cut)[:, :, 3])
+            ys, xs = np.nonzero(mask)
+            size = int(max(xs.max() - xs.min(), ys.max() - ys.min())) + 1 if len(xs) else 0
+            src_w = src_rgb.shape[1]
+            plain = Image.fromarray(src_rgb).convert('RGBA')
+            plain.putalpha(Image.fromarray((mask * 255).astype(np.uint8)))
+            sh = sharpness(plain)
             low = size < SMALL or src_w < 800 or sh < SOFT
-            if low:
-                obj = upscale(obj)
+            if sr:
+                obj = product_rgba(src_rgb, mask, sr(src_rgb, os.path.join(args.work, 'sr', key + '.png')))
+            else:
+                obj = product_rgba(src_rgb, mask, None)
+                if low:
+                    obj = upscale(obj)
             master_img = compose(obj, logo)
-            info = dict(object_px=size, source_px=src_w, sharpness=round(sh), enhanced='igen' if low else '',
+            info = dict(object_px=size, source_px=src_w, sharpness=round(sh), enhanced=('AI ×4' if sr else 'igen' if low else ''),
                         new_source='kell' if size < TINY else '',
                         reason=', '.join(x for x, c in (('kicsi a termék a képen', size < SMALL), ('kis felbontás', src_w < 800),
                                                          ('életlen', sh < SOFT)) if c))
