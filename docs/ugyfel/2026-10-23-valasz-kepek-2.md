@@ -3,6 +3,7 @@
 **Hova:** ügyfélportál → a „Webshop-előnézet – új termékképek” anyag (12990001) változtatáskérésére, a „Képfeltöltés”
 kérésben (CRM 6532633).
 **Előtte:** új előnézet a portálon, Laci feltölti a dev oldalra.
+**Kiküldve:** 2026-10-23, Claude, Áron kérésére (előnézet-anyag 15110001; Laci feladata 81988265).
 
 ---
 
