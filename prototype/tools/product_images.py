@@ -75,13 +75,28 @@ def object_mask(src_rgb, cut_alpha):
     apró foltok nélkül. A halvány árnyék (eltérés ≤ 40) kimarad."""
     src = src_rgb.astype(int)
     bg = np.median(np.concatenate([src[0], src[-1], src[:, 0], src[:, -1]]), axis=0)
-    strong = np.abs(src - bg).max(axis=2) > 40
-    m = ndimage.binary_fill_holes(ndimage.binary_opening(strong | (cut_alpha > 110), iterations=1))
+    dist = np.abs(src - bg).max(axis=2)
+    rb = cut_alpha > 110
+    # amit csak a szín alapján veszünk be (a modell nem): színes vagy sötét képpont lehet, halványszürke nem – az a padló
+    # tükröződése / árnyéka (NIO, ELFA Pro – az ügyfél jelezte, 2026-10-22)
+    sat = src.max(axis=2) - src.min(axis=2)
+    lum = src.mean(axis=2)
+    strong = (dist > 40) & (rb | (sat > 24) | (lum < 150))
+    base = ndimage.binary_opening(strong | rb, iterations=1)
+    # lyuk csak ott töltődik ki, ahol a modell vagy a szín szerint termék (pl. fehér címke a dobozon); a két tárgy
+    # közti fehér rés (készülék és pod között) üres marad – az ügyfél jelezte, 2026-10-22
+    holes, hn = ndimage.label(ndimage.binary_fill_holes(base) & ~base)
+    if hn:
+        idx = range(1, hn + 1)
+        fill = (np.asarray(ndimage.mean(rb, holes, idx)) > 0.5) | (np.asarray(ndimage.mean(dist, holes, idx)) > 25) | \
+               (np.asarray(ndimage.sum(np.ones_like(base), holes, idx)) < base.size * 0.0004)
+        base = base | np.concatenate([[False], fill])[holes]
+    m = base
     lab, n = ndimage.label(m)
     if not n:
         return m
-    rb = cut_alpha > 110
     sizes = ndimage.sum(m, lab, range(1, n + 1))
+    light = ndimage.labeled_comprehension(dist, lab, range(1, n + 1), lambda v: np.percentile(v, 90), float, 0)
     cov = ndimage.mean(rb, lab, range(1, n + 1))
     sl = ndimage.find_objects(lab)
     sure = [i for i in range(n) if cov[i] >= 0.5]
@@ -98,6 +113,8 @@ def object_mask(src_rgb, cut_alpha):
             # amit a rembg nem ismert fel: csak a termék magasságában marad (pl. a kivágott coilok); a tükröződés
             # alatta és a nagyker sarokcímkéje („EXCLUSIVITÉ”) jobbra fent kimarad
             if not top <= cy <= bottom or (xs.start > w * 0.68 and ys.stop < h * 0.32):
+                continue
+            if light[i] < 90:  # halvány szürke folt (padló-tükröződés), nem coil / alkatrész
                 continue
         keep[i + 1] = True
     return keep[lab]
@@ -189,23 +206,38 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--work', required=True, help='munkamappa (src/, cut/, master/)')
     ap.add_argument('--only', help='csak ezek a slugok (vesszővel)')
+    ap.add_argument('--model', default='isnet-general-use', help='rembg modell (pl. birefnet-general: lassabb, pontosabb)')
     ap.add_argument('--sr', help='Real-ESRGAN súlyfájl (realesr-general-x4v3.pth); nélküle a régi Lanczos-felnagyítás')
     args = ap.parse_args()
     sr = SuperRes(args.sr) if args.sr else None
-    for d in ('src', 'cut', 'master', 'sr'):
+    for d in ('src', 'cut', 'master', 'sr', 'cut-' + args.model):
         os.makedirs(os.path.join(args.work, d), exist_ok=True)
     prev_dir = os.path.join(ROOT, 'assets/img/p')
     os.makedirs(prev_dir, exist_ok=True)
     logo = Image.open(os.path.join(ROOT, 'assets/img/first-vape-logo.png')).convert('RGBA')
     logo = logo.resize((LOGO_W, round(logo.height * LOGO_W / logo.width)), Image.LANCZOS)
+    import onnxruntime as ort
+    _opts = ort.SessionOptions
+
+    def lean_opts():
+        # a BiRefNet a memória-arénával képenként egyre több memóriát foglal (14 GB után a rendszer leállította): kikapcsolva
+        o = _opts()
+        o.enable_cpu_mem_arena = False
+        o.enable_mem_pattern = False
+        return o
+    ort.SessionOptions = lean_opts
     from rembg import new_session
-    session = new_session('isnet-general-use')
+    session = new_session(args.model)
+    cutdir = 'cut' if args.model == 'isnet-general-use' else 'cut-' + args.model
     rows = list(csv.DictReader(open(os.path.join(ROOT, 'csv/termekkepek.csv'), encoding='utf-8')))
     alt = os.path.join(ROOT, 'csv/termekkepek-forras-csere.csv')
     if os.path.exists(alt):
-        swap = {r['slug']: r['source_url'] for r in csv.DictReader(open(alt, encoding='utf-8'))}
+        swap = {r['slug']: r for r in csv.DictReader(open(alt, encoding='utf-8'))}
         for r in rows:
-            r['source_url'] = swap.get(r['slug'], r['source_url'])
+            sw = swap.get(r['slug'])
+            if sw:
+                r['source_url'] = sw['source_url'] or r['source_url']
+                r['part'] = sw.get('resz', '')
     only = set(args.only.split(',')) if args.only else None
     report = []
     done = {}
@@ -215,6 +247,8 @@ def main():
         key = hashlib.md5(r['source_url'].encode()).hexdigest()[:12]
         src = os.path.join(args.work, 'src', key + '.jpg')
         download(r['source_url'], src)
+        if r.get('part'):
+            key = key + '-' + r['part']  # ugyanaz a forrás, más kivágás: külön feldolgozás
         if key in done:  # ugyanaz a forráskép több terméknél: egyszer dolgozzuk fel
             master_img, info = done[key]
         else:
@@ -231,9 +265,17 @@ def main():
             if own.min() < 10 and not card:
                 cut = own  # valóban átlátszó, kivágott forrás (pl. a gyártó PNG-je): a saját alfája pontos
             else:
-                cut = np.minimum(np.asarray(cutout(src, os.path.join(args.work, 'cut', key + '.png'), session))[:, :, 3], own)
+                cut = np.minimum(np.asarray(cutout(src, os.path.join(args.work, cutdir, key + '.png'), session))[:, :, 3], own)
             mask = object_mask(src_rgb, cut)
             mask &= own > 10
+            if r.get('part') == 'jobb':
+                # csak a jobb szélső tárgy (pl. a pod a doboz nélkül: a 0 mg-os terméknél a nagyker a 20 mg-os doboz képét adta)
+                lab, n = ndimage.label(mask)
+                if n > 1:
+                    sl = ndimage.find_objects(lab)
+                    big = [i for i in range(n) if ndimage.sum(mask, lab, i + 1) > mask.sum() * 0.05]
+                    right = max(big, key=lambda i: sl[i][1].start)
+                    mask = lab == right + 1
             ys, xs = np.nonzero(mask)
             size = int(max(xs.max() - xs.min(), ys.max() - ys.min())) + 1 if len(xs) else 0
             src_w = src_rgb.shape[1]
