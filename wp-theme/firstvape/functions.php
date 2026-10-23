@@ -23,6 +23,7 @@ require_once __DIR__ . '/inc/theme.php';
 require_once __DIR__ . '/inc/blocks.php';
 require_once __DIR__ . '/inc/shop.php';
 require_once __DIR__ . '/inc/shipping.php';
+require_once __DIR__ . '/inc/ageverify.php';
 require_once __DIR__ . '/inc/ajax.php';
 require_once __DIR__ . '/inc/forms.php';
 require_once __DIR__ . '/inc/seo.php';

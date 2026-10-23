@@ -37,6 +37,7 @@ OPEN = [
     "Francia domain: firstvape.fr – megvan-e már, kinél van regisztrálva, ki fér hozzá (a DNS-hez kell).",
     "Bruttó ár piaconként: ugyanaz a bruttó vagy az ÁFA-kulccsal változó (SK 23 %, FR 20 %) – ügyfél + könyvelő.",
     "Régi vásárlók és rendelések átvétele a VirtueMartból – csak ha az ügyfél kéri (GDPR).",
+    "Adulto korellenőrzés: az ügyfél regisztrál (adulto.cz), a kulcsokat a portálon adja meg; kell-e minden terméknél (jogász); SOI-bejelentés a rendszerről.",
 ]
 
 LACI = dict(
@@ -178,6 +179,9 @@ LACI = dict(
             dict(id="int-mail", who="Laci", title="E-mailek és SMTP",
                  desc="<p>WooCommerce-levelek: a vásárló a rendelés nyelvén kapja (a téma a domain szerint vált, a későbbi állapotlevelek is). Feladó: <code>info@firstvape.sk</code> (az ügyféllel egyeztetve), WP Mail SMTP a tárhely postafiókjával.</p>",
                  check="a visszaigazolás megérkezik a vásárlónak és az adminnak, nem spamként."),
+            dict(id="int-adulto", who="Laci", title="Adulto korellenőrzés (SK, kötelező)",
+                 desc="<p>Az ügyfél kérése (2026-10-22): Szlovákiában a nikotinos termékek távértékesítésénél kötelező az életkor-ellenőrző rendszer (89/2016 Z. z.). <b>A témában kész</b> (<code>inc/ageverify.php</code>): nikotinos kosárnál (158 termék: <code>pa_nikotin</code> &gt; 0 mg, terméknél felülírható) a pénztárban az Adulto widget, sikeres ellenőrzés nélkül nincs rendelés; a rendeléshez azonosító, időpont, mód, eredmény + megjegyzés; a rendeléslistában oszlop, keresés az azonosítóra, CSV-export (SOI). A te részed: az ügyfél Adulto-kulcsai (nyilvános + privát, a firstvape.sk domainhez) a Megjelenés → First Vape → Korellenőrzés fülön, a widget szkriptjének címe és a válasz mezőnevei az Adulto fejlesztői leírásából (adulto.cz/pro-vyvojare), a dev oldalon addig teszt mód.</p>",
+                 check="élő kulccsal: nikotinos termékkel ellenőrzés nélkül nem megy a rendelés, ellenőrzéssel igen, és az adatok a rendelésnél, a CSV-exportban; a teszt mód élesben KI; <code>wp firstvape check</code> zöld."),
         ]),
         dict(id="market", title="Nyelvek és piacok", intro="Áron döntése (2026-10-19): <b>egy webshop két domainnel</b>. "
              "<b>firstvape.sk</b> = szlovák felület + SK piac, <b>firstvape.fr</b> = francia felület + FR piac. Egy WordPress, egy "

@@ -25,6 +25,13 @@ function firstvape_admin_checks(): array
     $c = [];
     $d = firstvape_domains();
     $c[] = firstvape_multi_domain() ? ['ok', 'Két domain: ' . $d['sk'] . ' (SK) és ' . $d['fr'] . ' (FR)', ''] : ['warn', 'Csak egy domain van beállítva (' . ($d['sk'] ?: '–') . ')', 'élesítéskor: Adatok → Domainek (firstvape.sk és firstvape.fr); addig ?lang=fr-rel váltható'];
+    if (firstvape_av_opt('test')) {
+        $c[] = ['bad', 'A korellenőrzés TESZT módban van', 'élesítés előtt: Korellenőrzés → Teszt mód ki, Adulto kulcsok be'];
+    } elseif (!firstvape_av_active('sk')) {
+        $c[] = ['bad', 'Nincs bekapcsolva az Adulto korellenőrzés (SK)', 'Korellenőrzés: nyilvános és privát kulcs, a widget szkriptje (89/2016 Z. z.: kötelező a nikotinos termékek távértékesítésénél)'];
+    } else {
+        $c[] = ['ok', 'Adulto korellenőrzés bekapcsolva (' . implode(', ', array_map('strtoupper', (array) firstvape_av_opt('markets', ['sk']))) . ')', ''];
+    }
     $n = count(firstvape_index());
     $c[] = $n ? ['ok', $n . ' termék az indexben', ''] : ['bad', 'Nincs termék', 'Telepítés → Termékek'];
     $noimg = count(array_filter(firstvape_index(), fn($p) => !$p['img']));
@@ -76,7 +83,7 @@ function firstvape_admin_page(): void
     }
     $url = fn($t) => esc_url(admin_url('themes.php?page=firstvape&tab=' . $t));
     echo '<div class="wrap"><h1>First Vape</h1><nav class="nav-tab-wrapper">';
-    foreach (['setup' => 'Telepítés', 'data' => 'Adatok', 'check' => 'Élesítési ellenőrzés'] as $k => $l) {
+    foreach (['setup' => 'Telepítés', 'data' => 'Adatok', 'age' => 'Korellenőrzés', 'check' => 'Élesítési ellenőrzés'] as $k => $l) {
         echo '<a class="nav-tab' . ($tab === $k ? ' nav-tab-active' : '') . '" href="' . $url($k) . '">' . esc_html($l) . '</a>';
     }
     echo '</nav>';
@@ -103,6 +110,8 @@ function firstvape_admin_page(): void
             $f('free_over_fr', 'Ingyenes szállítás – FR (€-tól)', get_option('firstvape_free_over_fr', '')) .
             '<tr><th>Szállítási díjak</th><td><label><input type="checkbox" name="shipping_final" value="1"' . checked((bool) get_option('firstvape_shipping_final'), true, false) . '> A díjak véglegesek (a „orientačné” megjegyzés eltűnik)</label></td></tr>' .
             '</table><p><button class="button button-primary" name="firstvape_save" value="1">Mentés</button></p></form>';
+    } elseif ($tab === 'age') {
+        firstvape_av_admin_tab();
     } elseif ($tab === 'check') {
         echo '<table class="widefat striped" style="max-width:900px"><tbody>';
         foreach (firstvape_admin_checks() as [$st, $label, $fix]) {

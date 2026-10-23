@@ -26,6 +26,8 @@ wp-theme/firstvape/
 │   ├── shop.php           WooCommerce: piac (ország, ÁFA), pénztár mezői, cégadatok, 18+, utánvét díja, lépések,
 │   │                      fragmentek, fiók (Kedvencek), súly elrejtve, kifutott termék, levelek a rendelés nyelvén
 │   ├── shipping.php       „First Vape – Packeta (minta)” szállítási mód: súlysáv, ingyenes küszöb, átvételi pont
+│   ├── ageverify.php      korellenőrzés a pénztárban (Adulto): nikotinos kosárnál kötelező, eredmény a rendeléshez,
+│   │                      admin oszlop / keresés / CSV-export (SOI), teszt mód
 │   ├── ajax.php           REST firstvape/v1/search (élő kereső), admin-ajax: kosár-fiók mennyiség, kedvencek
 │   ├── forms.php          kapcsolat, hírlevél, „Upozorniť ma” (REST firstvape/v1/form/…), Beküldések CPT
 │   ├── seo.php            meta leírás, hreflang, canonical, noindex a szűrt listákon, JSON-LD Product / Store / Breadcrumb
@@ -47,7 +49,7 @@ wp-theme/firstvape/
 | attribútum | `pa_prichut`, `pa_nikotin`, `pa_objem`, `pa_pocet-potiahnuti`, `pa_system`, `pa_farba`, `pa_odpor` | globális, a szűrők ezekből; a slug a szlovák felirat (az import CSV ugyanígy nevezi) |
 | termék | SIMPLE | `_fv_group` testvérek, `_fv_art` típus (ha nincs: a fő kategóriából), `_fv_color` ízszín, `_fv_pop` népszerűség, `_fv_short_fr`, `_fv_desc_fr`, `_fv_swatch`, `_fv_discontinued`, `_fv_weight_estimated`; cross-sell = az ügyfél ajánlásai |
 | oldal / cikk | `page`, `post` | `fv_lang` (sk / fr / –), `fv_page` (shipping, terms …), `fv_pair` (a másik nyelvű pár), `fv_title_key` (a közös oldalak címe a szótárból) |
-| rendelés | | `_fv_lang`, `_fv_pickup_point`, `_billing_fv_id`, `_billing_fv_vat`, `_fv_age_confirmed` |
+| rendelés | | `_fv_lang`, `_fv_pickup_point`, `_billing_fv_id`, `_billing_fv_vat`, `_fv_age_confirmed`; korellenőrzés: `_fv_av_required`, `_fv_av_provider`, `_fv_av_id`, `_fv_av_time`, `_fv_av_method`, `_fv_av_result`, `_fv_av_raw` |
 
 A termékindex (`firstvape_index` opció, autoload nélkül) minden termék, kategória és márka mentésekor újraépül;
 kézzel: `wp firstvape reindex`. A listák, a szűrők, a kereső és a mega menü ebből dolgoznak (400 terméknél gyors).
@@ -86,6 +88,17 @@ TVA), ország (csak a piacé), PSČ, város, utca; eltérő szállítási cím (
 megjegyzés alatt – nem az AJAX-szal újrarajzolt összesítőben), ÁSZF-pipa (a piac oldalaira). A hibák a mező alatt
 (a WooCommerce 9+ saját üzenete, rövid szöveggel), fölül egy összefoglaló. Átvételi pont: a szállítási mód alatt
 (minta lista vagy Packeta widget), kötelező, a rendelés metájába és a levelekbe kerül.
+
+## Korellenőrzés (Adulto)
+
+Szlovákiában a nikotinos termékek távértékesítésénél kötelező az életkor-ellenőrző rendszer (89/2016 Z. z.; az ügyfél
+kérése, 2026-10-22). `inc/ageverify.php`: ha a piac be van kapcsolva (alapból SK) és a kosárban nikotinos termék van
+(`pa_nikotin` > 0 mg, vagy a terméknél „Korellenőrzés: mindig”), a pénztárban az Adulto widget
+(`<div class="adulto-cz" data-sitekey data-adultocz="18" data-lang>` + a szolgáltató szkriptje), a rendeléskor a szerver
+lekérdezi az eredményt (`api.result.adulto.cz?secret=…&response=<token>`, a token a form `adultocz-uid` mezőjéből), és
+csak `adultocz-verify-adult = true` esetén enged tovább. Beállítás: Megjelenés → First Vape → Korellenőrzés (kulcsok,
+szkript címe, mezőnevek, korhatár, termékkör, teszt mód, CSV-export). A szkript címét és a válasz mezőneveit az Adulto
+fejlesztői leírásával kell véglegesíteni (a nyers válasz a `_fv_av_raw`-ban). Teszt: `tests/wp/ageverify.mjs` (11 ellenőrzés).
 
 ## Fejlesztés
 

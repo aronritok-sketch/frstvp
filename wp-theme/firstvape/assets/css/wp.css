@@ -223,3 +223,10 @@ ul.woocommerce-order-overview li strong { display: block; margin-top: 4px; color
   .u-columns.col2-set, .woocommerce-Addresses, .woocommerce-columns--addresses { grid-template-columns: 1fr; }
   .wc-page .form-row { grid-column: 1 / -1 !important; }
 }
+
+/* Korellenőrzés (Adulto) a pénztárban – inc/ageverify.php */
+.fv-av { margin: 22px 0 6px; padding: 16px 18px; border: 1px solid var(--line-2); border-radius: var(--r); background: var(--surface); }
+.fv-av h3 { margin: 0 0 6px; font: 700 18px/1.25 var(--f-display); color: var(--text); }
+.fv-av p { margin: 0 0 12px; font-size: 14px; }
+.fv-av .fv-av-ok { margin: 0; color: var(--ok); font-weight: 600; }
+.fv-av.woocommerce-invalid, #fv_av_field.woocommerce-invalid { border-color: var(--bad); }
