@@ -16,7 +16,8 @@ Köszi a részletes listát! Mindet végignéztük, és mind a 392 képet újra 
   - a 180 ml-es Chubby flakon közepe,
   - a kupakok és üvegek (Saiyen, A&L 50 ml és 30 ml, Obvious és Liquideo booster, Extrapure).
 - **NIO, Join One:** a készülék és a pod közti fehér sáv eltűnt, a két tárgy között üres a háttér.
-- **NIO, ELFA Pro (pl. Mangue Pamplemousse) és Drifter podok:** a padló tükröződése lekerült a képről.
+- **NIO, ELFA Pro (pl. Mangue Pamplemousse):** a padló tükröződése lekerült a képről.
+- **Drifter podok:** ezeket is újra elkészítettük. Ha még mindig hibásnak látod őket, kérlek, írd meg, mi a gond.
 
 **0% és 2%:** igazad van. 7 db 0%-os ELFA Pro podnál a nagyker a 20 mg-os doboz fotóját adta, rajta a nikotin-figyelmeztetéssel:
 Frozen Strawberry, Blueberry Sour Raspberry, Blue Razz Lemonade, Kiwi Passion Fruit Guava, Watermelon,

@@ -7,7 +7,8 @@ sötét hátterén fehér keret nélkül jelenjen meg … pár kép minőségben
     python3 -m venv .venv && .venv/bin/pip install pillow numpy opencv-contrib-python-headless "rembg[cpu]"
     .venv/bin/pip install --index-url https://download.pytorch.org/whl/cpu torch
     curl -LO https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.5.0/realesr-general-x4v3.pth
-    .venv/bin/python prototype/tools/product_images.py --work <munkamappa> --sr realesr-general-x4v3.pth
+    .venv/bin/python prototype/tools/product_images.py --work <munkamappa> --sr realesr-general-x4v3.pth --model birefnet-general
+    (a BiRefNet ~25 s / kép és ~8 GB memória: 15-ös adagokban, --only-val futtatva a gyorsítótár miatt folytatható)
 
 Bemenet: prototype/csv/termekkepek.csv (a client_import.py írja: termék ↔ forráskép URL ↔ fájlnév), és ha van,
 prototype/csv/termekkepek-forras-csere.csv (slug → jobb forráskép, pl. a gyártó átlátszó PNG-je; ilyenkor a kép saját
