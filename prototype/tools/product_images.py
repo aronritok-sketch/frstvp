@@ -12,7 +12,9 @@ sötét hátterén fehér keret nélkül jelenjen meg … pár kép minőségben
 
 Bemenet: prototype/csv/termekkepek.csv (a client_import.py írja: termék ↔ forráskép URL ↔ fájlnév), és ha van,
 prototype/csv/termekkepek-forras-csere.csv (slug → jobb forráskép, pl. a gyártó átlátszó PNG-je; ilyenkor a kép saját
-átlátszósága a maszk, a rembg nem fut rá).
+átlátszósága a maszk, a rembg nem fut rá; a „resz” oszlop szóközzel elválasztva: jobb = csak a jobb szélső tárgy,
+alja=<px> vagy <bal px>/<jobb px> = a tükröződés levágása a forráskép e sora alatt, sav=<px> = felette ekkora sávban a
+halvány maradék is (alapból 28; fehér flakonnál 0), uveg = flakon-körvonal).
 Lépések termékenként:
   1. letöltés (a forrás a nagykereskedő képe, 800 × 800, fehér háttér) → <work>/src/
   2. háttér eltávolítása (rembg, isnet-general-use modell) → <work>/cut/; a végleges maszk a rembg maszkja ∪ a fehér
@@ -119,6 +121,36 @@ def object_mask(src_rgb, cut_alpha):
                 continue
         keep[i + 1] = True
     return keep[lab]
+
+
+def bottle_mask(mask):
+    """Álló flakon(ok) maszkja tárgyanként: a sor két széle közt kitöltve, a fél szélesség soronként mediánnal simítva,
+    a tárgy függőleges tengelyére tükrözve; a széles csoport (több összeérő flakon) oszloponként kitöltve."""
+    lab, n = ndimage.label(mask)
+    out = np.zeros_like(mask)
+    for i, (ys, xs) in enumerate(ndimage.find_objects(lab)):
+        part = lab[ys, xs] == i + 1
+        if part.sum() < mask.sum() * 0.02:  # apró folt (a tükröződés maradéka a flakon alatt): kimarad
+            continue
+        if part.shape[1] > part.shape[0]:
+            # egymás mellett összeérő flakonok (Chubby 120 ml, 8 db): oszloponként a teteje és az alja között kitöltve,
+            # a felső és az alsó körvonal simítva – a flakonok közti háttér a nyakaknál üres marad
+            cols = np.nonzero(part.any(axis=0))[0]
+            top = ndimage.median_filter(np.array([np.argmax(part[:, x]) for x in cols]), size=5, mode='nearest')
+            bot = ndimage.median_filter(np.array([part.shape[0] - 1 - np.argmax(part[::-1, x]) for x in cols]), size=9,
+                                        mode='nearest')
+            for x, t, b in zip(cols, top, bot):
+                out[ys.start + t:ys.start + b + 1, xs.start + x] = True
+            continue
+        rows = np.nonzero(part.any(axis=1))[0]
+        left = np.array([np.argmax(part[y]) for y in rows])
+        right = np.array([part.shape[1] - 1 - np.argmax(part[y][::-1]) for y in rows])
+        c = np.median((left + right) / 2)
+        half = ndimage.median_filter(np.maximum(c - left, right - c), size=9, mode='nearest')
+        half = np.minimum(half, ndimage.median_filter((right - left) / 2 + 1, size=31, mode='nearest') * 1.04)
+        for y, hw in zip(rows, half):
+            out[ys.start + y, xs.start + max(0, int(round(c - hw))):xs.start + int(round(c + hw)) + 1] = True
+    return out
 
 
 class SuperRes:
@@ -248,8 +280,9 @@ def main():
         key = hashlib.md5(r['source_url'].encode()).hexdigest()[:12]
         src = os.path.join(args.work, 'src', key + '.jpg')
         download(r['source_url'], src)
+        base = key  # a háttér-eltávolítás és a felnagyítás a forrásképhez tartozik: a kivágástól független
         if r.get('part'):
-            key = key + '-' + r['part']  # ugyanaz a forrás, más kivágás: külön feldolgozás
+            key = key + '-' + ''.join(ch if ch.isalnum() else '_' for ch in r['part'])  # ugyanaz a forrás, más kivágás: külön feldolgozás
         if key in done:  # ugyanaz a forráskép több terméknél: egyszer dolgozzuk fel
             master_img, info = done[key]
         else:
@@ -266,10 +299,31 @@ def main():
             if own.min() < 10 and not card:
                 cut = own  # valóban átlátszó, kivágott forrás (pl. a gyártó PNG-je): a saját alfája pontos
             else:
-                cut = np.minimum(np.asarray(cutout(src, os.path.join(args.work, cutdir, key + '.png'), session))[:, :, 3], own)
+                cut = np.minimum(np.asarray(cutout(src, os.path.join(args.work, cutdir, base + '.png'), session))[:, :, 3], own)
             mask = object_mask(src_rgb, cut)
             mask &= own > 10
-            if r.get('part') == 'jobb':
+            opts = dict(t.partition('=')[::2] for t in r.get('part', '').split())
+            if 'alja' in opts:
+                # a padló tükröződése levágva: a termék alja a forrásképen (px), vagy ferde vonal: bal szél/jobb szél
+                # (A&L 30 ml, Saiyen, Geekvape doboz – az ügyfél jelezte, 2026-10-23)
+                yl, _, yr = opts['alja'].partition('/')
+                h, w = mask.shape
+                line = np.linspace(float(yl), float(yr or yl), w)
+                mask &= np.arange(h)[:, None] < line[None, :]
+                # a vágás feletti sávban a halvány, fehéres képpont még a tükröződés (a flakon lekerekített alsó sarka)
+                px = src_rgb.astype(int)
+                pale = (px.mean(axis=2) > 185) & (px.max(axis=2) - px.min(axis=2) < 45)
+                band = np.arange(h)[:, None] >= line[None, :] - int(opts.get('sav', 28))  # sav=0: fehér flakonnál ki
+                refl, rn = ndimage.label(ndimage.binary_opening(pale & band, iterations=2))
+                edge = np.arange(h)[:, None] >= line[None, :] - 3  # csak ami a vágásig ér: a címke fehér része marad
+                touch = np.unique(refl[edge & (refl > 0)])
+                mask &= ~np.isin(refl, touch[touch > 0])
+                mask = ndimage.binary_opening(mask, iterations=2) | (mask & ~band)
+            if 'uveg' in opts:
+                # flakon: soronként kitöltve a két széle között, a körvonal simítva és tükörszimmetrikus – az átlátszó nyak
+                # nem lesz rés (Hades 50 ml, Obvious), a fehér flakon széle nem csipkés (Succube, Nagato, Chubby)
+                mask = bottle_mask(mask)
+            if 'jobb' in opts:
                 # csak a jobb szélső tárgy (pl. a pod a doboz nélkül: a 0 mg-os terméknél a nagyker a 20 mg-os doboz képét adta)
                 lab, n = ndimage.label(mask)
                 if n > 1:
@@ -285,7 +339,7 @@ def main():
             sh = sharpness(plain)
             low = size < SMALL or src_w < 800 or sh < SOFT
             if sr:
-                obj = product_rgba(src_rgb, mask, sr(src_rgb, os.path.join(args.work, 'sr', key + '.png')))
+                obj = product_rgba(src_rgb, mask, sr(src_rgb, os.path.join(args.work, 'sr', base + '.png')))
             else:
                 obj = product_rgba(src_rgb, mask, None)
                 if low:
@@ -301,8 +355,12 @@ def main():
         report.append(dict(slug=r['slug'], sku=r['sku'], name=r['name'], file=r['file'], **info))
         if i % 25 == 0:
             print(i, len(rows), flush=True)
-    if not only:
-        with open(os.path.join(ROOT, 'csv/termekkepek-minoseg.csv'), 'w', newline='', encoding='utf-8') as f:
+    rep = os.path.join(ROOT, 'csv/termekkepek-minoseg.csv')
+    if only and os.path.exists(rep):  # --only: a jelentés többi sora marad
+        new = {x['slug']: x for x in report}
+        report = [new.pop(x['slug'], x) for x in csv.DictReader(open(rep, encoding='utf-8'))] + list(new.values())
+    if report:
+        with open(rep, 'w', newline='', encoding='utf-8') as f:
             w = csv.DictWriter(f, fieldnames=list(report[0].keys()))
             w.writeheader()
             w.writerows(report)
