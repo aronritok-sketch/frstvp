@@ -1,8 +1,8 @@
-# Válasz az ügyfélnek – az első szlovák címkés fotó (2026-10-28) – PISZKOZAT
+# Válasz az ügyfélnek – az első szlovák címkés fotó (2026-10-28)
 
 **Hova:** ügyfélportál → üzenetek (a Firstvape csatorna), Johny 2026-10-27-i képére (IMG_4820.jpeg, CRM fájl 16874001:
 ELFBAR ELFA Pro Pod Triple Mangue 20 mg, a francia doboz szlovák figyelmeztető matricával).
-**Állapot:** Áron jóváhagyására vár.
+**Kiküldve:** 2026-10-28, Claude, Áron jóváhagyásával („mehet, itt az engedély”).
 **Próba:** a fotót feldolgoztuk (BiRefNet + `resz=doboz`: egyenes dobozszél, a fehér asztal a fehér matrica mellett kimarad)
 – jól használható.
 
