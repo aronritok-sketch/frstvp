@@ -14,7 +14,7 @@ Bemenet: prototype/csv/termekkepek.csv (a client_import.py írja: termék ↔ fo
 prototype/csv/termekkepek-forras-csere.csv (slug → jobb forráskép, pl. a gyártó átlátszó PNG-je; ilyenkor a kép saját
 átlátszósága a maszk, a rembg nem fut rá; a „resz” oszlop szóközzel elválasztva: jobb = csak a jobb szélső tárgy,
 alja=<px> vagy <bal px>/<jobb px> = a tükröződés levágása a forráskép e sora alatt, sav=<px> = felette ekkora sávban a
-halvány maradék is (alapból 28; fehér flakonnál 0), uveg = flakon-körvonal).
+halvány maradék is (alapból 28; fehér flakonnál 0), uveg = flakon-körvonal, doboz = egyenes szélű doboz saját fotón).
 Lépések termékenként:
   1. letöltés (a forrás a nagykereskedő képe, 800 × 800, fehér háttér) → <work>/src/
   2. háttér eltávolítása (rembg, isnet-general-use modell) → <work>/cut/; a végleges maszk a rembg maszkja ∪ a fehér
@@ -150,6 +150,30 @@ def bottle_mask(mask):
         half = np.minimum(half, ndimage.median_filter((right - left) / 2 + 1, size=31, mode='nearest') * 1.04)
         for y, hw in zip(rows, half):
             out[ys.start + y, xs.start + max(0, int(round(c - hw))):xs.start + int(round(c + hw)) + 1] = True
+    return out
+
+
+def box_mask(mask):
+    """Álló doboz (saját fotó): a legnagyobb tárgy bal és jobb széle soronként, a két szélre robusztusan egyenes illesztve
+    (a doboz széle egyenes, a fotó kissé dőlhet); ami a két egyenesen kívül van, az a háttér (a fehér asztal a fehér
+    címke mellett), a kettő között kitöltve."""
+    lab, n = ndimage.label(mask)
+    if not n:
+        return mask
+    big = 1 + int(np.argmax(ndimage.sum(mask, lab, range(1, n + 1))))
+    part = lab == big
+    rows = np.nonzero(part.any(axis=1))[0]
+    left = np.array([np.argmax(part[y]) for y in rows], float)
+    right = np.array([part.shape[1] - 1 - np.argmax(part[y][::-1]) for y in rows], float)
+    out = np.zeros_like(mask)
+    fit = []
+    for edge in (left, right):
+        good = np.abs(edge - ndimage.median_filter(edge, size=61, mode='nearest')) < 3
+        fit.append(np.polyval(np.polyfit(rows[good], edge[good], 1), rows))
+    for y, l, r, fl, fr in zip(rows, left, right, *fit):
+        a, b = int(round(max(l, fl - 2))), int(round(min(r, fr + 2)))
+        if b > a:
+            out[y, a:b + 1] = True
     return out
 
 
@@ -323,6 +347,9 @@ def main():
                 # flakon: soronként kitöltve a két széle között, a körvonal simítva és tükörszimmetrikus – az átlátszó nyak
                 # nem lesz rés (Hades 50 ml, Obvious), a fehér flakon széle nem csipkés (Succube, Nagato, Chubby)
                 mask = bottle_mask(mask)
+            if 'doboz' in opts:
+                # saját fotó dobozról (az ügyfél szlovák címkés fotói): egyenes szélek, a mellette lévő asztal kimarad
+                mask = box_mask(mask)
             if 'jobb' in opts:
                 # csak a jobb szélső tárgy (pl. a pod a doboz nélkül: a 0 mg-os terméknél a nagyker a 20 mg-os doboz képét adta)
                 lab, n = ndimage.label(mask)
