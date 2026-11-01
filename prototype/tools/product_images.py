@@ -14,7 +14,7 @@ Bemenet: prototype/csv/termekkepek.csv (a client_import.py írja: termék ↔ fo
 prototype/csv/termekkepek-forras-csere.csv (slug → jobb forráskép, pl. a gyártó átlátszó PNG-je; ilyenkor a kép saját
 átlátszósága a maszk, a rembg nem fut rá; a „resz” oszlop szóközzel elválasztva: jobb = csak a jobb szélső tárgy,
 alja=<px> vagy <bal px>/<jobb px> = a tükröződés levágása a forráskép e sora alatt, sav=<px> = felette ekkora sávban a
-halvány maradék is (alapból 28; fehér flakonnál 0), uveg = flakon-körvonal, doboz = egyenes szélű doboz saját fotón).
+halvány maradék is (alapból 28; fehér flakonnál 0), uveg = flakon-körvonal, kerek=<px> = mellé a flakon alja egyenes oldalú, lekerekített, doboz = egyenes szélű doboz saját fotón).
 Lépések termékenként:
   1. letöltés (a forrás a nagykereskedő képe, 800 × 800, fehér háttér) → <work>/src/
   2. háttér eltávolítása (rembg, isnet-general-use modell) → <work>/cut/; a végleges maszk a rembg maszkja ∪ a fehér
@@ -123,9 +123,11 @@ def object_mask(src_rgb, cut_alpha):
     return keep[lab]
 
 
-def bottle_mask(mask):
+def bottle_mask(mask, round_px=0):
     """Álló flakon(ok) maszkja tárgyanként: a sor két széle közt kitöltve, a fél szélesség soronként mediánnal simítva,
-    a tárgy függőleges tengelyére tükrözve; a széles csoport (több összeérő flakon) oszloponként kitöltve."""
+    a tárgy függőleges tengelyére tükrözve; a széles csoport (több összeérő flakon) oszloponként kitöltve.
+    round_px > 0: a flakon alsó 45%-a egyenes oldalú (a medián szélességgel), az alja round_px sugárral lekerekítve – a
+    fehér háttér előtti átlátszó flakonaljnál a szél nem látszik, ott a becsült szél szögletes / lépcsős lenne."""
     lab, n = ndimage.label(mask)
     out = np.zeros_like(mask)
     for i, (ys, xs) in enumerate(ndimage.find_objects(lab)):
@@ -148,6 +150,13 @@ def bottle_mask(mask):
         c = np.median((left + right) / 2)
         half = ndimage.median_filter(np.maximum(c - left, right - c), size=9, mode='nearest')
         half = np.minimum(half, ndimage.median_filter((right - left) / 2 + 1, size=31, mode='nearest') * 1.04)
+        if round_px:
+            low = rows >= rows[0] + 0.55 * (rows[-1] - rows[0])
+            hb = float(np.median(half[low]))
+            half = np.where(low, hb, half)
+            dy = rows - (rows[-1] - round_px)
+            corner = dy > 0
+            half = np.where(corner, hb - round_px + np.sqrt(np.clip(round_px ** 2 - dy ** 2, 0, None)), half)
         for y, hw in zip(rows, half):
             out[ys.start + y, xs.start + max(0, int(round(c - hw))):xs.start + int(round(c + hw)) + 1] = True
     return out
@@ -346,7 +355,7 @@ def main():
             if 'uveg' in opts:
                 # flakon: soronként kitöltve a két széle között, a körvonal simítva és tükörszimmetrikus – az átlátszó nyak
                 # nem lesz rés (Hades 50 ml, Obvious), a fehér flakon széle nem csipkés (Succube, Nagato, Chubby)
-                mask = bottle_mask(mask)
+                mask = bottle_mask(mask, int(opts.get('kerek', 0)))
             if 'doboz' in opts:
                 # saját fotó dobozról (az ügyfél szlovák címkés fotói): egyenes szélek, a mellette lévő asztal kimarad
                 mask = box_mask(mask)
