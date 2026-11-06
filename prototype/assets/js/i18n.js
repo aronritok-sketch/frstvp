@@ -305,7 +305,8 @@
     fr: { Black: 'Noir', Silver: 'Argent', Blue: 'Bleu', Green: 'Vert', Pink: 'Rose', Gunmetal: 'Gris anthracite' }
   };
 
-  /* ---------- Információs és jogi oldalak (HELYŐRZŐ jogi szövegek!) ---------- */
+  /* ---------- Információs és jogi oldalak (SK: a régi firstvape.sk szövegei a mostani cégadatokkal – az ügyfél kérése,
+     2026-11-04; FR: HELYŐRZŐ) ---------- */
   function ph(lang) { return '<p class="legal-ph">' + FV.I18N[lang].legalPh + '</p>'; }
   FV.PAGES = {
     sk: {
@@ -315,23 +316,84 @@
           '<h2>Faktúra</h2><p>Faktúru automaticky vystavíme po objednávke a pošleme ti ju e-mailom. Stiahnuť si ju môžeš aj vo svojom účte v časti Objednávky.</p><p>Všetky ceny sú uvedené vrátane DPH 23 %.</p>';
       },
       terms: function () {
-        return ph('sk') + '<p>Tieto obchodné podmienky upravujú nákup v internetovom obchode First Vape, ktorý prevádzkuje spoločnosť John&amp;Jen s.r.o.</p>' +
-          '<h2>1. Prevádzkovateľ</h2><p>John&amp;Jen s.r.o., sídlo: Banícka 703/16, 990 01 Veľký Krtíš, IČO: 50707191, DIČ: 2120427342, IČ DPH: SK2120427342, zapísaná v Obchodnom registri Okresného súdu [·], oddiel Sro, vložka č. 31298/S. Kontakt: info@firstvape.sk.</p>' +
-          '<h2>2. Objednávka a uzavretie zmluvy</h2><p>[doplní klient]</p><h2>3. Ceny a platobné podmienky</h2><p>[doplní klient]</p><h2>4. Dodacie podmienky</h2><p>[doplní klient]</p>' +
-          '<h2>5. Odstúpenie od zmluvy</h2><p>Pozri stránku <a href="#/oldal/withdrawal">Odstúpenie od zmluvy</a>.</p><h2>6. Reklamácie</h2><p>[doplní klient]</p>' +
-          '<h2>7. Predaj len plnoletým osobám</h2><p>V internetovom obchode môžu nakupovať výlučne osoby staršie ako 18 rokov.</p>' +
-          '<h2>8. Orgán dozoru a alternatívne riešenie sporov</h2><p>Slovenská obchodná inšpekcia, [inšpektorát a adresa]. [doplní klient]</p>';
+        return '<p>Tieto všeobecné obchodné podmienky upravujú nákup v internetovom obchode First Vape na adrese www.firstvape.sk.</p>' +
+          '<h2>1. Kto sme?</h2><ol>' +
+          '<li>Prevádzkovateľom internetového obchodu www.firstvape.sk je spoločnosť John&amp;Jen s.r.o., IČO: 50707191, DIČ: 2120427342, IČ DPH: SK2120427342, so sídlom Banícka 703/16, 990 01 Veľký Krtíš, zapísaná v Obchodnom registri Okresného súdu Banská Bystrica, oddiel: Sro, vložka číslo: 31298/S (ďalej aj ako „prevádzkovateľ“).</li>' +
+          '<li>Našimi kontaktnými údajmi sú: e-mail <a href="mailto:info@firstvape.sk">info@firstvape.sk</a>, tel.: +36 20 483 3092, prostredníctvom ktorých sa na nás môžete obrátiť s otázkami, podnetmi, reklamáciou a inými záležitosťami týkajúcimi sa nami ponúkaného sortimentu.</li>' +
+          '<li>V našom sortimente nájdete elektronické cigarety, ich príslušenstvo a rôzne druhy náplní do nich (ďalej aj ako „tovar“ alebo „sortiment“). Pri tovare s dobou expirácie má zakúpený tovar, ak nie je pri jeho popise uvedené inak, dátum expirácie minimálne 1 rok od uzavretia kúpnej zmluvy.</li></ol>' +
+          '<h2>2. Spôsob uzatvorenia kúpnej zmluvy</h2><ol>' +
+          '<li>Na stránke www.firstvape.sk si z ponuky vyberiete tovar; pri každom nájdete informácie o tovare vrátane ceny. Po výbere tovaru uvediete spôsob a miesto doručenia, ako aj spôsob platby, a odošlete objednávku. Ponuka tovaru je informatívna a nezáväzná.</li>' +
+          '<li>Odoslaním objednávky dávate návrh na uzatvorenie kúpnej zmluvy s prevádzkovateľom. Prevádzkovateľ objednávku bez zbytočného odkladu, najneskôr do 5 pracovných dní od jej doručenia, akceptuje, odmietne alebo po dohode akceptuje len čiastočne.</li>' +
+          '<li>Kúpna zmluva medzi Vami a prevádzkovateľom je uzavretá v okamihu potvrdenia Vašej objednávky prevádzkovateľom. Obsah kúpnej zmluvy je určený týmito všeobecnými obchodnými podmienkami, prípadne aj obsahom potvrdenia objednávky, a zmluva je uzavretá v zmysle zákona č. 40/1964 Zb. Občianskeho zákonníka, zákona č. 250/2007 Z. z. o ochrane spotrebiteľa, zákona č. 22/2004 Z. z. o elektronickom obchode a zákona č. 377/2004 Z. z. o ochrane nefajčiarov, v znení neskorších predpisov.</li>' +
+          '<li>Uzatvorením kúpnej zmluvy súhlasíte so zaslaním daňového dokladu (faktúry) výlučne elektronicky na Vami zadanú e-mailovú adresu.</li>' +
+          '<li>Ak by z akéhokoľvek dôvodu nedošlo k uzavretiu kúpnej zmluvy, už zaplatenú sumu Vám vrátime najneskôr do 14 dní od prijatia platby.</li>' +
+          '<li>Nakupovať môžu výlučne osoby staršie ako 18 rokov. Pri objednávke tovaru s obsahom nikotínu je podmienkou odoslania objednávky úspešné overenie veku (pozri čl. 7).</li></ol>' +
+          '<h2>3. Ceny, platba a doručenie</h2><ol>' +
+          '<li>Ceny tovaru sú uvedené v eurách vrátane DPH.</li>' +
+          '<li>Za tovar môžete zaplatiť online platobnou kartou (Visa, Mastercard, Apple Pay, Google Pay) na zabezpečenej platobnej stránke Teya alebo na dobierku pri prevzatí zásielky.</li>' +
+          '<li>Tovar doručuje spoločnosť Packeta na výdajné miesto, do Z-BOXu alebo na Vami zadanú adresu. Ceny dopravy, poplatok za dobierku a hranica dopravy zdarma sú uvedené na stránke <a href="#/oldal/shipping">Doprava a platba</a>.</li>' +
+          '<li>Faktúru Vám po objednávke pošleme e-mailom; nájdete ju aj vo svojom účte v časti Objednávky.</li></ol>' +
+          '<h2>4. Odstúpenie od kúpnej zmluvy</h2><ol>' +
+          '<li>Ako kupujúci máte právo odstúpiť od kúpnej zmluvy do 14 dní od prevzatia tovaru, a to aj bez udania dôvodu. Postup, výnimky a formulár nájdete na stránke <a href="#/oldal/withdrawal">Odstúpenie od zmluvy</a>.</li>' +
+          '<li>Prevádzkovateľ si vyhradzuje právo odstúpiť od kúpnej zmluvy, ak<ul><li>si objednaný tovar neprevezmete,</li><li>sa objednaný tovar už nevyrába alebo Vám ho prevádzkovateľ z akéhokoľvek iného dôvodu nie je schopný dodať,</li><li>sa na stránke vyskytla zjavná chyba v písaní (napr. v cene tovaru v porovnaní s ostatnými, podobnými produktmi),</li><li>vyjde dodatočne najavo alebo je dôvodná pochybnosť o tom, že nie ste starší ako 18 rokov.</li></ul></li>' +
+          '<li>Odstúpenie Vám prevádzkovateľ doručí rovnakým spôsobom, akým Vám doručil potvrdenie objednávky, a do 14 dní od neho Vám vráti zaplatenú kúpnu cenu.</li></ol>' +
+          '<h2>5. Reklamácia tovaru</h2><ol>' +
+          '<li>Reklamáciu tovaru si môžete uplatniť v zmysle zákona č. 40/1964 Zb. Občianskeho zákonníka a zákona č. 250/2007 Z. z. o ochrane spotrebiteľa v znení neskorších predpisov. Situácie, ktoré tieto obchodné podmienky neupravujú, sa riadia uvedenými zákonmi.</li>' +
+          '<li>Prevádzkovateľ zodpovedá za vadu tovaru, ktorá existovala v čase jeho prevzatia, a reklamáciu si môžete uplatniť do 24 mesiacov od prevzatia tovaru. Prevádzkovateľ reklamáciu vybaví bez zbytočného odkladu, najneskôr do 30 dní od jej uplatnenia.</li>' +
+          '<li>Zjavné vady pri prevzatí tovaru (napr. zjavne poškodený obal) reklamujte ihneď u osoby, ktorá Vám tovar odovzdáva – vadu písomne uveďte do potvrdenia o doručení alebo spíšte škodový záznam či iný vhodný doklad.</li>' +
+          '<li>Pri reklamácii musíte preukázať, že ste tovar kúpili u prevádzkovateľa; doklad o kúpe si preto starostlivo uschovajte.</li>' +
+          '<li>Vaše práva pri reklamácii:<ul><li>pri vade, ktorú možno odstrániť, máte právo na jej bezplatné odstránenie; môžete žiadať aj o výmenu tovaru alebo jeho vadnej časti, ak tým prevádzkovateľovi nevzniknú neprimerané náklady vzhľadom na cenu tovaru alebo závažnosť vady,</li><li>pri neodstrániteľnej vade máte právo na primeranú zľavu z kúpnej ceny,</li><li>pri neodstrániteľnej vade, ktorá bráni riadnemu užívaniu tovaru, máte právo na výmenu tovaru alebo na odstúpenie od zmluvy,</li><li>ak sa rovnaká vada vyskytne aj po druhej oprave, máte právo na výmenu tovaru alebo na odstúpenie od zmluvy,</li><li>nevyhnutné náklady spojené s uplatnením práv zo zodpovednosti za vady Vám nahradíme, ak ich uplatníte do jedného mesiaca od skončenia lehoty na uplatnenie práv z vadného plnenia.</li></ul></li></ol>' +
+          '<h2>6. Prechod vlastníckeho práva</h2><ol>' +
+          '<li>Vlastnícke právo k tovaru prechádza na Vás jeho prevzatím a zaplatením kúpnej ceny. Prevzatím tovaru na Vás prechádza aj nebezpečenstvo škody na tovare.</li>' +
+          '<li>Pri prevzatí tovaru skontrolujte, či nie je zjavne poškodený; ak áno, postupujte podľa čl. 5 ods. 3.</li></ol>' +
+          '<h2>7. Predaj len osobám starším ako 18 rokov a overenie veku</h2><ol>' +
+          '<li>Tovar zo sortimentu prevádzkovateľa môže obsahovať nikotín a predaj takýchto výrobkov osobám mladším ako 18 rokov je zakázaný. Pri vstupe do obchodu preto potvrdzujete, že máte viac ako 18 rokov.</li>' +
+          '<li>Pri predaji tovaru s obsahom nikotínu na diaľku vyžaduje zákon č. 89/2016 Z. z. overenie veku kupujúceho. Pri objednávke takéhoto tovaru preto pred jej dokončením overíte svoj vek prostredníctvom služby Adulto (napr. občianskym preukazom alebo vodičským preukazom). Bez úspešného overenia nie je možné objednávku dokončiť. O overení uchovávame jeho identifikátor, čas, spôsob a výsledok.</li>' +
+          '<li>Vek kupujúceho môže byť overený aj pri odovzdaní tovaru.</li></ol>' +
+          '<h2>8. Riešenie sporov</h2><ol>' +
+          '<li>Ak sa prípadný spor s prevádzkovateľom nepodarí vyriešiť, môžete sa obrátiť na Slovenskú obchodnú inšpekciu, ústredný inšpektorát, Odbor pre medzinárodné vzťahy a alternatívne riešenie sporov, Bajkalská 21/A, P. O. BOX 29, 827 99 Bratislava 27, e-mail: <a href="mailto:ars@soi.sk">ars@soi.sk</a>, <a href="mailto:adr@soi.sk">adr@soi.sk</a>. Na riešenie sporov je dostupná aj online platforma Európskej komisie: <a href="https://ec.europa.eu/consumers/odr/">https://ec.europa.eu/consumers/odr/</a>.</li>' +
+          '<li>Vzťah medzi Vami a prevádzkovateľom sa riadi slovenským právnym poriadkom.</li></ol>' +
+          '<h2>9. Orgán dozoru</h2><p>Inšpektorát SOI pre Banskobystrický kraj, Odbor výkonu dozoru, Dolná 46, 974 00 Banská Bystrica 1, e-mail: <a href="mailto:bb@soi.sk">bb@soi.sk</a>, tel.: 048/412 49 69, 048/415 18 71, 048/415 18 73. Online kontaktný formulár: <a href="https://www.soi.sk/sk/Podavanie-podnetov-staznosti-navrhov-a-ziadosti.soi">www.soi.sk</a>.</p>';
       },
       privacy: function () {
-        return ph('sk') + '<p>Informácie o tom, ako spracúvame osobné údaje zákazníkov (GDPR).</p><h2>Prevádzkovateľ</h2><p>John&amp;Jen s.r.o., Banícka 703/16, 990 01 Veľký Krtíš, IČO: 50707191</p>' +
-          '<h2>Aké údaje spracúvame?</h2><ul><li>Meno, e-mail, telefón, fakturačná a dodacia adresa</li><li>Údaje o objednávkach</li><li>Prihlásenie na odber noviniek</li></ul>' +
-          '<h2>Sprostredkovatelia</h2><ul><li>Packeta – doručenie zásielok</li><li>Teya – online platby</li><li>SuperFaktúra – fakturácia</li></ul><h2>Tvoje práva</h2><p>[doplní klient]</p>';
+        return '<p>Tento dokument opisuje spôsob a účel spracúvania osobných údajov spoločnosťou John&amp;Jen s.r.o., IČO: 50707191, DIČ: 2120427342, IČ DPH: SK2120427342, so sídlom Banícka 703/16, 990 01 Veľký Krtíš, zapísaná v Obchodnom registri Okresného súdu Banská Bystrica, oddiel: Sro, vložka číslo: 31298/S (ďalej aj ako „prevádzkovateľ“) a poskytuje ďalšie informácie, ktoré vyžaduje zákon, vrátane informácií o právach dotknutej osoby a o tom, ako ich uplatniť.</p>' +
+          '<p>Nariadenie (EÚ) 2016/679 o ochrane fyzických osôb pri spracúvaní osobných údajov a o voľnom pohybe takýchto údajov (ďalej len „Nariadenie“) chráni základné práva a slobody fyzických osôb, najmä ich právo na ochranu osobných údajov. Podľa čl. 4 ods. 1 Nariadenia sú „osobné údaje“ akékoľvek informácie týkajúce sa identifikovanej alebo identifikovateľnej fyzickej osoby (ďalej len „dotknutá osoba“).</p>' +
+          '<h2>Na akom základe spracúvame Vaše osobné údaje?</h2><ul><li>dotknutá osoba vyjadrila súhlas so spracúvaním svojich osobných údajov na jeden alebo viac konkrétnych účelov,</li><li>spracúvanie je nevyhnutné na plnenie zmluvy, ktorej zmluvnou stranou je dotknutá osoba, alebo na vykonanie opatrení pred uzatvorením zmluvy na jej žiadosť,</li><li>spracúvanie je nevyhnutné na splnenie zákonnej povinnosti,</li><li>spracúvanie je nevyhnutné na účely oprávnených záujmov prevádzkovateľa alebo tretej strany, okrem prípadov, keď nad nimi prevažujú záujmy alebo základné práva a slobody dotknutej osoby.</li></ul>' +
+          '<h2>Účely spracúvania, osobné údaje a doba uchovávania</h2>' +
+          '<h2>E-shop</h2><ul><li>Účel: predaj tovaru, vystavenie faktúry a doručenie tovaru. Spracúvame meno, e-mail, telefón, fakturačnú a dodaciu adresu a údaje o objednávke.</li><li>Právny základ: plnenie zmluvy (čl. 6 ods. 1 písm. b) Nariadenia).</li><li>Doba uchovávania: 10 rokov.</li></ul>' +
+          '<h2>Overenie veku</h2><ul><li>Účel: overenie, že kupujúci tovaru s obsahom nikotínu je starší ako 18 rokov, ako to vyžaduje zákon č. 89/2016 Z. z. Overenie vykonáva služba Adulto; pri objednávke uchovávame identifikátor overenia, jeho čas, spôsob a výsledok.</li><li>Právny základ: plnenie zákonnej povinnosti.</li><li>Doba uchovávania: rovnako ako údaje o objednávke.</li></ul>' +
+          '<h2>Účtovníctvo a obchodná agenda</h2><ul><li>Účel: plnenie zákonných povinností prevádzkovateľa (napr. zákon o účtovníctve, zákon o dani z pridanej hodnoty, zákon o dani z príjmov).</li><li>Právny základ: zákonná povinnosť.</li><li>Doba uchovávania: 10 rokov.</li></ul>' +
+          '<h2>Obchodná komunikácia</h2><ul><li>Účel: príprava a realizácia obchodných aktivít prevádzkovateľa.</li><li>Právny základ: oprávnený záujem prevádzkovateľa podnikať v rozsahu predmetov činnosti zapísaných v príslušnom registri.</li><li>Doba uchovávania: počas prípravy a trvania obchodného vzťahu a do uplynutia premlčacej doby.</li></ul>' +
+          '<h2>Zasielanie noviniek (priamy marketing)</h2><ul><li>Účel: informovať Vás o novinkách a produktoch, ktoré Vás môžu zaujímať.</li><li>Právny základ: Váš súhlas.</li><li>Doba uchovávania: kým sa z odberu neodhlásite alebo súhlas neodvoláte.</li></ul>' +
+          '<h2>Personálna a mzdová agenda</h2><ul><li>Účel: uzatvorenie a plnenie pracovnoprávnych vzťahov a súvisiacich zákonných povinností.</li><li>Právny základ: plnenie zákonnej povinnosti, plnenie zmluvy, súhlas alebo oprávnený záujem.</li><li>Doba uchovávania: počas trvania pracovnoprávneho vzťahu a podľa osobitných predpisov.</li></ul>' +
+          '<h2>Správa registratúry</h2><ul><li>Účel: plnenie zákonných povinností, najmä podľa zákona č. 395/2002 Z. z. o archívoch a registratúrach.</li><li>Právny základ: plnenie zákonnej povinnosti.</li><li>Doba uchovávania: podľa osobitných predpisov.</li></ul>' +
+          '<h2>Evidencia práv dotknutých osôb</h2><ul><li>Účel a právny základ: plnenie zákonnej povinnosti.</li><li>Doba uchovávania: 2 roky od vybavenia žiadosti.</li></ul>' +
+          '<h2>Súdne spory</h2><ul><li>Účel: preukazovanie, uplatňovanie a obhajovanie právnych nárokov prevádzkovateľa.</li><li>Právny základ: oprávnený záujem prevádzkovateľa.</li><li>Doba uchovávania: do právoplatného skončenia veci.</li></ul>' +
+          '<h2>Komu poskytujeme Vaše osobné údaje?</h2><ul><li>Packeta – doručenie zásielok,</li><li>Teya – online platby kartou,</li><li>SuperFaktúra – vystavenie faktúr,</li><li>Adulto – overenie veku,</li><li>poskytovateľ webhostingu a správca webovej stránky,</li><li>účtovník (aj externý), audítor, advokát, orgány štátnej a verejnej správy a v odôvodnených prípadoch súdy a orgány činné v trestnom konaní.</li></ul>' +
+          '<p>Osobné údaje nezverejňujeme, nepoužívame ich na automatizované individuálne rozhodovanie vrátane profilovania a neprenášame ich do tretích krajín mimo Európskej únie. Naši zamestnanci a spolupracovníci, ktorí s osobnými údajmi pracujú, sú viazaní mlčanlivosťou aj po skončení spolupráce.</p>' +
+          '<h2>Zabezpečenie osobných údajov</h2><p>Aby sme zabránili neoprávnenému prístupu k Vašim osobným údajom a ich zneužitiu, prijali sme primerané technické a organizačné opatrenia, ktoré pravidelne kontrolujeme a zdokonaľujeme.</p>' +
+          '<h2>Vaše práva</h2><ul>' +
+          '<li><b>Odvolanie súhlasu</b> – ak spracúvame Vaše údaje na základe súhlasu, môžete ho kedykoľvek odvolať; odvolanie nemá vplyv na zákonnosť spracúvania pred ním.</li>' +
+          '<li><b>Právo na prístup</b> – máte právo na kópiu osobných údajov, ktoré o Vás máme, a na informácie o tom, ako ich používame.</li>' +
+          '<li><b>Právo na opravu</b> – ak sú Vaše údaje nepresné, neúplné alebo neaktuálne, požiadajte nás o ich opravu alebo doplnenie.</li>' +
+          '<li><b>Právo na výmaz</b> – môžete nás požiadať o vymazanie údajov, napríklad ak už nie sú potrebné na pôvodný účel; zákonné povinnosti (napr. účtovné) však môžu výmazu brániť.</li>' +
+          '<li><b>Právo na obmedzenie spracúvania</b> – za určitých okolností môžete žiadať, aby sme Vaše údaje prestali používať.</li>' +
+          '<li><b>Právo na prenosnosť</b> – údaje, ktoré ste nám poskytli na základe súhlasu alebo zmluvy, Vám na požiadanie odovzdáme alebo prenesieme k inému prevádzkovateľovi.</li>' +
+          '<li><b>Právo namietať</b> – môžete namietať proti spracúvaniu založenému na našom oprávnenom záujme.</li>' +
+          '<li><b>Právo podať návrh na začatie konania</b> – ak sa domnievate, že Vaše údaje spracúvame nezákonne, môžete sa obrátiť na Úrad na ochranu osobných údajov Slovenskej republiky, Hraničná 12, 820 07 Bratislava 27, tel.: +421 2 3231 3214, e-mail: <a href="mailto:statny.dozor@pdp.gov.sk">statny.dozor@pdp.gov.sk</a>, <a href="https://dataprotection.gov.sk">dataprotection.gov.sk</a>.</li></ul>' +
+          '<h2>Ako uplatniť svoje práva</h2><p>Kontaktujte nás na adrese John&amp;Jen s.r.o., Banícka 703/16, 990 01 Veľký Krtíš alebo e-mailom na <a href="mailto:info@firstvape.sk">info@firstvape.sk</a>. Odpovieme bezplatne do 30 dní; pri zložitých alebo početných žiadostiach môžeme lehotu predĺžiť o ďalších 60 dní – o tom aj o dôvodoch Vás budeme informovať.</p>' +
+          '<p>Informácie o súboroch cookie nájdete na stránke <a href="#/oldal/cookies">Súbory cookie</a>.</p>';
       },
       withdrawal: function () {
-        return ph('sk') + '<p>Od zmluvy môžeš bez udania dôvodu odstúpiť do 14 dní od prevzatia tovaru.</p>' +
-          '<h2>Výnimky</h2><p>Z hygienických dôvodov nie je možné vrátiť otvorené e-liquidy a predplnené pody.</p>' +
-          '<h2>Postup</h2><ol><li>Oznám nám odstúpenie cez kontaktný formulár alebo e-mailom.</li><li>Pošli tovar späť v neotvorenom balení.</li><li>Kúpnu cenu ti vrátime do 14 dní od doručenia oznámenia o odstúpení.</li></ol>' +
-          '<h2>Formulár na odstúpenie od zmluvy</h2><p>[vzorový formulár doplní klient]</p>';
+        return '<p>Ako kupujúci máte právo odstúpiť od kúpnej zmluvy do 14 dní od prevzatia tovaru, a to aj bez udania dôvodu.</p>' +
+          '<h2>Ako odstúpiť od zmluvy</h2><ol>' +
+          '<li>Pošlite nám písomné odstúpenie od zmluvy na adresu sídla (John&amp;Jen s.r.o., Banícka 703/16, 990 01 Veľký Krtíš) alebo e-mailom na <a href="mailto:info@firstvape.sk">info@firstvape.sk</a>. Môžete použiť formulár nižšie.</li>' +
+          '<li>Tovar vráťte poštou alebo osobne na adrese sídla prevádzkovateľa. Náklady na vrátenie tovaru znášate Vy.</li>' +
+          '<li>Zaplatenú kúpnu cenu Vám vrátime najneskôr do 14 dní od Vášho odstúpenia od zmluvy. Podmienkou vrátenia je, že vrátený tovar dostaneme.</li></ol>' +
+          '<h2>Výnimka</h2><p>Od zmluvy nie je možné odstúpiť pri tovare uzavretom v ochrannom obale, ktorý nie je vhodné vrátiť z dôvodu ochrany zdravia alebo z hygienických dôvodov, ak bol ochranný obal po dodaní porušený – napríklad otvorené e-liquidy a predplnené pody (§ 7 ods. 6 písm. e) zákona č. 102/2014 Z. z.).</p>' +
+          '<h2>Formulár na odstúpenie od zmluvy</h2><p>(vyplňte a zašlite ho len v prípade, že chcete odstúpiť od zmluvy)</p>' +
+          '<p>Komu: John&amp;Jen s.r.o., Banícka 703/16, 990 01 Veľký Krtíš, e-mail: info@firstvape.sk</p>' +
+          '<p>Týmto oznamujem, že odstupujem od zmluvy na tento tovar: …<br>Číslo objednávky: …<br>Dátum objednania / dátum prijatia tovaru: …<br>Meno a priezvisko: …<br>Adresa: …<br>Podpis (iba ak sa formulár podáva v listinnej podobe): …<br>Dátum: …</p>';
       },
       cookies: function () {
         return '<p>Stránka používa súbory cookie na fungovanie košíka a prihlásenia a – s tvojím súhlasom – na štatistické a marketingové účely.</p>' +

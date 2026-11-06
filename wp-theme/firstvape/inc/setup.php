@@ -189,6 +189,26 @@ function firstvape_html_to_blocks(string $html): string
         }
         return trim($s);
     };
+    // lista blokként; a listaelemen belüli lista beágyazott lista-blokk (ÁSZF: „Vaše práva pri reklamácii” stb.)
+    $list = function (DOMElement $l) use (&$list, $doc): string {
+        $tag = strtolower($l->tagName);
+        $items = '';
+        foreach ($l->childNodes as $li) {
+            if (!$li instanceof DOMElement || strtolower($li->tagName) !== 'li') {
+                continue;
+            }
+            $text = $sub = '';
+            foreach ($li->childNodes as $c) {
+                if ($c instanceof DOMElement && in_array(strtolower($c->tagName), ['ul', 'ol'], true)) {
+                    $sub .= $list($c);
+                } else {
+                    $text .= $doc->saveHTML($c);
+                }
+            }
+            $items .= "<!-- wp:list-item -->\n<li class=\"iu-list-item\">" . trim($text) . $sub . "</li>\n<!-- /wp:list-item -->\n\n";
+        }
+        return '<!-- wp:list' . ($tag === 'ol' ? ' {"ordered":true}' : '') . " -->\n<" . $tag . ' class="wp-block-list iu-list">' . rtrim($items) . '</' . $tag . ">\n<!-- /wp:list -->";
+    };
     $out = [];
     foreach ($root ? $root->childNodes : [] as $n) {
         if (!$n instanceof DOMElement) {
@@ -205,13 +225,7 @@ function firstvape_html_to_blocks(string $html): string
             $cls = $n->getAttribute('class');
             $out[] = '<!-- wp:paragraph' . ($cls !== '' ? ' {"className":"' . esc_attr($cls) . '"}' : '') . " -->\n<p class=\"iu-text" . ($cls !== '' ? ' ' . esc_attr($cls) : '') . '">' . $inner($n) . "</p>\n<!-- /wp:paragraph -->";
         } elseif ($tag === 'ul' || $tag === 'ol') {
-            $items = '';
-            foreach ($n->childNodes as $li) {
-                if ($li instanceof DOMElement && strtolower($li->tagName) === 'li') {
-                    $items .= "<!-- wp:list-item -->\n<li class=\"iu-list-item\">" . $inner($li) . "</li>\n<!-- /wp:list-item -->\n\n";
-                }
-            }
-            $out[] = '<!-- wp:list' . ($tag === 'ol' ? ' {"ordered":true}' : '') . " -->\n<" . $tag . ' class="wp-block-list iu-list">' . rtrim($items) . '</' . $tag . ">\n<!-- /wp:list -->";
+            $out[] = $list($n);
         } elseif ($tag === 'div' && $n->getAttribute('data-sc') !== '') {
             $out[] = "<!-- wp:shortcode -->\n[" . $n->getAttribute('data-sc') . "]\n<!-- /wp:shortcode -->";
         }
