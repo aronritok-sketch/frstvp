@@ -20,6 +20,11 @@ const FIRSTVAPE_AV_VERIFY_URL = 'https://api.result.adulto.cz/';
 function firstvape_av_opt(string $key, $default = '')
 {
     $o = (array) get_option('firstvape_av', []);
+    // a saját dev szerverünkön (HPV_SITE_ENV = 'dev', a VPS-telepítő adja) beállítás nélkül teszt mód – a frissen épített
+    // dev is mutatja a korellenőrzést; élesben (HPV_SITE_ENV = 'live') vagy más tárhelyen soha nem kapcsol be magától
+    if ($key === 'test' && !array_key_exists('test', $o) && defined('HPV_SITE_ENV') && HPV_SITE_ENV === 'dev') {
+        return 1;
+    }
     return $o[$key] ?? $default;
 }
 

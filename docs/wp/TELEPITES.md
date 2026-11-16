@@ -73,7 +73,8 @@ Egy WordPress szolgálja ki mindkettőt (Áron döntése, 2026-10-19). **A téma
 - Utánvét díja piaconként: Adatok (üresen a minta 1,50 €).
 - **Korellenőrzés (Adulto, SK – kötelező):** Megjelenés → First Vape → Korellenőrzés: az ügyfél Adulto-fiókjának nyilvános
   és privát kulcsa (a firstvape.sk domainhez), a widget szkriptjének címe az Adulto fejlesztői leírásából; a teszt módot
-  KI kell kapcsolni. A `wp firstvape check` piros, amíg nincs bekapcsolva.
+  KI kell kapcsolni. A `wp firstvape check` piros, amíg nincs bekapcsolva. A saját dev szerverünkön (`HPV_SITE_ENV = 'dev'`)
+  beállítás nélkül magától teszt módban fut; élesen (`HPV_SITE_ENV = 'live'`) és más tárhelyen soha.
 - Jogi szövegek (ügyfél jogásza): az oldalak szerkeszthető blokkok, a `legal-ph` bekezdést töröld.
 - Súly: most kategóriánkénti becslés (`_fv_weight_estimated` = yes) – az ügyfél adataiból felülírni.
 - Termékképek (2026-10-21 újra): a termékből semmi nem vész el, Real-ESRGAN élesítés, 16 Elfliq íz a gyártó képéből

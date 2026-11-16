@@ -98,7 +98,9 @@ kérése, 2026-10-22). `inc/ageverify.php`: ha a piac be van kapcsolva (alapból
 lekérdezi az eredményt (`api.result.adulto.cz?secret=…&response=<token>`, a token a form `adultocz-uid` mezőjéből), és
 csak `adultocz-verify-adult = true` esetén enged tovább. Beállítás: Megjelenés → First Vape → Korellenőrzés (kulcsok,
 szkript címe, mezőnevek, korhatár, termékkör, teszt mód, CSV-export). A szkript címét és a válasz mezőneveit az Adulto
-fejlesztői leírásával kell véglegesíteni (a nyers válasz a `_fv_av_raw`-ban). Teszt: `tests/wp/ageverify.mjs` (11 ellenőrzés).
+fejlesztői leírásával kell véglegesíteni (a nyers válasz a `_fv_av_raw`-ban). Ha a `firstvape_av` beállításban nincs
+`test` kulcs és `HPV_SITE_ENV === 'dev'` (a VPS-telepítő adja), a teszt mód alapból be van kapcsolva – a frissen épített dev is
+mutatja a korellenőrzést. Teszt: `tests/wp/ageverify.mjs` (11 ellenőrzés).
 
 ## Fejlesztés
 
