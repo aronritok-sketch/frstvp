@@ -92,7 +92,7 @@ function firstvape_jsonld(): string
     if (is_front_page()) {
         $out[] = [
             '@context' => 'https://schema.org', '@type' => 'OnlineStore', 'name' => 'First Vape', 'url' => home_url('/'),
-            'logo' => firstvape_img('first-vape-logo.png'), 'legalName' => (string) get_option('firstvape_company_name', 'John&Jen s.r.o.'),
+            'logo' => firstvape_img('first-vape-logo.png'), 'legalName' => (string) get_option('firstvape_company_name', 'SP & ES s. r. o.'),
             'email' => (string) get_option('firstvape_email', 'info@firstvape.sk'), 'currenciesAccepted' => 'EUR',
             'areaServed' => firstvape_market_country(),
         ];

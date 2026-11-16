@@ -870,6 +870,11 @@ function firstvape_setup_finish(int $offset, bool $force, array &$log): array
     if (!empty($map['*']['blog'])) {
         update_option('page_for_posts', (int) $map['*']['blog']);
     }
+    // a cégnév régi alapértéke (az admin űrlapja ezt mutatta, mentéskor elmentődött) → a valódi (ORSR, 2026-11-16)
+    if (get_option('firstvape_company_name') === 'John&Jen s.r.o.') {
+        update_option('firstvape_company_name', 'SP & ES s. r. o.');
+        $log[] = '↻ cégnév: SP & ES s. r. o.';
+    }
     // a minta „Hello world” bejegyzés és „Sample page” oldal ne maradjon
     foreach (get_posts(['post_type' => ['post', 'page'], 'post_status' => 'any', 'numberposts' => 10, 'name' => '', 'meta_query' => [['key' => 'fv_key', 'compare' => 'NOT EXISTS']], 'date_query' => [['before' => '-0 seconds']]]) as $p) {
         if (in_array($p->post_name, ['hello-world', 'sample-page', 'ahoj-svet', 'ukazkova-stranka', 'vzorova-stranka'], true)) {

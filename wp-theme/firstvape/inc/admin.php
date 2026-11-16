@@ -100,7 +100,7 @@ function firstvape_admin_page(): void
             $f('domain_sk', 'Szlovák domain', $d['sk'], 'pl. firstvape.sk – a szlovák felület és piac') .
             $f('domain_fr', 'Francia domain', $d['fr'], 'pl. firstvape.fr – üresen: egy domain, a francia nyelv ?lang=fr-rel érhető el (dev / staging)') .
             $f('email', 'Az üzlet e-mail címe', get_option('firstvape_email', 'info@firstvape.sk'), 'kapcsolati űrlap címzettje, a láblécben és a kapcsolat oldalon') .
-            $f('company', 'Cégnév', get_option('firstvape_company_name', 'John&Jen s.r.o.')) .
+            $f('company', 'Cégnév', get_option('firstvape_company_name', 'SP & ES s. r. o.')) .
             $f('facebook', 'Facebook', $s['facebook'] ?? '') . $f('instagram', 'Instagram', $s['instagram'] ?? '') . $f('tiktok', 'TikTok', $s['tiktok'] ?? '') .
             $f('packeta', 'Packeta API-kulcs (widget)', get_option('firstvape_packeta_key') ? '********' : '', 'csak a minta szállítási módhoz; élesben a Packeta bővítmény saját beállítása') .
             $f('featured', 'Kiemelt készülék (termék slug)', get_option('firstvape_featured', 'elfbar-elfa-turbo-black'), 'a márkák menüjében és a kompatibilitás-blokkban') .

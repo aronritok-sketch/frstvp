@@ -242,7 +242,7 @@
       '<div><p class="ftr-h">' + t('customer') + '</p><ul><li><a href="#/oldal/contact">' + t('contact') + '</a></li><li><a href="#/fiok">' + t('myAccount') + '</a></li><li><a href="#/fiok/rendelesek">' + t('orders') + '</a></li><li><a href="#/fiok/kedvencek">' + t('wishlist') + '</a></li></ul></div>' +
       '</div><div class="wrap ftr-pay"><div class="pay-badges"><span>Teya</span><span>VISA</span><span>Mastercard</span><span>Apple Pay</span><span>Google Pay</span>' + (FV.mkt().carrier ? '<span class="carrier">' + FV.mkt().carrier + '</span>' : '') + '</div>' +
       '<p class="warn-line">' + t('nicWarn') + '</p></div>' +
-      '<div class="wrap ftr-bottom"><p>© 2026 First Vape · John&amp;Jen s.r.o.</p><p>' + t('madeBy') + '</p></div></footer>';
+      '<div class="wrap ftr-bottom"><p>© 2026 First Vape · SP &amp; ES s. r. o.</p><p>' + t('madeBy') + '</p></div></footer>';
   };
 
   /* ---------- Korellenőrzés (18+) ---------- */

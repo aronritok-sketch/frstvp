@@ -312,13 +312,13 @@
     sk: {
       shipping: function () {
         return '<h2>Doprava</h2><p>Zásielky doručuje Packeta – na výdajné miesto, do Z-BOXu alebo na adresu. Objednávky prijaté v pracovné dni do 14:00 odosielame ešte v ten deň. Cena dopravy sa počíta podľa celkovej hmotnosti zásielky.</p>{shipTable}' +
-          '<h2>Platba</h2><ul><li><b>Online platba kartou</b> (Visa, Mastercard, Apple Pay, Google Pay) na zabezpečenej platobnej stránke Teya.</li><li><b>Dobierka</b>: platba pri prevzatí zásielky, poplatok {cod}.</li></ul>' +
+          '<h2>Platba</h2><ul><li><b>Online platba kartou</b> (Visa, Mastercard, Apple Pay, Google Pay) cez zabezpečenú platobnú bránu Teya.</li><li><b>Dobierka</b>: platba pri prevzatí zásielky, poplatok {cod}.</li></ul>' +
           '<h2>Faktúra</h2><p>Faktúru automaticky vystavíme po objednávke a pošleme ti ju e-mailom. Stiahnuť si ju môžeš aj vo svojom účte v časti Objednávky.</p><p>Všetky ceny sú uvedené vrátane DPH 23 %.</p>';
       },
       terms: function () {
         return '<p>Tieto všeobecné obchodné podmienky upravujú nákup v internetovom obchode First Vape na adrese www.firstvape.sk.</p>' +
           '<h2>1. Kto sme?</h2><ol>' +
-          '<li>Prevádzkovateľom internetového obchodu www.firstvape.sk je spoločnosť John&amp;Jen s.r.o., IČO: 50707191, DIČ: 2120427342, IČ DPH: SK2120427342, so sídlom Banícka 703/16, 990 01 Veľký Krtíš, zapísaná v Obchodnom registri Okresného súdu Banská Bystrica, oddiel: Sro, vložka číslo: 31298/S (ďalej aj ako „prevádzkovateľ“).</li>' +
+          '<li>Prevádzkovateľom internetového obchodu www.firstvape.sk je spoločnosť SP &amp; ES s. r. o., IČO: 50707191, DIČ: 2120427342, IČ DPH: SK2120427342, so sídlom Banícka 703/16, 990 01 Veľký Krtíš, zapísaná v Obchodnom registri Okresného súdu Banská Bystrica, oddiel: Sro, vložka číslo: 31298/S (ďalej aj ako „prevádzkovateľ“).</li>' +
           '<li>Našimi kontaktnými údajmi sú: e-mail <a href="mailto:info@firstvape.sk">info@firstvape.sk</a>, tel.: +36 20 483 3092, prostredníctvom ktorých sa na nás môžete obrátiť s otázkami, podnetmi, reklamáciou a inými záležitosťami týkajúcimi sa nami ponúkaného sortimentu.</li>' +
           '<li>V našom sortimente nájdete elektronické cigarety, ich príslušenstvo a rôzne druhy náplní do nich (ďalej aj ako „tovar“ alebo „sortiment“). Pri tovare s dobou expirácie má zakúpený tovar, ak nie je pri jeho popise uvedené inak, dátum expirácie minimálne 1 rok od uzavretia kúpnej zmluvy.</li></ol>' +
           '<h2>2. Spôsob uzatvorenia kúpnej zmluvy</h2><ol>' +
@@ -330,7 +330,7 @@
           '<li>Nakupovať môžu výlučne osoby staršie ako 18 rokov. Pri objednávke tovaru s obsahom nikotínu je podmienkou odoslania objednávky úspešné overenie veku (pozri čl. 7).</li></ol>' +
           '<h2>3. Ceny, platba a doručenie</h2><ol>' +
           '<li>Ceny tovaru sú uvedené v eurách vrátane DPH.</li>' +
-          '<li>Za tovar môžete zaplatiť online platobnou kartou (Visa, Mastercard, Apple Pay, Google Pay) na zabezpečenej platobnej stránke Teya alebo na dobierku pri prevzatí zásielky.</li>' +
+          '<li>Za tovar môžete zaplatiť online platobnou kartou (Visa, Mastercard, Apple Pay, Google Pay) cez zabezpečenú platobnú bránu Teya alebo na dobierku pri prevzatí zásielky.</li>' +
           '<li>Tovar doručuje spoločnosť Packeta na výdajné miesto, do Z-BOXu alebo na Vami zadanú adresu. Ceny dopravy, poplatok za dobierku a hranica dopravy zdarma sú uvedené na stránke <a href="#/oldal/shipping">Doprava a platba</a>.</li>' +
           '<li>Faktúru Vám po objednávke pošleme e-mailom; nájdete ju aj vo svojom účte v časti Objednávky.</li></ol>' +
           '<h2>4. Odstúpenie od kúpnej zmluvy</h2><ol>' +
@@ -356,7 +356,7 @@
           '<h2>9. Orgán dozoru</h2><p>Inšpektorát SOI pre Banskobystrický kraj, Odbor výkonu dozoru, Dolná 46, 974 00 Banská Bystrica 1, e-mail: <a href="mailto:bb@soi.sk">bb@soi.sk</a>, tel.: 048/412 49 69, 048/415 18 71, 048/415 18 73. Online kontaktný formulár: <a href="https://www.soi.sk/sk/Podavanie-podnetov-staznosti-navrhov-a-ziadosti.soi">www.soi.sk</a>.</p>';
       },
       privacy: function () {
-        return '<p>Tento dokument opisuje spôsob a účel spracúvania osobných údajov spoločnosťou John&amp;Jen s.r.o., IČO: 50707191, DIČ: 2120427342, IČ DPH: SK2120427342, so sídlom Banícka 703/16, 990 01 Veľký Krtíš, zapísaná v Obchodnom registri Okresného súdu Banská Bystrica, oddiel: Sro, vložka číslo: 31298/S (ďalej aj ako „prevádzkovateľ“) a poskytuje ďalšie informácie, ktoré vyžaduje zákon, vrátane informácií o právach dotknutej osoby a o tom, ako ich uplatniť.</p>' +
+        return '<p>Tento dokument opisuje spôsob a účel spracúvania osobných údajov spoločnosťou SP &amp; ES s. r. o., IČO: 50707191, DIČ: 2120427342, IČ DPH: SK2120427342, so sídlom Banícka 703/16, 990 01 Veľký Krtíš, zapísaná v Obchodnom registri Okresného súdu Banská Bystrica, oddiel: Sro, vložka číslo: 31298/S (ďalej aj ako „prevádzkovateľ“) a poskytuje ďalšie informácie, ktoré vyžaduje zákon, vrátane informácií o právach dotknutej osoby a o tom, ako ich uplatniť.</p>' +
           '<p>Nariadenie (EÚ) 2016/679 o ochrane fyzických osôb pri spracúvaní osobných údajov a o voľnom pohybe takýchto údajov (ďalej len „Nariadenie“) chráni základné práva a slobody fyzických osôb, najmä ich právo na ochranu osobných údajov. Podľa čl. 4 ods. 1 Nariadenia sú „osobné údaje“ akékoľvek informácie týkajúce sa identifikovanej alebo identifikovateľnej fyzickej osoby (ďalej len „dotknutá osoba“).</p>' +
           '<h2>Na akom základe spracúvame Vaše osobné údaje?</h2><ul><li>dotknutá osoba vyjadrila súhlas so spracúvaním svojich osobných údajov na jeden alebo viac konkrétnych účelov,</li><li>spracúvanie je nevyhnutné na plnenie zmluvy, ktorej zmluvnou stranou je dotknutá osoba, alebo na vykonanie opatrení pred uzatvorením zmluvy na jej žiadosť,</li><li>spracúvanie je nevyhnutné na splnenie zákonnej povinnosti,</li><li>spracúvanie je nevyhnutné na účely oprávnených záujmov prevádzkovateľa alebo tretej strany, okrem prípadov, keď nad nimi prevažujú záujmy alebo základné práva a slobody dotknutej osoby.</li></ul>' +
           '<h2>Účely spracúvania, osobné údaje a doba uchovávania</h2>' +
@@ -381,18 +381,18 @@
           '<li><b>Právo na prenosnosť</b> – údaje, ktoré ste nám poskytli na základe súhlasu alebo zmluvy, Vám na požiadanie odovzdáme alebo prenesieme k inému prevádzkovateľovi.</li>' +
           '<li><b>Právo namietať</b> – môžete namietať proti spracúvaniu založenému na našom oprávnenom záujme.</li>' +
           '<li><b>Právo podať návrh na začatie konania</b> – ak sa domnievate, že Vaše údaje spracúvame nezákonne, môžete sa obrátiť na Úrad na ochranu osobných údajov Slovenskej republiky, Hraničná 12, 820 07 Bratislava 27, tel.: +421 2 3231 3214, e-mail: <a href="mailto:statny.dozor@pdp.gov.sk">statny.dozor@pdp.gov.sk</a>, <a href="https://dataprotection.gov.sk">dataprotection.gov.sk</a>.</li></ul>' +
-          '<h2>Ako uplatniť svoje práva</h2><p>Kontaktujte nás na adrese John&amp;Jen s.r.o., Banícka 703/16, 990 01 Veľký Krtíš alebo e-mailom na <a href="mailto:info@firstvape.sk">info@firstvape.sk</a>. Odpovieme bezplatne do 30 dní; pri zložitých alebo početných žiadostiach môžeme lehotu predĺžiť o ďalších 60 dní – o tom aj o dôvodoch Vás budeme informovať.</p>' +
+          '<h2>Ako uplatniť svoje práva</h2><p>Kontaktujte nás na adrese SP &amp; ES s. r. o., Banícka 703/16, 990 01 Veľký Krtíš alebo e-mailom na <a href="mailto:info@firstvape.sk">info@firstvape.sk</a>. Odpovieme bezplatne do 30 dní; pri zložitých alebo početných žiadostiach môžeme lehotu predĺžiť o ďalších 60 dní – o tom aj o dôvodoch Vás budeme informovať.</p>' +
           '<p>Informácie o súboroch cookie nájdete na stránke <a href="#/oldal/cookies">Súbory cookie</a>.</p>';
       },
       withdrawal: function () {
         return '<p>Ako kupujúci máte právo odstúpiť od kúpnej zmluvy do 14 dní od prevzatia tovaru, a to aj bez udania dôvodu.</p>' +
           '<h2>Ako odstúpiť od zmluvy</h2><ol>' +
-          '<li>Pošlite nám písomné odstúpenie od zmluvy na adresu sídla (John&amp;Jen s.r.o., Banícka 703/16, 990 01 Veľký Krtíš) alebo e-mailom na <a href="mailto:info@firstvape.sk">info@firstvape.sk</a>. Môžete použiť formulár nižšie.</li>' +
+          '<li>Pošlite nám písomné odstúpenie od zmluvy na adresu sídla (SP &amp; ES s. r. o., Banícka 703/16, 990 01 Veľký Krtíš) alebo e-mailom na <a href="mailto:info@firstvape.sk">info@firstvape.sk</a>. Môžete použiť formulár nižšie.</li>' +
           '<li>Tovar vráťte poštou alebo osobne na adrese sídla prevádzkovateľa. Náklady na vrátenie tovaru znášate Vy.</li>' +
           '<li>Zaplatenú kúpnu cenu Vám vrátime najneskôr do 14 dní od Vášho odstúpenia od zmluvy. Podmienkou vrátenia je, že vrátený tovar dostaneme.</li></ol>' +
           '<h2>Výnimka</h2><p>Od zmluvy nie je možné odstúpiť pri tovare uzavretom v ochrannom obale, ktorý nie je vhodné vrátiť z dôvodu ochrany zdravia alebo z hygienických dôvodov, ak bol ochranný obal po dodaní porušený – napríklad otvorené e-liquidy a predplnené pody (§ 7 ods. 6 písm. e) zákona č. 102/2014 Z. z.).</p>' +
           '<h2>Formulár na odstúpenie od zmluvy</h2><p>(vyplňte a zašlite ho len v prípade, že chcete odstúpiť od zmluvy)</p>' +
-          '<p>Komu: John&amp;Jen s.r.o., Banícka 703/16, 990 01 Veľký Krtíš, e-mail: info@firstvape.sk</p>' +
+          '<p>Komu: SP &amp; ES s. r. o., Banícka 703/16, 990 01 Veľký Krtíš, e-mail: info@firstvape.sk</p>' +
           '<p>Týmto oznamujem, že odstupujem od zmluvy na tento tovar: …<br>Číslo objednávky: …<br>Dátum objednania / dátum prijatia tovaru: …<br>Meno a priezvisko: …<br>Adresa: …<br>Podpis (iba ak sa formulár podáva v listinnej podobe): …<br>Dátum: …</p>';
       },
       cookies: function () {
@@ -404,19 +404,19 @@
       shipping: function () {
         return '<h2>Livraison</h2><p>Les commandes sont expédiées depuis notre entrepôt en Slovaquie. Les commandes passées en semaine avant 14 h partent le jour même. Les frais de port sont calculés selon le poids total du colis.</p>' +
           '<p class="legal-ph">Transporteur, délais et tarifs pour la France : à confirmer. Le tableau ci-dessous est un exemple.</p>{shipTable}' +
-          '<h2>Paiement</h2><ul><li><b>Paiement en ligne par carte</b> (Visa, Mastercard, Apple Pay, Google Pay) sur la page de paiement sécurisée de Teya.</li><li><b>Paiement à la livraison</b> : frais de {cod}, sous réserve de disponibilité chez le transporteur.</li></ul>' +
+          '<h2>Paiement</h2><ul><li><b>Paiement en ligne par carte</b> (Visa, Mastercard, Apple Pay, Google Pay) via la passerelle de paiement sécurisée Teya.</li><li><b>Paiement à la livraison</b> : frais de {cod}, sous réserve de disponibilité chez le transporteur.</li></ul>' +
           '<h2>Facture</h2><p>La facture est émise automatiquement après la commande et vous est envoyée par e-mail. Vous pouvez aussi la télécharger depuis votre compte, rubrique Commandes.</p><p>Tous les prix sont indiqués TTC (TVA française de 20 %).</p>';
       },
       terms: function () {
-        return ph('fr') + '<p>Les présentes conditions générales de vente (CGV) régissent les achats effectués sur la boutique en ligne First Vape, exploitée par la société John&amp;Jen s.r.o.</p>' +
-          '<h2>1. Identification du vendeur</h2><p>John&amp;Jen s.r.o., société de droit slovaque, siège : Banícka 703/16, 990 01 Veľký Krtíš, Slovaquie, n° d’identification (IČO) : 50707191, n° de TVA intracommunautaire : SK2120427342. Contact : info@firstvape.sk.</p>' +
+        return ph('fr') + '<p>Les présentes conditions générales de vente (CGV) régissent les achats effectués sur la boutique en ligne First Vape, exploitée par la société SP &amp; ES s. r. o.</p>' +
+          '<h2>1. Identification du vendeur</h2><p>SP &amp; ES s. r. o., société de droit slovaque, siège : Banícka 703/16, 990 01 Veľký Krtíš, Slovaquie, immatriculée au registre du commerce du tribunal de district de Banská Bystrica (Okresný súd Banská Bystrica), section Sro, n° 31298/S, n° d’identification (IČO) : 50707191, n° de TVA intracommunautaire : SK2120427342. Contact : info@firstvape.sk.</p>' +
           '<h2>2. Commandes</h2><p>[à compléter par le client]</p><h2>3. Prix et paiement</h2><p>Les prix sont indiqués en euros, toutes taxes comprises (TTC). [à compléter]</p><h2>4. Livraison</h2><p>[à compléter]</p>' +
           '<h2>5. Droit de rétractation</h2><p>Voir la page <a href="#/oldal/withdrawal">Droit de rétractation</a>.</p><h2>6. Garanties légales</h2><p>Garantie légale de conformité et garantie des vices cachés. [à compléter]</p>' +
           '<h2>7. Vente réservée aux personnes majeures</h2><p>La vente des produits est strictement réservée aux personnes âgées de 18 ans ou plus.</p>' +
           '<h2>8. Médiation de la consommation</h2><p>[médiateur à désigner par le client]</p><h2>9. Droit applicable</h2><p>[à compléter]</p>';
       },
       privacy: function () {
-        return ph('fr') + '<p>Informations sur le traitement des données personnelles de nos clients (RGPD).</p><h2>Responsable du traitement</h2><p>John&amp;Jen s.r.o., Banícka 703/16, 990 01 Veľký Krtíš, Slovaquie</p>' +
+        return ph('fr') + '<p>Informations sur le traitement des données personnelles de nos clients (RGPD).</p><h2>Responsable du traitement</h2><p>SP &amp; ES s. r. o., Banícka 703/16, 990 01 Veľký Krtíš, Slovaquie</p>' +
           '<h2>Données traitées</h2><ul><li>Nom, e-mail, téléphone, adresses de facturation et de livraison</li><li>Données de commande</li><li>Inscription à la newsletter</li></ul>' +
           '<h2>Sous-traitants</h2><ul><li>Transporteur – livraison des colis [à confirmer]</li><li>Teya – paiement en ligne</li><li>SuperFaktúra – facturation</li></ul><h2>Vos droits</h2><p>[à compléter par le client]</p>';
       },
@@ -427,7 +427,7 @@
           '<h2>Formulaire de rétractation</h2><p>[modèle à fournir par le client]</p>';
       },
       legal: function () {
-        return ph('fr') + '<h2>Éditeur du site</h2><p>John&amp;Jen s.r.o., société à responsabilité limitée de droit slovaque, capital social : [·], siège : Banícka 703/16, 990 01 Veľký Krtíš, Slovaquie, n° d’identification (IČO) : 50707191, n° de TVA intracommunautaire : SK2120427342. E-mail : info@firstvape.sk.</p>' +
+        return ph('fr') + '<h2>Éditeur du site</h2><p>SP &amp; ES s. r. o., société à responsabilité limitée de droit slovaque, capital social : 5 000 EUR, siège : Banícka 703/16, 990 01 Veľký Krtíš, Slovaquie, immatriculée au registre du commerce du tribunal de district de Banská Bystrica (Okresný súd Banská Bystrica), section Sro, n° 31298/S, n° d’identification (IČO) : 50707191, n° de TVA intracommunautaire : SK2120427342. E-mail : info@firstvape.sk.</p>' +
           '<h2>Directeur de la publication</h2><p>[nom et fonction]</p><h2>Hébergeur</h2><p>[nom, adresse et téléphone de l’hébergeur]</p>';
       },
       cookies: function () {

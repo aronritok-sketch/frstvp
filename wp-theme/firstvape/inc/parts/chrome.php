@@ -325,7 +325,7 @@ function firstvape_render_footer(): string
             $pages .= '<li><a href="' . esc_url(firstvape_page_url($k)) . '">' . esc_html((string) ($short[$k] ?? firstvape_page_title($k))) . '</a></li>';
         }
     }
-    $company = (string) get_option('firstvape_company_name', 'John&Jen s.r.o.');
+    $company = (string) get_option('firstvape_company_name', 'SP & ES s. r. o.');
     return '<section class="newsletter"><div class="wrap nl-in"><div><h2>' . firstvape_t('nlTitle') . '</h2>' .
         '<p>' . firstvape_t('nlText') . '</p></div>' .
         '<form class="nl-form" data-form="newsletter" novalidate><label class="sr" for="nl-mail">' . firstvape_t('email') . '</label><input id="nl-mail" name="email" type="email" required placeholder="' . esc_attr((string) firstvape_t('emailPh')) . '">' .

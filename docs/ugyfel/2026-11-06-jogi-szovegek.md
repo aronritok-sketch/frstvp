@@ -27,12 +27,16 @@ adultót hogy a termékeink nikotintartalma miatt a jogszabály előírja a kor 
   ami nem egyezik a mostani bolttal. A mostani Doprava a platba oldal maradt (a Packeta-díjak az árlistából jönnek).
 - A francia oldalakat: a régi oldalon nincs francia jogi szöveg, a francia oldalak helyőrzők maradtak.
 
-**Megerősítendő (az ügyféllel):**
-- A cégadatok az ügyfél 10-20-i adatai (IČO 50707191, DIČ 2120427342, IČ DPH SK2120427342, Sro 31298/S). A régi oldalon
-  a korábbi cég szerepel: John&Jen s.r.o., IČO 54 596 793, vložka 43717/S. A cégnév („John&Jen s.r.o.”) az új cégnél nincs
-  megerősítve.
-- A bíróság: „Okresný súd Banská Bystrica”, a régi cég bejegyzése és a /S végű betétszám alapján. Nincs megerősítve.
-- A telefonszám (+36 20 483 3092) a régi oldalról van.
+**Megerősítve (2026-11-16):**
+- Cégnév: **SP & ES s. r. o.** (Johny, portál 2026-11-06; a „John&Jen s.r.o.” a korábbi cég neve volt). Az ORSR kivonata
+  (Okresný súd Banská Bystrica, oddiel Sro, vložka 31298/S, IČO 50 707 191, sídlo Banícka 703/16, 990 01 Veľký Krtíš,
+  základné imanie 5 000 EUR) egyezik a témában lévő adatokkal. A név mindenhol átírva (SK és FR jogi oldalak, lábléc,
+  kapcsolat, szerkezeti adatok, admin alapérték; a telepítő a régi elmentett alapértéket is átírja), az FR impresszumban
+  a törzstőke és a cégjegyzék is.
+- Bíróság: Banská Bystrica („a besztercei cégjegyzékben van”, Johny, 2026-11-06).
+- Telefonszám +36 20 483 3092: marad („a telefonszám az enyém, de teljesen jó lesz”, Johny, 2026-11-06).
+- Teya: az ügyfél az oldalon maradó (beágyazott) fizetést kéri – a szöveg ezért „zabezpečená platobná brána Teya”
+  (nem „platobná stránka”); a Teya-bővítmény beállítása élesítéskor.
 
 ## Technika
 
